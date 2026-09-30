@@ -57,20 +57,20 @@ export default function LoginPage() {
     <div className="max-w-4xl mx-auto py-12 space-y-8">
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#101720] border border-[#1B252F] text-xs font-mono text-[#39D9FF]">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#12171D] border border-[#1C242C] text-xs font-mono text-[#4FD1C5]">
           <Lock className="w-3.5 h-3.5" />
           <span>ZERO-TRUST IDENTITY GATEWAY</span>
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold font-heading text-[#F5F7FA]">
+        <h1 className="text-2xl md:text-3xl font-bold font-heading text-[#EEF2F5]">
           Authentication & Role Enforcement
         </h1>
-        <p className="text-xs text-[#A4AFBC] max-w-lg mx-auto">
+        <p className="text-xs text-[#A3ADB7] max-w-lg mx-auto">
           Authenticate with role-embedded JWT bearer credentials or switch instantly between demo operators.
         </p>
       </div>
 
       {error && (
-        <div className="p-3.5 rounded-lg bg-[#FF6074]/15 border border-[#FF6074]/30 text-[#FF6074] text-xs font-mono flex items-center gap-2.5 max-w-2xl mx-auto">
+        <div className="p-3.5 rounded-lg bg-[#E66A77]/15 border border-[#E66A77]/30 text-[#E66A77] text-xs font-mono flex items-center gap-2.5 max-w-2xl mx-auto">
           <AlertTriangle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -78,17 +78,17 @@ export default function LoginPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
         {/* Left: 1-Click Role Switcher */}
-        <div className="p-6 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4 flex flex-col justify-between">
+        <div className="p-6 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4 flex flex-col justify-between">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-heading font-semibold text-sm text-[#F5F7FA]">
+              <span className="font-heading font-semibold text-sm text-[#EEF2F5]">
                 Instant Demo Roles
               </span>
               <Badge variant="cyan" size="xs">
                 QUICK-SWITCH
               </Badge>
             </div>
-            <p className="text-xs text-[#A4AFBC]">
+            <p className="text-xs text-[#A3ADB7]">
               Select any role below to authenticate instantly and observe strict zone boundary enforcement.
             </p>
           </div>
@@ -96,116 +96,116 @@ export default function LoginPage() {
           <div className="space-y-2.5">
             <button
               onClick={() => handleQuickRole("red_operator", "/red")}
-              className="w-full flex items-center justify-between p-3 rounded-md bg-[#070A0F] border border-[#1B252F] hover:border-[#FF6074]/50 transition text-left group"
+              className="w-full flex items-center justify-between p-3 rounded-md bg-[#080A0D] border border-[#1C242C] hover:border-[#E66A77]/50 transition text-left group"
             >
               <div className="flex items-center gap-3">
-                <div className="p-1.5 rounded bg-[#FF6074]/10 text-[#FF6074]">
+                <div className="p-1.5 rounded bg-[#E66A77]/10 text-[#E66A77]">
                   <Terminal className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-[#F5F7FA] block">
+                  <span className="text-xs font-semibold text-[#EEF2F5] block">
                     Red Team Operator
                   </span>
-                  <span className="text-[10px] font-mono text-[#6C7886]">
+                  <span className="text-[10px] font-mono text-[#68737E]">
                     red_operator • red_zone
                   </span>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-[#6C7886] group-hover:text-[#FF6074] transition" />
+              <ArrowRight className="w-4 h-4 text-[#68737E] group-hover:text-[#E66A77] transition" />
             </button>
 
             <button
               onClick={() => handleQuickRole("blue_operator", "/blue")}
-              className="w-full flex items-center justify-between p-3 rounded-md bg-[#070A0F] border border-[#1B252F] hover:border-[#5D9CFF]/50 transition text-left group"
+              className="w-full flex items-center justify-between p-3 rounded-md bg-[#080A0D] border border-[#1C242C] hover:border-[#6EA8FE]/50 transition text-left group"
             >
               <div className="flex items-center gap-3">
-                <div className="p-1.5 rounded bg-[#5D9CFF]/10 text-[#5D9CFF]">
+                <div className="p-1.5 rounded bg-[#6EA8FE]/10 text-[#6EA8FE]">
                   <Shield className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-[#F5F7FA] block">
+                  <span className="text-xs font-semibold text-[#EEF2F5] block">
                     Blue Team Operator
                   </span>
-                  <span className="text-[10px] font-mono text-[#6C7886]">
+                  <span className="text-[10px] font-mono text-[#68737E]">
                     blue_operator • blue_zone
                   </span>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-[#6C7886] group-hover:text-[#5D9CFF] transition" />
+              <ArrowRight className="w-4 h-4 text-[#68737E] group-hover:text-[#6EA8FE] transition" />
             </button>
 
             <button
               onClick={() => handleQuickRole("admin", "/control")}
-              className="w-full flex items-center justify-between p-3 rounded-md bg-[#070A0F] border border-[#1B252F] hover:border-[#38D996]/50 transition text-left group"
+              className="w-full flex items-center justify-between p-3 rounded-md bg-[#080A0D] border border-[#1C242C] hover:border-[#45C995]/50 transition text-left group"
             >
               <div className="flex items-center gap-3">
-                <div className="p-1.5 rounded bg-[#38D996]/10 text-[#38D996]">
+                <div className="p-1.5 rounded bg-[#45C995]/10 text-[#45C995]">
                   <Database className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-[#F5F7FA] block">
+                  <span className="text-xs font-semibold text-[#EEF2F5] block">
                     Control Plane Admin
                   </span>
-                  <span className="text-[10px] font-mono text-[#6C7886]">
+                  <span className="text-[10px] font-mono text-[#68737E]">
                     admin • control_plane
                   </span>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-[#6C7886] group-hover:text-[#38D996] transition" />
+              <ArrowRight className="w-4 h-4 text-[#68737E] group-hover:text-[#45C995] transition" />
             </button>
 
             <button
               onClick={() => handleQuickRole("auditor", "/audit")}
-              className="w-full flex items-center justify-between p-3 rounded-md bg-[#070A0F] border border-[#1B252F] hover:border-[#FFB84D]/50 transition text-left group"
+              className="w-full flex items-center justify-between p-3 rounded-md bg-[#080A0D] border border-[#1C242C] hover:border-[#E6B35A]/50 transition text-left group"
             >
               <div className="flex items-center gap-3">
-                <div className="p-1.5 rounded bg-[#FFB84D]/10 text-[#FFB84D]">
+                <div className="p-1.5 rounded bg-[#E6B35A]/10 text-[#E6B35A]">
                   <FileCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-[#F5F7FA] block">
+                  <span className="text-xs font-semibold text-[#EEF2F5] block">
                     Compliance Auditor
                   </span>
-                  <span className="text-[10px] font-mono text-[#6C7886]">
+                  <span className="text-[10px] font-mono text-[#68737E]">
                     auditor • audit_zone
                   </span>
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-[#6C7886] group-hover:text-[#FFB84D] transition" />
+              <ArrowRight className="w-4 h-4 text-[#68737E] group-hover:text-[#E6B35A] transition" />
             </button>
           </div>
         </div>
 
         {/* Right: Manual Login Form */}
-        <div className="p-6 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4 flex flex-col justify-between">
+        <div className="p-6 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4 flex flex-col justify-between">
           <div className="space-y-2">
-            <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+            <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
               Manual Credentials
             </h3>
-            <p className="text-xs text-[#A4AFBC]">
+            <p className="text-xs text-[#A3ADB7]">
               Enter username and password to authenticate directly via POST /api/auth/login.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3.5 text-xs font-mono">
             <div className="space-y-1">
-              <label className="text-[#A4AFBC]">Username</label>
+              <label className="text-[#A3ADB7]">Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] focus:border-[#39D9FF] outline-none"
+                className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] focus:border-[#4FD1C5] outline-none"
                 required
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[#A4AFBC]">Password</label>
+              <label className="text-[#A3ADB7]">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] focus:border-[#39D9FF] outline-none"
+                className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] focus:border-[#4FD1C5] outline-none"
                 required
               />
             </div>
@@ -222,9 +222,9 @@ export default function LoginPage() {
           </form>
 
           {user && (
-            <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F] text-[11px] font-mono flex items-center justify-between">
-              <span className="text-[#6C7886]">Current Session:</span>
-              <span className="text-[#39D9FF] font-semibold">{user.username} ({user.role})</span>
+            <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C] text-[11px] font-mono flex items-center justify-between">
+              <span className="text-[#68737E]">Current Session:</span>
+              <span className="text-[#4FD1C5] font-semibold">{user.username} ({user.role})</span>
             </div>
           )}
         </div>

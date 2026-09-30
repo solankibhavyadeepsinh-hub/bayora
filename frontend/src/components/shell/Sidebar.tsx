@@ -18,13 +18,10 @@ import {
   ChevronRight,
   Shield,
   UserCheck,
-  CheckCircle2,
   Server,
   Settings,
-  ExternalLink,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
-import { Badge } from "../ui/Badge";
 
 interface SidebarProps {
   onOpenCommandPalette: () => void;
@@ -32,134 +29,62 @@ interface SidebarProps {
 
 export function Sidebar({ onOpenCommandPalette }: SidebarProps) {
   const pathname = usePathname();
-  const { user, switchRole } = useAuth();
+  const { user } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
 
   const mainNavigation = [
-    {
-      name: "OVERVIEW",
-      href: "/",
-      icon: LayoutDashboard,
-      activeColor: "text-[#39D9FF]",
-      activeBg: "bg-[#39D9FF]/10 border-[#39D9FF]/30",
-    },
-    {
-      name: "MODEL LAB",
-      href: "/models",
-      icon: Cpu,
-      activeColor: "text-[#8C7DFF]",
-      activeBg: "bg-[#8C7DFF]/10 border-[#8C7DFF]/30",
-    },
-    {
-      name: "SECURITY CENTER",
-      href: "/blue",
-      icon: ShieldCheck,
-      activeColor: "text-[#5D9CFF]",
-      activeBg: "bg-[#5D9CFF]/10 border-[#5D9CFF]/30",
-    },
-    {
-      name: "EVALUATION",
-      href: "/red",
-      icon: Flame,
-      activeColor: "text-[#FF6074]",
-      activeBg: "bg-[#FF6074]/10 border-[#FF6074]/30",
-    },
-    {
-      name: "LIVE ACTIVITY",
-      href: "/observability",
-      icon: Activity,
-      activeColor: "text-[#39D9FF]",
-      activeBg: "bg-[#39D9FF]/10 border-[#39D9FF]/30",
-    },
-    {
-      name: "EVIDENCE",
-      href: "/audit",
-      icon: FileCheck,
-      activeColor: "text-[#FFB84D]",
-      activeBg: "bg-[#FFB84D]/10 border-[#FFB84D]/30",
-    },
-    {
-      name: "REPORTS",
-      href: "/compliance",
-      icon: Award,
-      activeColor: "text-[#38D996]",
-      activeBg: "bg-[#38D996]/10 border-[#38D996]/30",
-    },
-    {
-      name: "SYSTEM HEALTH",
-      href: "/control",
-      icon: Server,
-      activeColor: "text-[#38D996]",
-      activeBg: "bg-[#38D996]/10 border-[#38D996]/30",
-    },
+    { name: "OVERVIEW", href: "/", icon: LayoutDashboard },
+    { name: "MODEL LAB", href: "/models", icon: Cpu },
+    { name: "SECURITY CENTER", href: "/blue", icon: ShieldCheck },
+    { name: "EVALUATION", href: "/red", icon: Flame },
+    { name: "LIVE ACTIVITY", href: "/observability", icon: Activity },
+    { name: "EVIDENCE", href: "/audit", icon: FileCheck },
+    { name: "REPORTS", href: "/compliance", icon: Award },
+    { name: "SYSTEM HEALTH", href: "/control", icon: Server },
   ];
 
   const workspaceNavigation = [
-    {
-      name: "TAXONOMY / OWASP",
-      href: "/taxonomy",
-      icon: BookOpen,
-      activeColor: "text-[#5D9CFF]",
-      activeBg: "bg-[#5D9CFF]/10 border-[#5D9CFF]/30",
-    },
-    {
-      name: "WALKTHROUGH DEMO",
-      href: "/demo",
-      icon: Sparkles,
-      activeColor: "text-[#8C7DFF]",
-      activeBg: "bg-[#8C7DFF]/10 border-[#8C7DFF]/30",
-    },
-    {
-      name: "IDENTITY & RBAC",
-      href: "/login",
-      icon: UserCheck,
-      activeColor: "text-[#A4AFBC]",
-      activeBg: "bg-[#25303C] border-[#39D9FF]/30",
-    },
-    {
-      name: "CONFIGURATION",
-      href: "/settings",
-      icon: Settings,
-      activeColor: "text-[#39D9FF]",
-      activeBg: "bg-[#39D9FF]/10 border-[#39D9FF]/30",
-    },
+    { name: "TAXONOMY / OWASP", href: "/taxonomy", icon: BookOpen },
+    { name: "WALKTHROUGH DEMO", href: "/demo", icon: Sparkles },
+    { name: "IDENTITY & RBAC", href: "/login", icon: UserCheck },
+    { name: "CONFIGURATION", href: "/settings", icon: Settings },
   ];
 
   return (
     <aside
-      className={`fixed top-0 left-0 bottom-0 z-40 bg-[#070A0F] border-r border-[#1B252F] flex flex-col justify-between transition-all duration-200 select-none ${
-        collapsed ? "w-16" : "w-64"
+      className={`fixed top-0 left-0 bottom-0 z-40 bg-[#080A0D] border-r border-[#1C242C] flex flex-col justify-between transition-all duration-200 select-none ${
+        collapsed ? "w-16" : "w-60"
       }`}
     >
       {/* Top Header / Brand */}
       <div>
-        <div className="h-16 px-4 border-b border-[#1B252F] flex items-center justify-between bg-[#070A0F]">
+        <div className="h-14 px-4 border-b border-[#1C242C] flex items-center justify-between bg-[#080A0D]">
           {!collapsed ? (
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-lg bg-[#101720] border border-[#25303C] flex items-center justify-center text-[#39D9FF]">
-                <Shield className="w-4 h-4 text-[#39D9FF]" />
+              <div className="h-7 w-7 rounded bg-[#12171D] border border-[#252D36] flex items-center justify-center text-[#4FD1C5]">
+                <Shield className="w-3.5 h-3.5 text-[#4FD1C5]" />
               </div>
               <div className="flex flex-col">
-                <span className="font-heading font-bold text-sm tracking-wider text-[#F5F7FA] flex items-center gap-1">
+                <span className="font-heading font-bold text-xs tracking-wider text-[#EEF2F5] flex items-center gap-1">
                   BAYORA
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#39D9FF]" />
+                  <span className="h-1 w-1 rounded-full bg-[#4FD1C5]" />
                 </span>
-                <span className="text-[9px] font-mono text-[#6C7886] tracking-widest uppercase">
+                <span className="text-[9px] font-mono text-[#68737E] tracking-widest uppercase">
                   AI Security Lab
                 </span>
               </div>
             </Link>
           ) : (
             <div className="mx-auto">
-              <div className="h-8 w-8 rounded-lg bg-[#101720] border border-[#25303C] flex items-center justify-center text-[#39D9FF]">
-                <Shield className="w-4 h-4 text-[#39D9FF]" />
+              <div className="h-7 w-7 rounded bg-[#12171D] border border-[#252D36] flex items-center justify-center text-[#4FD1C5]">
+                <Shield className="w-3.5 h-3.5 text-[#4FD1C5]" />
               </div>
             </div>
           )}
 
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="p-1 rounded-md text-[#6C7886] hover:text-[#F5F7FA] hover:bg-[#101720] transition hidden lg:flex"
+            className="p-1 rounded text-[#68737E] hover:text-[#EEF2F5] hover:bg-[#12171D] transition hidden lg:flex"
             title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
@@ -171,11 +96,11 @@ export function Sidebar({ onOpenCommandPalette }: SidebarProps) {
         </div>
 
         {/* Navigation Sections */}
-        <div className="p-3 space-y-6 overflow-y-auto max-h-[calc(100vh-210px)]">
+        <div className="p-2.5 space-y-5 overflow-y-auto max-h-[calc(100vh-190px)]">
           {/* Main Console Links */}
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {!collapsed && (
-              <div className="px-3 pb-1 text-[10px] font-mono text-[#6C7886] tracking-wider uppercase">
+              <div className="px-2.5 pb-1 text-[9px] font-mono text-[#68737E] tracking-wider uppercase">
                 Core Modules
               </div>
             )}
@@ -187,13 +112,17 @@ export function Sidebar({ onOpenCommandPalette }: SidebarProps) {
                   key={item.href}
                   href={item.href}
                   title={collapsed ? item.name : undefined}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-md text-xs font-mono transition-all duration-150 border ${
+                  className={`flex items-center gap-2.5 px-2.5 py-1.5 rounded text-xs font-mono transition-colors border ${
                     isActive
-                      ? `${item.activeBg} ${item.activeColor} font-semibold shadow-sm`
-                      : "border-transparent text-[#A4AFBC] hover:text-[#F5F7FA] hover:bg-[#101720]"
+                      ? "bg-[#171D24] border-[#252D36] text-[#EEF2F5] font-semibold"
+                      : "border-transparent text-[#A3ADB7] hover:text-[#EEF2F5] hover:bg-[#12171D]"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? item.activeColor : "text-[#6C7886]"}`} />
+                  <Icon
+                    className={`w-3.5 h-3.5 shrink-0 ${
+                      isActive ? "text-[#4FD1C5]" : "text-[#68737E]"
+                    }`}
+                  />
                   {!collapsed && <span className="truncate">{item.name}</span>}
                 </Link>
               );
@@ -201,9 +130,9 @@ export function Sidebar({ onOpenCommandPalette }: SidebarProps) {
           </div>
 
           {/* Workspace Links */}
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {!collapsed && (
-              <div className="px-3 pb-1 text-[10px] font-mono text-[#6C7886] tracking-wider uppercase">
+              <div className="px-2.5 pb-1 text-[9px] font-mono text-[#68737E] tracking-wider uppercase">
                 Assurance & Hub
               </div>
             )}
@@ -215,13 +144,17 @@ export function Sidebar({ onOpenCommandPalette }: SidebarProps) {
                   key={item.href}
                   href={item.href}
                   title={collapsed ? item.name : undefined}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-md text-xs font-mono transition-all duration-150 border ${
+                  className={`flex items-center gap-2.5 px-2.5 py-1.5 rounded text-xs font-mono transition-colors border ${
                     isActive
-                      ? `${item.activeBg} ${item.activeColor} font-semibold shadow-sm`
-                      : "border-transparent text-[#A4AFBC] hover:text-[#F5F7FA] hover:bg-[#101720]"
+                      ? "bg-[#171D24] border-[#252D36] text-[#EEF2F5] font-semibold"
+                      : "border-transparent text-[#A3ADB7] hover:text-[#EEF2F5] hover:bg-[#12171D]"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? item.activeColor : "text-[#6C7886]"}`} />
+                  <Icon
+                    className={`w-3.5 h-3.5 shrink-0 ${
+                      isActive ? "text-[#4FD1C5]" : "text-[#68737E]"
+                    }`}
+                  />
                   {!collapsed && <span className="truncate">{item.name}</span>}
                 </Link>
               );
@@ -231,39 +164,39 @@ export function Sidebar({ onOpenCommandPalette }: SidebarProps) {
       </div>
 
       {/* Bottom Profile & Status Section */}
-      <div className="p-3 border-t border-[#1B252F] bg-[#070A0F] space-y-3">
-        {/* System Heartbeat Pill */}
+      <div className="p-2.5 border-t border-[#1C242C] bg-[#080A0D] space-y-2">
+        {/* System Heartbeat */}
         {!collapsed ? (
-          <div className="p-2 rounded bg-[#0B1017] border border-[#1B252F] flex items-center justify-between text-[11px] font-mono">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#38D996] animate-pulse" />
-              <span className="text-[#A4AFBC]">mTLS Mesh</span>
+          <div className="p-2 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between text-[10px] font-mono">
+            <div className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
+              <span className="text-[#A3ADB7]">mTLS Mesh</span>
             </div>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#101720] text-[#39D9FF] border border-[#1B252F]">
+            <span className="text-[9px] px-1 py-0.5 rounded bg-[#12171D] text-[#4FD1C5] border border-[#1C242C]">
               SANDBOX
             </span>
           </div>
         ) : (
-          <div className="flex justify-center" title="mTLS Zero-Trust Mesh Healthy">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#38D996] animate-pulse" />
+          <div className="flex justify-center" title="mTLS Mesh Active">
+            <span className="h-2 w-2 rounded-full bg-[#45C995]" />
           </div>
         )}
 
-        {/* User Session Profile & Role Switcher */}
+        {/* User Session */}
         {!collapsed && user && (
-          <div className="flex items-center justify-between p-2 rounded-md bg-[#101720] border border-[#1B252F]">
-            <div className="flex flex-col min-w-0 pr-2">
-              <span className="text-xs font-medium text-[#F5F7FA] truncate font-sans">
+          <div className="flex items-center justify-between p-2 rounded bg-[#12171D] border border-[#1C242C]">
+            <div className="flex flex-col min-w-0 pr-1.5">
+              <span className="text-xs font-medium text-[#EEF2F5] truncate font-sans">
                 {user.username}
               </span>
-              <span className="text-[10px] font-mono text-[#6C7886] uppercase">
+              <span className="text-[9px] font-mono text-[#68737E] uppercase">
                 {user.role}
               </span>
             </div>
 
             <Link
               href="/login"
-              className="text-[10px] font-mono text-[#39D9FF] hover:underline shrink-0"
+              className="text-[10px] font-mono text-[#4FD1C5] hover:underline shrink-0"
               title="Switch role"
             >
               Switch

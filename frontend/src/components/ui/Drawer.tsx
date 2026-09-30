@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { X, Copy, Check, ExternalLink } from "lucide-react";
+import { X, Copy, Check } from "lucide-react";
 import { Button } from "./Button";
-import { Badge } from "./Badge";
+import { Badge, BadgeVariant } from "./Badge";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -10,7 +10,7 @@ interface DrawerProps {
   subtitle?: string;
   badge?: {
     text: string;
-    variant: "cyan" | "violet" | "success" | "warning" | "danger" | "info" | "neutral";
+    variant: BadgeVariant;
   };
   children: React.ReactNode;
   rawJson?: any;
@@ -40,7 +40,6 @@ export function Drawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Prevent background scroll when drawer is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -66,16 +65,16 @@ export function Drawer({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-[#070A0F]/80 backdrop-blur-sm transition-opacity duration-200"
+        className="fixed inset-0 bg-[#080A0D]/75 backdrop-blur-[2px] transition-opacity duration-200"
       />
 
       {/* Slide-over panel */}
-      <div className="relative w-full max-w-xl bg-[#101720] border-l border-[#25303C] shadow-2xl flex flex-col h-full z-10 animate-slide-in-right">
+      <div className="relative w-full max-w-xl bg-[#12171D] border-l border-[#252D36] shadow-2xl flex flex-col h-full z-10 animate-slide-in-right">
         {/* Header */}
-        <div className="p-6 border-b border-[#1B252F] flex items-start justify-between gap-4 bg-[#0B1017]">
-          <div className="space-y-1.5 pr-2">
+        <div className="p-5 border-b border-[#1C242C] flex items-start justify-between gap-4 bg-[#0D1116]">
+          <div className="space-y-1 pr-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-base font-semibold text-[#F5F7FA] font-heading tracking-tight">
+              <h2 className="text-sm font-semibold text-[#EEF2F5] font-heading tracking-tight">
                 {title}
               </h2>
               {badge && (
@@ -85,7 +84,7 @@ export function Drawer({
               )}
             </div>
             {subtitle && (
-              <p className="text-xs text-[#A4AFBC] font-mono leading-relaxed">
+              <p className="text-[11px] text-[#A3ADB7] font-mono leading-relaxed">
                 {subtitle}
               </p>
             )}
@@ -93,7 +92,7 @@ export function Drawer({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-md text-[#6C7886] hover:text-[#F5F7FA] hover:bg-[#151D27] transition"
+            className="p-1 rounded text-[#68737E] hover:text-[#EEF2F5] hover:bg-[#171D24] transition-colors"
             aria-label="Close drawer"
           >
             <X className="w-4 h-4" />
@@ -102,23 +101,23 @@ export function Drawer({
 
         {/* Tab Header if rawJson provided */}
         {rawJson && (
-          <div className="flex items-center px-6 border-b border-[#1B252F] bg-[#0E1520] gap-4 text-xs font-mono">
+          <div className="flex items-center px-5 border-b border-[#1C242C] bg-[#0E1319] gap-4 text-xs font-mono">
             <button
               onClick={() => setActiveTab("details")}
-              className={`py-2.5 border-b-2 font-medium transition ${
+              className={`py-2 border-b-2 font-medium transition ${
                 activeTab === "details"
-                  ? "border-[#39D9FF] text-[#39D9FF]"
-                  : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+                  ? "border-[#4FD1C5] text-[#4FD1C5]"
+                  : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
               }`}
             >
-              Inspection & Telemetry
+              Inspection Telemetry
             </button>
             <button
               onClick={() => setActiveTab("json")}
-              className={`py-2.5 border-b-2 font-medium transition flex items-center gap-1.5 ${
+              className={`py-2 border-b-2 font-medium transition flex items-center gap-1.5 ${
                 activeTab === "json"
-                  ? "border-[#39D9FF] text-[#39D9FF]"
-                  : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+                  ? "border-[#4FD1C5] text-[#4FD1C5]"
+                  : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
               }`}
             >
               Raw Cryptographic JSON
@@ -127,25 +126,25 @@ export function Drawer({
         )}
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-5 space-y-5">
           {activeTab === "details" ? (
             children
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono text-[#6C7886]">
+                <span className="text-[10px] font-mono text-[#68737E]">
                   Canonical JSON Serialization
                 </span>
                 <Button
                   variant="outline"
                   size="xs"
                   onClick={copyJson}
-                  icon={copied ? <Check className="w-3 h-3 text-[#38D996]" /> : <Copy className="w-3 h-3" />}
+                  icon={copied ? <Check className="w-3 h-3 text-[#45C995]" /> : <Copy className="w-3 h-3" />}
                 >
                   {copied ? "Copied" : "Copy Payload"}
                 </Button>
               </div>
-              <pre className="p-4 rounded-md bg-[#070A0F] border border-[#1B252F] text-[11px] font-mono text-[#A4AFBC] overflow-x-auto leading-relaxed">
+              <pre className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] text-[11px] font-mono text-[#A3ADB7] overflow-x-auto leading-relaxed">
                 {JSON.stringify(rawJson, null, 2)}
               </pre>
             </div>
@@ -154,7 +153,7 @@ export function Drawer({
 
         {/* Footer Actions */}
         {actions && (
-          <div className="p-4 border-t border-[#1B252F] bg-[#0B1017] flex items-center justify-end gap-2.5">
+          <div className="p-4 border-t border-[#1C242C] bg-[#0D1116] flex items-center justify-end gap-2">
             {actions}
           </div>
         )}

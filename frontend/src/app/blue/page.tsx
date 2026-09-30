@@ -140,13 +140,13 @@ export default function SecurityCenterPage() {
 
   if (!isAuthorized) {
     return (
-      <div className="p-12 rounded-lg border border-[#FF6074]/30 bg-[#FF6074]/5 text-center max-w-lg mx-auto my-12 space-y-4">
-        <Lock className="w-8 h-8 text-[#FF6074] mx-auto" />
-        <h2 className="text-base font-semibold font-heading text-[#F5F7FA]">
+      <div className="p-12 rounded-lg border border-[#E66A77]/30 bg-[#E66A77]/5 text-center max-w-lg mx-auto my-12 space-y-4">
+        <Lock className="w-8 h-8 text-[#E66A77] mx-auto" />
+        <h2 className="text-base font-semibold font-heading text-[#EEF2F5]">
           ZONE ACCESS RESTRICTED: BLUE TEAM
         </h2>
-        <p className="text-xs text-[#A4AFBC] leading-relaxed">
-          Current identity <span className="font-mono text-[#39D9FF]">({user?.role})</span> lacks Blue Operator privileges. Switch role to access defensive guardrails.
+        <p className="text-xs text-[#A3ADB7] leading-relaxed">
+          Current identity <span className="font-mono text-[#4FD1C5]">({user?.role})</span> lacks Blue Operator privileges. Switch role to access defensive guardrails.
         </p>
         <Button variant="outline" size="sm" onClick={() => switchRole("blue_operator")}>
           Switch to Blue Operator
@@ -158,18 +158,18 @@ export default function SecurityCenterPage() {
   return (
     <div className="space-y-8">
       {/* Hero Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
               SECURITY CENTER
             </h1>
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#38D996]/15 border border-[#38D996]/30 text-[#38D996] text-[11px] font-mono">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#38D996] animate-pulse" />
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#45C995]/15 border border-[#45C995]/30 text-[#45C995] text-[11px] font-mono">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#45C995] animate-pulse" />
               <span>SYSTEM SECURE</span>
             </div>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             Real-time defensive posture, guardrail rule deployment, and dual-blind sanitized threat telemetry.
           </p>
         </div>
@@ -228,13 +228,13 @@ export default function SecurityCenterPage() {
       </div>
 
       {/* Main Tabs Navigation */}
-      <div className="flex items-center border-b border-[#1B252F] gap-6 text-xs font-mono">
+      <div className="flex items-center border-b border-[#1C242C] gap-6 text-xs font-mono">
         <button
           onClick={() => setActiveTab("threatFeed")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "threatFeed"
-              ? "border-[#39D9FF] text-[#39D9FF]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#4FD1C5] text-[#4FD1C5]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <ShieldAlert className="w-4 h-4" />
@@ -244,8 +244,8 @@ export default function SecurityCenterPage() {
           onClick={() => setActiveTab("guardrails")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "guardrails"
-              ? "border-[#39D9FF] text-[#39D9FF]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#4FD1C5] text-[#4FD1C5]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
@@ -255,8 +255,8 @@ export default function SecurityCenterPage() {
           onClick={() => setActiveTab("metrics")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "metrics"
-              ? "border-[#39D9FF] text-[#39D9FF]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#4FD1C5] text-[#4FD1C5]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <BarChart3 className="w-4 h-4" />
@@ -266,25 +266,25 @@ export default function SecurityCenterPage() {
 
       {/* TAB 1: Sanitized Threat Feed */}
       {activeTab === "threatFeed" && (
-        <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1B252F]">
+        <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1C242C]">
             <div>
-              <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+              <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                 Sanitized Threat Feed
               </h3>
-              <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+              <p className="text-[11px] text-[#A3ADB7] mt-0.5">
                 Dual-blind telemetry stream. Raw adversarial prompts and Red operator identifiers are strictly masked.
               </p>
             </div>
-            <div className="flex items-center gap-2 text-[11px] font-mono text-[#6C7886]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#38D996]" />
+            <div className="flex items-center gap-2 text-[11px] font-mono text-[#68737E]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
               <span>Auto-refreshing</span>
             </div>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+              <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
                 <tr>
                   <th className="py-2.5 px-3">Time</th>
                   <th className="py-2.5 px-3">Event / Threat</th>
@@ -296,10 +296,10 @@ export default function SecurityCenterPage() {
                   <th className="py-2.5 px-3 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1B252F]">
+              <tbody className="divide-y divide-[#1C242C]">
                 {threatFeed.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-8 text-center text-xs text-[#6C7886]">
+                    <td colSpan={8} className="py-8 text-center text-xs text-[#68737E]">
                       No threat signals detected. System perimeter fully intact.
                     </td>
                   </tr>
@@ -319,15 +319,15 @@ export default function SecurityCenterPage() {
                       <tr
                         key={idx}
                         onClick={() => setSelectedThreat(threat)}
-                        className="hover:bg-[#151D27]/50 cursor-pointer transition"
+                        className="hover:bg-[#171D24]/50 cursor-pointer transition"
                       >
-                        <td className="py-2.5 px-3 text-[#6C7886] whitespace-nowrap">
+                        <td className="py-2.5 px-3 text-[#68737E] whitespace-nowrap">
                           {threat.timestamp ? threat.timestamp.substring(11, 19) : "15:42:08"}
                         </td>
-                        <td className="py-2.5 px-3 font-semibold text-[#F5F7FA]">
+                        <td className="py-2.5 px-3 font-semibold text-[#EEF2F5]">
                           {threat.owasp_category || "LLM01: Prompt Injection"}
                         </td>
-                        <td className="py-2.5 px-3 text-[#A4AFBC]">
+                        <td className="py-2.5 px-3 text-[#A3ADB7]">
                           {threat.stage || "INPUT_FILTER"}
                         </td>
                         <td className="py-2.5 px-3">
@@ -335,24 +335,24 @@ export default function SecurityCenterPage() {
                             {sev}
                           </Badge>
                         </td>
-                        <td className="py-2.5 px-3 text-[#8C7DFF]">
+                        <td className="py-2.5 px-3 text-[#7C8CFF]">
                           {threat.sandbox_id || "sbx-finance-prod"}
                         </td>
-                        <td className="py-2.5 px-3 text-[#6C7886]">
+                        <td className="py-2.5 px-3 text-[#68737E]">
                           {threat.caller_zone || "red_zone [MASKED]"}
                         </td>
                         <td className="py-2.5 px-3">
                           <span
                             className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                               threat.action_taken === "BLOCK" || threat.blocked
-                                ? "bg-[#FF6074]/15 text-[#FF6074] border border-[#FF6074]/30"
-                                : "bg-[#38D996]/15 text-[#38D996] border border-[#38D996]/30"
+                                ? "bg-[#E66A77]/15 text-[#E66A77] border border-[#E66A77]/30"
+                                : "bg-[#45C995]/15 text-[#45C995] border border-[#45C995]/30"
                             }`}
                           >
                             {threat.action_taken || (threat.blocked ? "BLOCKED" : "SANITIZED")}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3 text-right text-[#39D9FF] hover:underline">
+                        <td className="py-2.5 px-3 text-right text-[#4FD1C5] hover:underline">
                           Inspect
                         </td>
                       </tr>
@@ -372,44 +372,44 @@ export default function SecurityCenterPage() {
             {defenses.map((rule) => (
               <div
                 key={rule.id}
-                className="p-4 rounded-lg bg-[#101720] border border-[#1B252F] space-y-3 flex flex-col justify-between"
+                className="p-4 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-3 flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-[#6C7886]">
+                    <span className="text-[10px] font-mono text-[#68737E]">
                       {rule.id}
                     </span>
                     <Badge variant={rule.is_active ? "success" : "neutral"} size="xs" dot>
                       {rule.is_active ? "ACTIVE" : "DISABLED"}
                     </Badge>
                   </div>
-                  <h4 className="font-semibold text-sm text-[#F5F7FA] font-sans">
+                  <h4 className="font-semibold text-sm text-[#EEF2F5] font-sans">
                     {rule.rule_name}
                   </h4>
-                  <p className="text-[11px] font-mono text-[#5D9CFF]">
+                  <p className="text-[11px] font-mono text-[#6EA8FE]">
                     {rule.owasp_category}
                   </p>
-                  <div className="p-2 rounded bg-[#070A0F] border border-[#1B252F] text-[10px] font-mono text-[#A4AFBC] truncate">
+                  <div className="p-2 rounded bg-[#080A0D] border border-[#1C242C] text-[10px] font-mono text-[#A3ADB7] truncate">
                     Pattern: {rule.pattern_or_config}
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-[#1B252F] flex items-center justify-between">
+                <div className="pt-3 border-t border-[#1C242C] flex items-center justify-between">
                   <button
                     onClick={() => handleToggleRule(rule)}
-                    className="text-xs font-mono text-[#A4AFBC] hover:text-[#F5F7FA] flex items-center gap-1.5 transition"
+                    className="text-xs font-mono text-[#A3ADB7] hover:text-[#EEF2F5] flex items-center gap-1.5 transition"
                   >
                     {rule.is_active ? (
-                      <ToggleRight className="w-5 h-5 text-[#38D996]" />
+                      <ToggleRight className="w-5 h-5 text-[#45C995]" />
                     ) : (
-                      <ToggleLeft className="w-5 h-5 text-[#6C7886]" />
+                      <ToggleLeft className="w-5 h-5 text-[#68737E]" />
                     )}
                     <span>{rule.is_active ? "Enabled" : "Disabled"}</span>
                   </button>
 
                   <button
                     onClick={() => handleDeleteRule(rule.id)}
-                    className="p-1 rounded text-[#6C7886] hover:text-[#FF6074] hover:bg-[#FF6074]/10 transition"
+                    className="p-1 rounded text-[#68737E] hover:text-[#E66A77] hover:bg-[#E66A77]/10 transition"
                     title="Delete rule"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -423,31 +423,31 @@ export default function SecurityCenterPage() {
 
       {/* TAB 3: Threat Distribution Metrics */}
       {activeTab === "metrics" && metrics && (
-        <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-          <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+        <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+          <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
             Threat Distribution by OWASP LLM Taxonomy
           </h3>
           <div className="h-72 pt-4">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={metrics.threats_by_category}>
-                  <XAxis dataKey="category" tick={{ fill: "#6C7886", fontSize: 10 }} />
-                  <YAxis tick={{ fill: "#6C7886", fontSize: 10 }} />
+                  <XAxis dataKey="category" tick={{ fill: "#68737E", fontSize: 10 }} />
+                  <YAxis tick={{ fill: "#68737E", fontSize: 10 }} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#0B1017",
-                      borderColor: "#25303C",
-                      color: "#F5F7FA",
+                      backgroundColor: "#0D1116",
+                      borderColor: "#252D36",
+                      color: "#EEF2F5",
                       fontSize: 11,
                       fontFamily: "JetBrains Mono",
                       borderRadius: 6,
                     }}
                   />
-                  <Bar dataKey="count" fill="#5D9CFF" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" fill="#6EA8FE" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-xs text-[#6C7886]">
+              <div className="h-full flex items-center justify-center text-xs text-[#68737E]">
                 Loading metrics visualization...
               </div>
             )}
@@ -474,35 +474,35 @@ export default function SecurityCenterPage() {
       >
         {selectedThreat && (
           <div className="space-y-4 text-xs font-mono">
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 OWASP Threat Classification
               </span>
-              <span className="text-sm font-semibold text-[#F5F7FA]">
+              <span className="text-sm font-semibold text-[#EEF2F5]">
                 {selectedThreat.owasp_category || "LLM01: Prompt Injection"}
               </span>
             </div>
 
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Sanitized Telemetry Snippet (Redacted)
               </span>
-              <p className="text-xs text-[#A4AFBC] font-sans leading-relaxed">
+              <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
                 {selectedThreat.sanitized_snippet ||
                   "[REDACTED_ATTACK_VECTOR] - High-entropy adversarial token sequence intercepted by regex guardrail."}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Action Enforced</span>
-                <span className="text-sm font-bold text-[#FF6074]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Action Enforced</span>
+                <span className="text-sm font-bold text-[#E66A77]">
                   {selectedThreat.action_taken || "BLOCK"}
                 </span>
               </div>
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Target Sandbox</span>
-                <span className="text-sm font-bold text-[#8C7DFF]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Target Sandbox</span>
+                <span className="text-sm font-bold text-[#7C8CFF]">
                   {selectedThreat.sandbox_id || "sbx-finance-prod"}
                 </span>
               </div>
@@ -516,43 +516,43 @@ export default function SecurityCenterPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
             onClick={() => setShowCreateModal(false)}
-            className="fixed inset-0 bg-[#070A0F]/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-[#080A0D]/80 backdrop-blur-sm"
           />
-          <div className="relative w-full max-w-lg bg-[#101720] border border-[#25303C] rounded-xl shadow-2xl p-6 z-10 space-y-4">
-            <h3 className="font-heading font-semibold text-base text-[#F5F7FA]">
+          <div className="relative w-full max-w-lg bg-[#12171D] border border-[#252D36] rounded-xl shadow-2xl p-6 z-10 space-y-4">
+            <h3 className="font-heading font-semibold text-base text-[#EEF2F5]">
               Deploy New Defensive Guardrail
             </h3>
             <form onSubmit={handleCreateRule} className="space-y-4 text-xs font-mono">
               <div className="space-y-1">
-                <label className="text-[#A4AFBC]">Rule Name</label>
+                <label className="text-[#A3ADB7]">Rule Name</label>
                 <input
                   type="text"
                   value={newRuleName}
                   onChange={(e) => setNewRuleName(e.target.value)}
                   placeholder="e.g. Canary Exfiltration Interceptor"
-                  className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] focus:border-[#39D9FF] outline-none"
+                  className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] focus:border-[#4FD1C5] outline-none"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[#A4AFBC]">Stage</label>
+                  <label className="text-[#A3ADB7]">Stage</label>
                   <select
                     value={newRuleStage}
                     onChange={(e) => setNewRuleStage(e.target.value)}
-                    className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] outline-none"
+                    className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] outline-none"
                   >
                     <option value="INPUT_FILTER">Stage 4: Input Filter</option>
                     <option value="OUTPUT_FILTER">Stage 6: Output Filter</option>
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#A4AFBC]">Severity</label>
+                  <label className="text-[#A3ADB7]">Severity</label>
                   <select
                     value={newRuleSeverity}
                     onChange={(e) => setNewRuleSeverity(e.target.value)}
-                    className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] outline-none"
+                    className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] outline-none"
                   >
                     <option value="LOW">LOW</option>
                     <option value="MEDIUM">MEDIUM</option>
@@ -563,18 +563,18 @@ export default function SecurityCenterPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#A4AFBC]">Pattern / Regex / Canary Keyword</label>
+                <label className="text-[#A3ADB7]">Pattern / Regex / Canary Keyword</label>
                 <input
                   type="text"
                   value={newRulePattern}
                   onChange={(e) => setNewRulePattern(e.target.value)}
                   placeholder="e.g. (?i)(canary|secret_key|api_token)"
-                  className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] focus:border-[#39D9FF] outline-none"
+                  className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] focus:border-[#4FD1C5] outline-none"
                   required
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#1B252F]">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#1C242C]">
                 <Button variant="ghost" size="sm" onClick={() => setShowCreateModal(false)}>
                   Cancel
                 </Button>

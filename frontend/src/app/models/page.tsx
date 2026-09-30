@@ -222,18 +222,18 @@ export default function ModelLabPage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
-            <Cpu className="w-5 h-5 text-[#8C7DFF]" />
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+            <Cpu className="w-5 h-5 text-[#7C8CFF]" />
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
               MODEL LAB & EXPERIMENTATION
             </h1>
             <Badge variant="violet" size="xs">
               AIRGAP SANDBOXES
             </Badge>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             Interactive AI model testing workbench with canary token inspection, live gateway telemetry, and defense verification.
           </p>
         </div>
@@ -256,8 +256,8 @@ export default function ModelLabPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* LEFT COLUMN: Model Selector & Dossier (3 cols) */}
         <div className="lg:col-span-3 space-y-4">
-          <div className="p-4 rounded-lg bg-[#101720] border border-[#1B252F] space-y-3">
-            <span className="text-[10px] font-mono text-[#6C7886] uppercase tracking-wider block">
+          <div className="p-4 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-3">
+            <span className="text-[10px] font-mono text-[#68737E] uppercase tracking-wider block">
               Target Model Selector
             </span>
 
@@ -270,24 +270,24 @@ export default function ModelLabPage() {
                     onClick={() => setSelectedModel(m)}
                     className={`p-3 rounded-md cursor-pointer transition text-xs border ${
                       isSelected
-                        ? "bg-[#151D27] border-[#8C7DFF]/50 shadow-sm"
-                        : "bg-[#070A0F] border-[#1B252F] hover:border-[#25303C]"
+                        ? "bg-[#171D24] border-[#7C8CFF]/50 shadow-sm"
+                        : "bg-[#080A0D] border-[#1C242C] hover:border-[#252D36]"
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-[#F5F7FA] font-sans">
+                      <span className="font-semibold text-[#EEF2F5] font-sans">
                         {m.name}
                       </span>
                       {isSelected && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#8C7DFF]" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#7C8CFF]" />
                       )}
                     </div>
-                    <span className="text-[10px] font-mono text-[#A4AFBC] block mt-0.5">
+                    <span className="text-[10px] font-mono text-[#A3ADB7] block mt-0.5">
                       {m.version}
                     </span>
                     <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
-                      <span className="text-[#6C7886]">{m.domain}</span>
-                      <span className="text-[#38D996]">{m.promptInjectionScore}% Def</span>
+                      <span className="text-[#68737E]">{m.domain}</span>
+                      <span className="text-[#45C995]">{m.promptInjectionScore}% Def</span>
                     </div>
                   </div>
                 );
@@ -296,35 +296,35 @@ export default function ModelLabPage() {
           </div>
 
           {/* Model Specification Card */}
-          <div className="p-4 rounded-lg bg-[#101720] border border-[#1B252F] space-y-3 text-xs font-mono">
-            <span className="text-[10px] text-[#6C7886] uppercase tracking-wider block">
+          <div className="p-4 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-3 text-xs font-mono">
+            <span className="text-[10px] text-[#68737E] uppercase tracking-wider block">
               Active Model Parameters
             </span>
 
             <div className="space-y-2 text-[11px]">
-              <div className="flex justify-between py-1 border-b border-[#1B252F]">
-                <span className="text-[#6C7886]">Sandbox ID</span>
-                <span className="text-[#F5F7FA]">{selectedModel.sandboxId}</span>
+              <div className="flex justify-between py-1 border-b border-[#1C242C]">
+                <span className="text-[#68737E]">Sandbox ID</span>
+                <span className="text-[#EEF2F5]">{selectedModel.sandboxId}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#1B252F]">
-                <span className="text-[#6C7886]">Context Window</span>
-                <span className="text-[#8C7DFF]">{selectedModel.contextWindow}</span>
+              <div className="flex justify-between py-1 border-b border-[#1C242C]">
+                <span className="text-[#68737E]">Context Window</span>
+                <span className="text-[#7C8CFF]">{selectedModel.contextWindow}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#1B252F]">
-                <span className="text-[#6C7886]">Isolation State</span>
-                <span className="text-[#38D996]">{selectedModel.isolation}</span>
+              <div className="flex justify-between py-1 border-b border-[#1C242C]">
+                <span className="text-[#68737E]">Isolation State</span>
+                <span className="text-[#45C995]">{selectedModel.isolation}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#1B252F]">
-                <span className="text-[#6C7886]">Latency Baseline</span>
-                <span className="text-[#F5F7FA]">{selectedModel.latencyMs} ms</span>
+              <div className="flex justify-between py-1 border-b border-[#1C242C]">
+                <span className="text-[#68737E]">Latency Baseline</span>
+                <span className="text-[#EEF2F5]">{selectedModel.latencyMs} ms</span>
               </div>
             </div>
 
             <div className="pt-2">
-              <span className="text-[10px] text-[#6C7886] uppercase tracking-wider block mb-1">
+              <span className="text-[10px] text-[#68737E] uppercase tracking-wider block mb-1">
                 Embedded Canary Token
               </span>
-              <div className="p-2 rounded bg-[#070A0F] border border-[#1B252F] text-[10px] text-[#FFB84D] truncate">
+              <div className="p-2 rounded bg-[#080A0D] border border-[#1C242C] text-[10px] text-[#E6B35A] truncate">
                 {selectedModel.canary}
               </div>
             </div>
@@ -334,8 +334,8 @@ export default function ModelLabPage() {
         {/* CENTER COLUMN: Prompt Workspace & Response Panel (6 cols) */}
         <div className="lg:col-span-6 space-y-4">
           {/* Preset Buttons */}
-          <div className="p-3 rounded-lg bg-[#101720] border border-[#1B252F] space-y-2">
-            <span className="text-[10px] font-mono text-[#6C7886] uppercase tracking-wider block">
+          <div className="p-3 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-2">
+            <span className="text-[10px] font-mono text-[#68737E] uppercase tracking-wider block">
               Vector Preset Presets
             </span>
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
@@ -343,7 +343,7 @@ export default function ModelLabPage() {
                 <button
                   key={idx}
                   onClick={() => setPromptText(p.prompt)}
-                  className="px-2.5 py-1 rounded bg-[#070A0F] hover:bg-[#151D27] border border-[#1B252F] hover:border-[#25303C] text-[11px] font-mono text-[#A4AFBC] hover:text-[#F5F7FA] whitespace-nowrap transition"
+                  className="px-2.5 py-1 rounded bg-[#080A0D] hover:bg-[#171D24] border border-[#1C242C] hover:border-[#252D36] text-[11px] font-mono text-[#A3ADB7] hover:text-[#EEF2F5] whitespace-nowrap transition"
                 >
                   {p.name}
                 </button>
@@ -352,10 +352,10 @@ export default function ModelLabPage() {
           </div>
 
           {/* Prompt Editor */}
-          <div className="p-4 rounded-lg bg-[#101720] border border-[#1B252F] space-y-3">
+          <div className="p-4 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-3">
             <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-[#6C7886] uppercase text-[10px]">Prompt Workspace</span>
-              <span className="text-[#6C7886]">
+              <span className="text-[#68737E] uppercase text-[10px]">Prompt Workspace</span>
+              <span className="text-[#68737E]">
                 {promptText.length} chars • ~{Math.round(promptText.length / 4)} tokens
               </span>
             </div>
@@ -365,11 +365,11 @@ export default function ModelLabPage() {
               onChange={(e) => setPromptText(e.target.value)}
               placeholder="Enter adversarial prompt, benign request, or extraction vector..."
               rows={5}
-              className="w-full p-3 rounded-md bg-[#070A0F] border border-[#1B252F] text-xs font-mono text-[#F5F7FA] placeholder-[#6C7886] focus:border-[#8C7DFF] focus:outline-none transition leading-relaxed resize-none"
+              className="w-full p-3 rounded-md bg-[#080A0D] border border-[#1C242C] text-xs font-mono text-[#EEF2F5] placeholder-[#68737E] focus:border-[#7C8CFF] focus:outline-none transition leading-relaxed resize-none"
             />
 
             <div className="flex items-center justify-between pt-1">
-              <span className="text-[11px] font-mono text-[#6C7886] hidden sm:inline">
+              <span className="text-[11px] font-mono text-[#68737E] hidden sm:inline">
                 Press Run or Ctrl + Enter
               </span>
               <Button
@@ -385,10 +385,10 @@ export default function ModelLabPage() {
           </div>
 
           {/* Response Panel */}
-          <div className="p-4 rounded-lg bg-[#101720] border border-[#1B252F] space-y-3">
-            <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-[#1B252F]">
+          <div className="p-4 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-3">
+            <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-[#1C242C]">
               <div className="flex items-center gap-2">
-                <span className="text-[#6C7886] uppercase text-[10px]">
+                <span className="text-[#68737E] uppercase text-[10px]">
                   Execution Response
                 </span>
                 {executionResult && (
@@ -407,25 +407,25 @@ export default function ModelLabPage() {
                   variant="ghost"
                   size="xs"
                   onClick={copyResponse}
-                  icon={copied ? <Check className="w-3 h-3 text-[#38D996]" /> : <Copy className="w-3 h-3" />}
+                  icon={copied ? <Check className="w-3 h-3 text-[#45C995]" /> : <Copy className="w-3 h-3" />}
                 >
                   {copied ? "Copied" : "Copy"}
                 </Button>
               )}
             </div>
 
-            <div className="min-h-[140px] p-4 rounded-md bg-[#070A0F] border border-[#1B252F] text-xs font-mono leading-relaxed">
+            <div className="min-h-[140px] p-4 rounded-md bg-[#080A0D] border border-[#1C242C] text-xs font-mono leading-relaxed">
               {isRunning ? (
-                <div className="flex items-center gap-2 text-[#8C7DFF] animate-pulse">
+                <div className="flex items-center gap-2 text-[#7C8CFF] animate-pulse">
                   <RotateCcw className="w-3.5 h-3.5 animate-spin" />
                   <span>Streaming model inference via 7-stage gateway...</span>
                 </div>
               ) : executionResult ? (
-                <div className={executionResult.blocked ? "text-[#FF6074]" : "text-[#F5F7FA]"}>
+                <div className={executionResult.blocked ? "text-[#E66A77]" : "text-[#EEF2F5]"}>
                   {executionResult.response}
                 </div>
               ) : (
-                <span className="text-[#6C7886]">
+                <span className="text-[#68737E]">
                   Select a preset vector or write a custom prompt above, then execute to inspect responses.
                 </span>
               )}
@@ -435,43 +435,43 @@ export default function ModelLabPage() {
 
         {/* RIGHT COLUMN: Execution Telemetry (3 cols) */}
         <div className="lg:col-span-3 space-y-4">
-          <div className="p-4 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4 text-xs font-mono">
-            <div className="flex items-center justify-between pb-2 border-b border-[#1B252F]">
-              <span className="font-semibold text-[#F5F7FA]">Execution Telemetry</span>
-              <Zap className="w-4 h-4 text-[#39D9FF]" />
+          <div className="p-4 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4 text-xs font-mono">
+            <div className="flex items-center justify-between pb-2 border-b border-[#1C242C]">
+              <span className="font-semibold text-[#EEF2F5]">Execution Telemetry</span>
+              <Zap className="w-4 h-4 text-[#4FD1C5]" />
             </div>
 
             <div className="space-y-3">
-              <div className="p-2.5 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Latency Profile</span>
-                <span className="text-base font-bold text-[#39D9FF]">
+              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Latency Profile</span>
+                <span className="text-base font-bold text-[#4FD1C5]">
                   {executionResult ? `${executionResult.latencyMs} ms` : "—"}
                 </span>
               </div>
 
-              <div className="p-2.5 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Tokens Processed</span>
-                <span className="text-sm font-bold text-[#F5F7FA]">
+              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Tokens Processed</span>
+                <span className="text-sm font-bold text-[#EEF2F5]">
                   {executionResult
                     ? `${executionResult.tokensPrompt} prompt / ${executionResult.tokensCompletion} completion`
                     : "—"}
                 </span>
               </div>
 
-              <div className="p-2.5 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Enforcement Status</span>
+              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Enforcement Status</span>
                 <span
                   className={`text-xs font-bold ${
-                    executionResult?.blocked ? "text-[#FF6074]" : "text-[#38D996]"
+                    executionResult?.blocked ? "text-[#E66A77]" : "text-[#45C995]"
                   }`}
                 >
                   {executionResult ? executionResult.guardrailState : "STANDBY"}
                 </span>
               </div>
 
-              <div className="p-2.5 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">SHA-256 Ledger Link</span>
-                <span className="text-[10px] text-[#FFB84D] truncate block mt-0.5">
+              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">SHA-256 Ledger Link</span>
+                <span className="text-[10px] text-[#E6B35A] truncate block mt-0.5">
                   {executionResult ? executionResult.hash : "0000000000000000..."}
                 </span>
               </div>
@@ -479,8 +479,8 @@ export default function ModelLabPage() {
           </div>
 
           {/* Airgap Security Notice */}
-          <div className="p-3.5 rounded-lg bg-[#0B1017] border border-[#1B252F] text-[11px] text-[#A4AFBC] space-y-1.5">
-            <div className="flex items-center gap-1.5 text-[#38D996] font-semibold font-mono">
+          <div className="p-3.5 rounded-lg bg-[#0D1116] border border-[#1C242C] text-[11px] text-[#A3ADB7] space-y-1.5">
+            <div className="flex items-center gap-1.5 text-[#45C995] font-semibold font-mono">
               <Lock className="w-3.5 h-3.5" />
               <span>DUAL-BLIND ENFORCED</span>
             </div>
@@ -492,24 +492,24 @@ export default function ModelLabPage() {
       </div>
 
       {/* BOTTOM REGION: Execution History Table */}
-      <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+      <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
           <div>
-            <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+            <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
               Recent Lab Execution History
             </h3>
-            <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+            <p className="text-[11px] text-[#A3ADB7] mt-0.5">
               Click any execution row to inspect cryptographic proofs and parameter metadata.
             </p>
           </div>
-          <span className="text-xs font-mono text-[#6C7886]">
+          <span className="text-xs font-mono text-[#68737E]">
             {history.length} executions logged
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+            <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
               <tr>
                 <th className="py-2.5 px-3">Time</th>
                 <th className="py-2.5 px-3">Model</th>
@@ -520,32 +520,32 @@ export default function ModelLabPage() {
                 <th className="py-2.5 px-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1B252F]">
+            <tbody className="divide-y divide-[#1C242C]">
               {history.map((h) => (
                 <tr
                   key={h.id}
                   onClick={() => setInspectedHistory(h)}
-                  className="hover:bg-[#151D27]/50 cursor-pointer transition"
+                  className="hover:bg-[#171D24]/50 cursor-pointer transition"
                 >
-                  <td className="py-2.5 px-3 text-[#6C7886]">{h.time}</td>
-                  <td className="py-2.5 px-3 font-semibold text-[#F5F7FA]">{h.model}</td>
-                  <td className="py-2.5 px-3 text-[#A4AFBC] truncate max-w-xs">
+                  <td className="py-2.5 px-3 text-[#68737E]">{h.time}</td>
+                  <td className="py-2.5 px-3 font-semibold text-[#EEF2F5]">{h.model}</td>
+                  <td className="py-2.5 px-3 text-[#A3ADB7] truncate max-w-xs">
                     {h.promptSnippet}
                   </td>
-                  <td className="py-2.5 px-3 text-[#39D9FF]">{h.latency}</td>
-                  <td className="py-2.5 px-3 text-[#6C7886]">{h.tokens}</td>
+                  <td className="py-2.5 px-3 text-[#4FD1C5]">{h.latency}</td>
+                  <td className="py-2.5 px-3 text-[#68737E]">{h.tokens}</td>
                   <td className="py-2.5 px-3">
                     <span
                       className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                         h.status === "BLOCKED"
-                          ? "bg-[#FF6074]/15 text-[#FF6074] border border-[#FF6074]/30"
-                          : "bg-[#38D996]/15 text-[#38D996] border border-[#38D996]/30"
+                          ? "bg-[#E66A77]/15 text-[#E66A77] border border-[#E66A77]/30"
+                          : "bg-[#45C995]/15 text-[#45C995] border border-[#45C995]/30"
                       }`}
                     >
                       {h.status}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 text-right text-[#8C7DFF] hover:underline">
+                  <td className="py-2.5 px-3 text-right text-[#7C8CFF] hover:underline">
                     Inspect
                   </td>
                 </tr>
@@ -574,25 +574,25 @@ export default function ModelLabPage() {
       >
         {inspectedHistory && (
           <div className="space-y-4 text-xs font-mono">
-            <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Executed Prompt Snippet
               </span>
-              <p className="mt-1 text-xs text-[#F5F7FA] font-sans">
+              <p className="mt-1 text-xs text-[#EEF2F5] font-sans">
                 {inspectedHistory.promptSnippet}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Latency</span>
-                <span className="text-sm font-bold text-[#39D9FF]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Latency</span>
+                <span className="text-sm font-bold text-[#4FD1C5]">
                   {inspectedHistory.latency}
                 </span>
               </div>
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Tokens</span>
-                <span className="text-sm font-bold text-[#8C7DFF]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Tokens</span>
+                <span className="text-sm font-bold text-[#7C8CFF]">
                   {inspectedHistory.tokens}
                 </span>
               </div>

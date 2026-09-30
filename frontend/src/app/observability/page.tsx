@@ -147,33 +147,33 @@ export default function LiveActivityPage() {
     return item.category === categoryFilter;
   });
 
-  const STAGE_COLORS = ["#38D996", "#38D996", "#38D996", "#5D9CFF", "#8C7DFF", "#5D9CFF", "#FFB84D"];
+  const STAGE_COLORS = ["#45C995", "#45C995", "#45C995", "#6EA8FE", "#7C8CFF", "#6EA8FE", "#E6B35A"];
 
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
               LIVE ACTIVITY & TELEMETRY
             </h1>
             <div
               className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono border ${
                 isLive
-                  ? "bg-[#38D996]/15 border-[#38D996]/30 text-[#38D996]"
-                  : "bg-[#FFB84D]/15 border-[#FFB84D]/30 text-[#FFB84D]"
+                  ? "bg-[#45C995]/15 border-[#45C995]/30 text-[#45C995]"
+                  : "bg-[#E6B35A]/15 border-[#E6B35A]/30 text-[#E6B35A]"
               }`}
             >
               <span
                 className={`h-1.5 w-1.5 rounded-full ${
-                  isLive ? "bg-[#38D996] animate-pulse" : "bg-[#FFB84D]"
+                  isLive ? "bg-[#45C995] animate-pulse" : "bg-[#E6B35A]"
                 }`}
               />
               <span>{isLive ? "LIVE STREAMING" : "PAUSED"}</span>
             </div>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             Real-time operational event stream, 7-stage gateway profiler, and inter-zone zero-trust network matrix.
           </p>
         </div>
@@ -233,15 +233,15 @@ export default function LiveActivityPage() {
 
       {/* Filter Chips Bar */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-mono">
-        <span className="text-[#6C7886] uppercase text-[10px] mr-1">Filter Stream:</span>
+        <span className="text-[#68737E] uppercase text-[10px] mr-1">Filter Stream:</span>
         {["All", "Requests", "Security", "Models", "Infrastructure", "Evaluation"].map((cat) => (
           <button
             key={cat}
             onClick={() => setCategoryFilter(cat)}
             className={`px-3 py-1 rounded-md transition ${
               categoryFilter === cat
-                ? "bg-[#151D27] text-[#39D9FF] font-semibold border border-[#25303C]"
-                : "bg-[#101720] text-[#A4AFBC] border border-[#1B252F] hover:border-[#25303C]"
+                ? "bg-[#171D24] text-[#4FD1C5] font-semibold border border-[#252D36]"
+                : "bg-[#12171D] text-[#A3ADB7] border border-[#1C242C] hover:border-[#252D36]"
             }`}
           >
             {cat}
@@ -250,24 +250,24 @@ export default function LiveActivityPage() {
       </div>
 
       {/* Operational Stream Table */}
-      <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+      <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
           <div>
-            <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+            <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
               Operational Event Stream
             </h3>
-            <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+            <p className="text-[11px] text-[#A3ADB7] mt-0.5">
               Click any event row to open the deep inspection drawer.
             </p>
           </div>
-          <span className="text-xs font-mono text-[#6C7886]">
+          <span className="text-xs font-mono text-[#68737E]">
             Showing {filteredStream.length} events
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+            <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
               <tr>
                 <th className="py-2.5 px-3">Time</th>
                 <th className="py-2.5 px-3">Category</th>
@@ -278,36 +278,36 @@ export default function LiveActivityPage() {
                 <th className="py-2.5 px-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1B252F]">
+            <tbody className="divide-y divide-[#1C242C]">
               {filteredStream.map((item) => (
                 <tr
                   key={item.id}
                   onClick={() => setSelectedActivity(item)}
-                  className="hover:bg-[#151D27]/50 cursor-pointer transition"
+                  className="hover:bg-[#171D24]/50 cursor-pointer transition"
                 >
-                  <td className="py-2.5 px-3 text-[#6C7886]">{item.time}</td>
+                  <td className="py-2.5 px-3 text-[#68737E]">{item.time}</td>
                   <td className="py-2.5 px-3">
-                    <span className="text-[#39D9FF] font-medium">{item.category}</span>
+                    <span className="text-[#4FD1C5] font-medium">{item.category}</span>
                   </td>
-                  <td className="py-2.5 px-3 font-semibold text-[#F5F7FA]">
+                  <td className="py-2.5 px-3 font-semibold text-[#EEF2F5]">
                     {item.title}
                   </td>
-                  <td className="py-2.5 px-3 text-[#A4AFBC]">{item.target}</td>
-                  <td className="py-2.5 px-3 text-[#6C7886]">{item.latency}</td>
+                  <td className="py-2.5 px-3 text-[#A3ADB7]">{item.target}</td>
+                  <td className="py-2.5 px-3 text-[#68737E]">{item.latency}</td>
                   <td className="py-2.5 px-3">
                     <span
                       className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                         item.status === "BLOCKED"
-                          ? "bg-[#FF6074]/15 text-[#FF6074] border border-[#FF6074]/30"
+                          ? "bg-[#E66A77]/15 text-[#E66A77] border border-[#E66A77]/30"
                           : item.status === "INTERCEPTED"
-                          ? "bg-[#FFB84D]/15 text-[#FFB84D] border border-[#FFB84D]/30"
-                          : "bg-[#38D996]/15 text-[#38D996] border border-[#38D996]/30"
+                          ? "bg-[#E6B35A]/15 text-[#E6B35A] border border-[#E6B35A]/30"
+                          : "bg-[#45C995]/15 text-[#45C995] border border-[#45C995]/30"
                       }`}
                     >
                       {item.status}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 text-right text-[#39D9FF] hover:underline">
+                  <td className="py-2.5 px-3 text-right text-[#4FD1C5] hover:underline">
                     Inspect
                   </td>
                 </tr>
@@ -319,30 +319,30 @@ export default function LiveActivityPage() {
 
       {/* Latency Stage Breakdown */}
       {data && (
-        <div className="p-6 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+        <div className="p-6 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
             <div>
-              <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+              <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                 7-Stage Gateway Pipeline Latency Profiler
               </h3>
-              <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+              <p className="text-[11px] text-[#A3ADB7] mt-0.5">
                 Latency contribution per enforcement stage: Auth &rarr; Policy &rarr; Quota &rarr; Blue In &rarr; LLM &rarr; Blue Out &rarr; Audit.
               </p>
             </div>
-            <span className="text-xs font-mono text-[#6C7886]">Live Profiler</span>
+            <span className="text-xs font-mono text-[#68737E]">Live Profiler</span>
           </div>
 
           <div className="h-64 pt-4">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.pipeline_latency_stages}>
-                  <XAxis dataKey="stage" tick={{ fill: "#6C7886", fontSize: 10 }} />
-                  <YAxis tick={{ fill: "#6C7886", fontSize: 10 }} unit="ms" />
+                  <XAxis dataKey="stage" tick={{ fill: "#68737E", fontSize: 10 }} />
+                  <YAxis tick={{ fill: "#68737E", fontSize: 10 }} unit="ms" />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#0B1017",
-                      borderColor: "#25303C",
-                      color: "#F5F7FA",
+                      backgroundColor: "#0D1116",
+                      borderColor: "#252D36",
+                      color: "#EEF2F5",
                       fontSize: 11,
                       fontFamily: "JetBrains Mono",
                       borderRadius: 6,
@@ -356,7 +356,7 @@ export default function LiveActivityPage() {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-xs text-[#6C7886] font-mono">
+              <div className="h-full flex items-center justify-center text-xs text-[#68737E] font-mono">
                 Initializing pipeline latency charts...
               </div>
             )}
@@ -366,19 +366,19 @@ export default function LiveActivityPage() {
 
       {/* Cross-Zone Traffic Matrix */}
       {data && (
-        <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
+        <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
           <div>
-            <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+            <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
               Zero-Trust Cross-Zone Network Matrix
             </h3>
-            <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+            <p className="text-[11px] text-[#A3ADB7] mt-0.5">
               Verifies that all ingress traffic is routed strictly through the gateway with zero bypass sockets.
             </p>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+              <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
                 <tr>
                   <th className="py-2.5 px-3">Source Zone</th>
                   <th className="py-2.5 px-3">Destination</th>
@@ -387,18 +387,18 @@ export default function LiveActivityPage() {
                   <th className="py-2.5 px-3">Traffic Volume</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1B252F]">
+              <tbody className="divide-y divide-[#1C242C]">
                 {data.traffic_matrix.map((row: any, idx: number) => (
-                  <tr key={idx} className="hover:bg-[#151D27]/50">
-                    <td className="py-2.5 px-3 font-semibold text-[#F5F7FA]">{row.source}</td>
-                    <td className="py-2.5 px-3 text-[#A4AFBC]">{row.destination}</td>
-                    <td className="py-2.5 px-3 text-[#8C7DFF]">{row.protocol}</td>
+                  <tr key={idx} className="hover:bg-[#171D24]/50">
+                    <td className="py-2.5 px-3 font-semibold text-[#EEF2F5]">{row.source}</td>
+                    <td className="py-2.5 px-3 text-[#A3ADB7]">{row.destination}</td>
+                    <td className="py-2.5 px-3 text-[#7C8CFF]">{row.protocol}</td>
                     <td className="py-2.5 px-3">
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#38D996]/15 text-[#38D996] border border-[#38D996]/30">
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#45C995]/15 text-[#45C995] border border-[#45C995]/30">
                         {row.status}
                       </span>
                     </td>
-                    <td className="py-2.5 px-3 text-[#F5F7FA] font-bold">{row.volume} payloads</td>
+                    <td className="py-2.5 px-3 text-[#EEF2F5] font-bold">{row.volume} payloads</td>
                   </tr>
                 ))}
               </tbody>
@@ -426,34 +426,34 @@ export default function LiveActivityPage() {
       >
         {selectedActivity && (
           <div className="space-y-4 text-xs font-mono">
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Target Subsystem
               </span>
-              <span className="text-sm font-semibold text-[#F5F7FA]">
+              <span className="text-sm font-semibold text-[#EEF2F5]">
                 {selectedActivity.target}
               </span>
             </div>
 
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Event Description
               </span>
-              <p className="text-xs text-[#A4AFBC] font-sans leading-relaxed">
+              <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
                 {selectedActivity.details}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Latency</span>
-                <span className="text-sm font-bold text-[#39D9FF]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Latency</span>
+                <span className="text-sm font-bold text-[#4FD1C5]">
                   {selectedActivity.latency}
                 </span>
               </div>
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Category</span>
-                <span className="text-sm font-bold text-[#8C7DFF]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Category</span>
+                <span className="text-sm font-bold text-[#7C8CFF]">
                   {selectedActivity.category}
                 </span>
               </div>

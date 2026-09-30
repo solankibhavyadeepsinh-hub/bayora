@@ -10,7 +10,7 @@ interface MetricCardProps {
     context?: string;
   };
   sparklineData?: number[];
-  statusColor?: "cyan" | "violet" | "success" | "warning" | "danger" | "info";
+  statusColor?: "accent" | "cyan" | "violet" | "success" | "warning" | "danger" | "info";
   icon?: React.ReactNode;
   badgeText?: string;
   className?: string;
@@ -22,100 +22,106 @@ export function MetricCard({
   value,
   trend,
   sparklineData,
-  statusColor = "cyan",
+  statusColor = "accent",
   icon,
   badgeText,
   className = "",
   onClick,
 }: MetricCardProps) {
-  // Generate simple sparkline SVG path if data is provided
-  const sparklineSvg = sparklineData && sparklineData.length > 1 ? (() => {
-    const min = Math.min(...sparklineData);
-    const max = Math.max(...sparklineData);
-    const range = max - min || 1;
-    const width = 80;
-    const height = 24;
-    const points = sparklineData.map((d, i) => {
-      const x = (i / (sparklineData.length - 1)) * width;
-      const y = height - ((d - min) / range) * (height - 4) - 2;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(" ");
+  // Sparkline generator
+  const sparklineSvg =
+    sparklineData && sparklineData.length > 1 ? (
+      (() => {
+        const min = Math.min(...sparklineData);
+        const max = Math.max(...sparklineData);
+        const range = max - min || 1;
+        const width = 64;
+        const height = 20;
+        const points = sparklineData
+          .map((d, i) => {
+            const x = (i / (sparklineData.length - 1)) * width;
+            const y = height - ((d - min) / range) * (height - 4) - 2;
+            return `${x.toFixed(1)},${y.toFixed(1)}`;
+          })
+          .join(" ");
 
-    return (
-      <svg className="w-20 h-6 shrink-0 overflow-visible" viewBox="0 0 80 24">
-        <polyline
-          fill="none"
-          stroke={trend?.direction === "down" ? "#FF6074" : "#38D996"}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          points={points}
-        />
-      </svg>
-    );
-  })() : null;
+        return (
+          <svg className="w-16 h-5 shrink-0 overflow-visible" viewBox="0 0 64 20">
+            <polyline
+              fill="none"
+              stroke={trend?.direction === "down" ? "#E66A77" : "#45C995"}
+              strokeWidth="1.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              points={points}
+            />
+          </svg>
+        );
+      })()
+    ) : null;
 
   const colorDots = {
-    cyan: "bg-[#39D9FF]",
-    violet: "bg-[#8C7DFF]",
-    success: "bg-[#38D996]",
-    warning: "bg-[#FFB84D]",
-    danger: "bg-[#FF6074]",
-    info: "bg-[#5D9CFF]",
+    accent: "bg-[#4FD1C5]",
+    cyan: "bg-[#4FD1C5]",
+    violet: "bg-[#7C8CFF]",
+    success: "bg-[#45C995]",
+    warning: "bg-[#E6B35A]",
+    danger: "bg-[#E66A77]",
+    info: "bg-[#6EA8FE]",
   };
 
   return (
     <div
       onClick={onClick}
-      className={`p-4 rounded-lg bg-[#101720] border border-[#1B252F] hover:border-[#25303C] transition-all duration-150 flex flex-col justify-between ${
-        onClick ? "cursor-pointer hover:bg-[#151D27]" : ""
+      className={`p-3.5 rounded-md bg-[#12171D] border border-[#1C242C] hover:border-[#252D36] transition-colors duration-150 flex flex-col justify-between ${
+        onClick ? "cursor-pointer hover:bg-[#171D24]" : ""
       } ${className}`}
     >
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <span className={`h-1.5 w-1.5 rounded-full ${colorDots[statusColor]}`} />
-          <span className="text-[11px] font-mono uppercase tracking-wider text-[#A4AFBC]">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#A3ADB7]">
             {label}
           </span>
         </div>
         {badgeText ? (
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#1B252F] text-[#6C7886] border border-[#25303C]">
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#171D24] text-[#68737E] border border-[#252D36]">
             {badgeText}
           </span>
         ) : icon ? (
-          <div className="text-[#6C7886]">{icon}</div>
+          <div className="text-[#68737E]">{icon}</div>
         ) : null}
       </div>
 
-      <div className="mt-3 flex items-baseline justify-between gap-4">
-        <span className="text-2xl font-mono font-bold text-[#F5F7FA] tracking-tight">
+      <div className="mt-2.5 flex items-baseline justify-between gap-2">
+        <span className="text-xl font-mono font-bold text-[#EEF2F5] tracking-tight">
           {value}
         </span>
         {sparklineSvg}
       </div>
 
       {trend && (
-        <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-mono">
+        <div className="mt-2 flex items-center gap-1.5 text-[10px] font-mono">
           <span
             className={`inline-flex items-center gap-0.5 font-medium ${
               trend.direction === "up"
-                ? "text-[#38D996]"
+                ? "text-[#45C995]"
                 : trend.direction === "down"
-                ? "text-[#FF6074]"
-                : "text-[#A4AFBC]"
+                ? "text-[#E66A77]"
+                : "text-[#A3ADB7]"
             }`}
           >
             {trend.direction === "up" ? (
-              <TrendingUp className="w-3 h-3" />
+              <TrendingUp className="w-2.5 h-2.5" />
             ) : trend.direction === "down" ? (
-              <TrendingDown className="w-3 h-3" />
+              <TrendingDown className="w-2.5 h-2.5" />
             ) : (
-              <Minus className="w-3 h-3" />
+              <Minus className="w-2.5 h-2.5" />
             )}
             {trend.value}
           </span>
           {trend.context && (
-            <span className="text-[#6C7886] truncate">{trend.context}</span>
+            <span className="text-[#68737E] truncate">{trend.context}</span>
           )}
         </div>
       )}

@@ -5,27 +5,27 @@
 @tailwind utilities;
 
 :root {
-  --bayora-bg: #070A0F;
-  --bayora-secondary: #0B1017;
-  --bayora-surface: #101720;
-  --bayora-elevated: #151D27;
-  --bayora-border: #25303C;
-  --bayora-border-subtle: #1B252F;
-  --bayora-text: #F5F7FA;
-  --bayora-text-secondary: #A4AFBC;
-  --bayora-muted: #6C7886;
+  --bayora-bg: #080A0D;
+  --bayora-secondary: #0D1116;
+  --bayora-surface: #12171D;
+  --bayora-elevated: #171D24;
+  --bayora-border: #252D36;
+  --bayora-border-subtle: #1C242C;
+  --bayora-text: #EEF2F5;
+  --bayora-text-secondary: #A3ADB7;
+  --bayora-muted: #68737E;
   
-  --bayora-cyan: #39D9FF;
-  --bayora-violet: #8C7DFF;
-  --bayora-success: #38D996;
-  --bayora-warning: #FFB84D;
-  --bayora-danger: #FF6074;
-  --bayora-info: #5D9CFF;
+  --bayora-accent: #4FD1C5;
+  --bayora-violet: #7C8CFF;
+  --bayora-success: #45C995;
+  --bayora-warning: #E6B35A;
+  --bayora-danger: #E66A77;
+  --bayora-info: #6EA8FE;
 }
 
 body {
-  background-color: #070A0F;
-  color: #F5F7FA;
+  background-color: #080A0D;
+  color: #EEF2F5;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -34,7 +34,7 @@ body {
 
 h1, h2, h3, .font-heading {
   font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 code, pre, .font-mono {
@@ -47,44 +47,36 @@ code, pre, .font-mono {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #070A0F;
+  background: #080A0D;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1B252F;
+  background: #1C242C;
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #25303C;
+  background: #252D36;
 }
 
-/* Subtle Micro Accents */
-.border-grid {
-  border-color: #1B252F;
-}
-
-.surface-card {
-  background-color: #101720;
-  border: 1px solid #1B252F;
-  border-radius: 8px;
-}
-
-.surface-card:hover {
-  border-color: #25303C;
-}
-
-.surface-elevated {
-  background-color: #151D27;
-  border: 1px solid #25303C;
-  border-radius: 8px;
-}
-
-/* Keyboard focus rings */
+/* Restrained Focus States */
 *:focus-visible {
-  outline: 2px solid #39D9FF;
+  outline: 1.5px solid #4FD1C5;
   outline-offset: 1px;
 }
 
-/* Reduced motion preference */
+/* Controlled Surface Layering */
+.surface-panel {
+  background-color: #12171D;
+  border: 1px solid #1C242C;
+  border-radius: 6px;
+}
+
+.surface-elevated {
+  background-color: #171D24;
+  border: 1px solid #252D36;
+  border-radius: 6px;
+}
+
+/* Reduced Motion Safety */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

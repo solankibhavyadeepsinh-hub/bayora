@@ -145,6 +145,18 @@ export default function SystemHealthControlPage() {
       icon: Cpu,
     },
     {
+      id: "node-guardrails",
+      name: "SECURITY GUARDRAILS",
+      type: "Dual-Phase Inspection",
+      health: "HEALTHY",
+      latency: "6 ms",
+      requests: "99.2% block rate",
+      availability: "100%",
+      lastCheck: "Just now",
+      description: "Pre-inference prompt sanitization and post-inference output canary leak filtration.",
+      icon: ShieldCheck,
+    },
+    {
       id: "node-database",
       name: "POSTGRESQL & REDIS",
       type: "Schema Isolation",
@@ -160,13 +172,13 @@ export default function SystemHealthControlPage() {
 
   if (!isAuthorized) {
     return (
-      <div className="p-12 rounded-lg border border-[#FF6074]/30 bg-[#FF6074]/5 text-center max-w-lg mx-auto my-12 space-y-4">
-        <Lock className="w-8 h-8 text-[#FF6074] mx-auto" />
-        <h2 className="text-base font-semibold font-heading text-[#F5F7FA]">
+      <div className="p-12 rounded-lg border border-[#E66A77]/30 bg-[#E66A77]/5 text-center max-w-lg mx-auto my-12 space-y-4">
+        <Lock className="w-8 h-8 text-[#E66A77] mx-auto" />
+        <h2 className="text-base font-semibold font-heading text-[#EEF2F5]">
           ZONE ACCESS RESTRICTED: ADMIN ROLE
         </h2>
-        <p className="text-xs text-[#A4AFBC] leading-relaxed">
-          Current identity <span className="font-mono text-[#39D9FF]">({user?.role})</span> lacks Admin privileges. Switch role to manage sandboxes and system infrastructure.
+        <p className="text-xs text-[#A3ADB7] leading-relaxed">
+          Current identity <span className="font-mono text-[#4FD1C5]">({user?.role})</span> lacks Admin privileges. Switch role to manage sandboxes and system infrastructure.
         </p>
         <Button variant="outline" size="sm" onClick={() => switchRole("admin")}>
           Switch to Admin Role
@@ -178,17 +190,17 @@ export default function SystemHealthControlPage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
               SYSTEM HEALTH & CONTROL PLANE
             </h1>
             <Badge variant="success" size="xs">
               CONTROL PLANE
             </Badge>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             End-to-end zero-trust architecture topology, multi-tenant sandbox provisioning, and token quota enforcement.
           </p>
         </div>
@@ -247,13 +259,13 @@ export default function SystemHealthControlPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center border-b border-[#1B252F] gap-6 text-xs font-mono">
+      <div className="flex items-center border-b border-[#1C242C] gap-6 text-xs font-mono">
         <button
           onClick={() => setActiveTab("topology")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "topology"
-              ? "border-[#38D996] text-[#38D996]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#45C995] text-[#45C995]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <Server className="w-4 h-4" />
@@ -263,8 +275,8 @@ export default function SystemHealthControlPage() {
           onClick={() => setActiveTab("sandboxes")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "sandboxes"
-              ? "border-[#38D996] text-[#38D996]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#45C995] text-[#45C995]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <Cpu className="w-4 h-4" />
@@ -274,8 +286,8 @@ export default function SystemHealthControlPage() {
           onClick={() => setActiveTab("quotas")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "quotas"
-              ? "border-[#38D996] text-[#38D996]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#45C995] text-[#45C995]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <Sliders className="w-4 h-4" />
@@ -285,8 +297,8 @@ export default function SystemHealthControlPage() {
           onClick={() => setActiveTab("users")}
           className={`pb-3 font-medium transition flex items-center gap-2 border-b-2 ${
             activeTab === "users"
-              ? "border-[#38D996] text-[#38D996]"
-              : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+              ? "border-[#45C995] text-[#45C995]"
+              : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
           }`}
         >
           <UserCheck className="w-4 h-4" />
@@ -297,57 +309,60 @@ export default function SystemHealthControlPage() {
       {/* TAB 1: Infrastructure Topology */}
       {activeTab === "topology" && (
         <div className="space-y-6">
-          <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+          <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
               <div>
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+                <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                   End-to-End Zero-Trust Service Topology
                 </h3>
-                <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+                <p className="text-[11px] text-[#A3ADB7] mt-0.5">
                   Click any service node to inspect live latency telemetry, health metrics, and isolation boundaries.
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-xs font-mono text-[#38D996]">
-                <span className="h-2 w-2 rounded-full bg-[#38D996] animate-pulse" />
+              <div className="flex items-center gap-2 text-xs font-mono text-[#45C995]">
+                <span className="h-2 w-2 rounded-full bg-[#45C995] animate-pulse" />
                 <span>Zero Bypass Sockets</span>
               </div>
             </div>
 
             {/* Visual Topology Diagram */}
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-3 py-6 px-4 bg-[#070A0F] rounded-lg border border-[#1B252F]">
+            <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2 py-6 px-4 bg-[#080A0D] rounded-lg border border-[#1C242C]">
               {topologyNodes.map((node, idx) => {
                 const Icon = node.icon;
                 return (
                   <React.Fragment key={node.id}>
                     <div
                       onClick={() => setSelectedNode(node)}
-                      className="w-full lg:w-48 p-4 rounded-lg bg-[#101720] border border-[#1B252F] hover:border-[#38D996] cursor-pointer transition space-y-2.5 flex flex-col justify-between"
+                      className="w-full xl:w-44 p-3.5 rounded-lg bg-[#12171D] border border-[#1C242C] hover:border-[#4FD1C5] cursor-pointer transition space-y-2 flex flex-col justify-between group"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="p-1.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#38D996]">
+                        <div className="p-1.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#4FD1C5] group-hover:text-[#EEF2F5] transition">
                           <Icon className="w-4 h-4" />
                         </div>
-                        <span className="h-2 w-2 rounded-full bg-[#38D996] animate-pulse" />
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[9px] font-mono text-[#68737E]">0{idx + 1}</span>
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#45C995] animate-pulse" />
+                        </div>
                       </div>
 
                       <div>
-                        <span className="text-[11px] font-bold text-[#F5F7FA] font-sans block truncate">
+                        <span className="text-[11px] font-bold text-[#EEF2F5] font-sans block truncate">
                           {node.name}
                         </span>
-                        <span className="text-[9px] font-mono text-[#6C7886] block">
+                        <span className="text-[9px] font-mono text-[#68737E] block truncate">
                           {node.type}
                         </span>
                       </div>
 
-                      <div className="pt-2 border-t border-[#1B252F] flex items-center justify-between text-[10px] font-mono">
-                        <span className="text-[#38D996]">{node.health}</span>
-                        <span className="text-[#A4AFBC]">{node.latency}</span>
+                      <div className="pt-2 border-t border-[#1C242C] flex items-center justify-between text-[10px] font-mono">
+                        <span className="text-[#45C995]">{node.health}</span>
+                        <span className="text-[#A3ADB7]">{node.latency}</span>
                       </div>
                     </div>
 
                     {idx < topologyNodes.length - 1 && (
-                      <div className="hidden lg:flex items-center text-[#6C7886]">
-                        <ArrowRight className="w-4 h-4 animate-pulse" />
+                      <div className="hidden xl:flex items-center text-[#68737E] shrink-0">
+                        <ArrowRight className="w-3.5 h-3.5 animate-pulse" />
                       </div>
                     )}
                   </React.Fragment>
@@ -360,24 +375,24 @@ export default function SystemHealthControlPage() {
 
       {/* TAB 2: Sandboxes Table */}
       {activeTab === "sandboxes" && (
-        <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+        <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
             <div>
-              <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+              <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                 Provisioned AI Target Sandboxes
               </h3>
-              <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+              <p className="text-[11px] text-[#A3ADB7] mt-0.5">
                 Isolated evaluation targets governed by quota limits and default-deny CNI rules.
               </p>
             </div>
-            <span className="text-xs font-mono text-[#6C7886]">
+            <span className="text-xs font-mono text-[#68737E]">
               {sandboxes.length} sandboxes active
             </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+              <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
                 <tr>
                   <th className="py-2.5 px-3">Sandbox ID</th>
                   <th className="py-2.5 px-3">Display Name</th>
@@ -388,20 +403,20 @@ export default function SystemHealthControlPage() {
                   <th className="py-2.5 px-3 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1B252F]">
+              <tbody className="divide-y divide-[#1C242C]">
                 {sandboxes.map((sbx) => (
-                  <tr key={sbx.id} className="hover:bg-[#151D27]/50 transition">
-                    <td className="py-2.5 px-3 font-semibold text-[#38D996]">{sbx.id}</td>
-                    <td className="py-2.5 px-3 text-[#F5F7FA] font-sans">{sbx.name}</td>
-                    <td className="py-2.5 px-3 text-[#8C7DFF]">{sbx.target_model}</td>
-                    <td className="py-2.5 px-3 text-[#39D9FF]">{sbx.quota_rpm} RPM</td>
-                    <td className="py-2.5 px-3 text-[#A4AFBC]">{sbx.quota_tokens_daily} tokens</td>
+                  <tr key={sbx.id} className="hover:bg-[#171D24]/50 transition">
+                    <td className="py-2.5 px-3 font-semibold text-[#45C995]">{sbx.id}</td>
+                    <td className="py-2.5 px-3 text-[#EEF2F5] font-sans">{sbx.name}</td>
+                    <td className="py-2.5 px-3 text-[#7C8CFF]">{sbx.target_model}</td>
+                    <td className="py-2.5 px-3 text-[#4FD1C5]">{sbx.quota_rpm} RPM</td>
+                    <td className="py-2.5 px-3 text-[#A3ADB7]">{sbx.quota_tokens_daily} tokens</td>
                     <td className="py-2.5 px-3">
                       <Badge variant="success" size="xs">
                         {sbx.isolation_level}
                       </Badge>
                     </td>
-                    <td className="py-2.5 px-3 text-right text-[#39D9FF] hover:underline cursor-pointer">
+                    <td className="py-2.5 px-3 text-right text-[#4FD1C5] hover:underline cursor-pointer">
                       Configure
                     </td>
                   </tr>
@@ -418,10 +433,10 @@ export default function SystemHealthControlPage() {
           {sandboxes.map((sbx) => (
             <div
               key={sbx.id}
-              className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-3"
+              className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-3"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-[#F5F7FA] font-sans">
+                <span className="text-xs font-semibold text-[#EEF2F5] font-sans">
                   {sbx.name}
                 </span>
                 <Badge variant="cyan" size="xs">
@@ -430,13 +445,13 @@ export default function SystemHealthControlPage() {
               </div>
 
               <div className="space-y-2 text-xs font-mono pt-2">
-                <div className="flex justify-between text-[#A4AFBC]">
+                <div className="flex justify-between text-[#A3ADB7]">
                   <span>Daily Token Usage</span>
                   <span>14,200 / {sbx.quota_tokens_daily}</span>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-[#070A0F] overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-[#080A0D] overflow-hidden">
                   <div
-                    className="h-full bg-[#39D9FF] rounded-full"
+                    className="h-full bg-[#4FD1C5] rounded-full"
                     style={{
                       width: `${Math.min(100, (14200 / sbx.quota_tokens_daily) * 100)}%`,
                     }}
@@ -450,13 +465,13 @@ export default function SystemHealthControlPage() {
 
       {/* TAB 4: Users & RBAC */}
       {activeTab === "users" && (
-        <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-          <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+        <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
+          <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
             Identities & Zone RBAC Permissions
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+              <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
                 <tr>
                   <th className="py-2.5 px-3">Username</th>
                   <th className="py-2.5 px-3">Role</th>
@@ -464,13 +479,13 @@ export default function SystemHealthControlPage() {
                   <th className="py-2.5 px-3">Permission Boundaries</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1B252F]">
+              <tbody className="divide-y divide-[#1C242C]">
                 {usersList.map((u) => (
-                  <tr key={u.id} className="hover:bg-[#151D27]/50 transition">
-                    <td className="py-2.5 px-3 font-semibold text-[#F5F7FA]">{u.username}</td>
-                    <td className="py-2.5 px-3 text-[#39D9FF]">{u.role}</td>
-                    <td className="py-2.5 px-3 text-[#8C7DFF]">{u.zone}</td>
-                    <td className="py-2.5 px-3 text-[#A4AFBC]">
+                  <tr key={u.id} className="hover:bg-[#171D24]/50 transition">
+                    <td className="py-2.5 px-3 font-semibold text-[#EEF2F5]">{u.username}</td>
+                    <td className="py-2.5 px-3 text-[#4FD1C5]">{u.role}</td>
+                    <td className="py-2.5 px-3 text-[#7C8CFF]">{u.zone}</td>
+                    <td className="py-2.5 px-3 text-[#A3ADB7]">
                       {u.role === "admin"
                         ? "Full Control Plane & All Zones"
                         : u.role === "red_operator"
@@ -506,25 +521,25 @@ export default function SystemHealthControlPage() {
       >
         {selectedNode && (
           <div className="space-y-4 text-xs font-mono">
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Node Description
               </span>
-              <p className="text-xs text-[#A4AFBC] font-sans leading-relaxed">
+              <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
                 {selectedNode.description}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Availability</span>
-                <span className="text-xs font-bold text-[#38D996]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Availability</span>
+                <span className="text-xs font-bold text-[#45C995]">
                   {selectedNode.availability}
                 </span>
               </div>
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Requests Handled</span>
-                <span className="text-xs font-bold text-[#39D9FF]">
+              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Requests Handled</span>
+                <span className="text-xs font-bold text-[#4FD1C5]">
                   {selectedNode.requests}
                 </span>
               </div>
@@ -538,59 +553,59 @@ export default function SystemHealthControlPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
             onClick={() => setShowCreateSandbox(false)}
-            className="fixed inset-0 bg-[#070A0F]/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-[#080A0D]/80 backdrop-blur-sm"
           />
-          <div className="relative w-full max-w-lg bg-[#101720] border border-[#25303C] rounded-xl shadow-2xl p-6 z-10 space-y-4">
-            <h3 className="font-heading font-semibold text-base text-[#F5F7FA]">
+          <div className="relative w-full max-w-lg bg-[#12171D] border border-[#252D36] rounded-xl shadow-2xl p-6 z-10 space-y-4">
+            <h3 className="font-heading font-semibold text-base text-[#EEF2F5]">
               Provision Isolated AI Sandbox
             </h3>
             <form onSubmit={handleCreateSandbox} className="space-y-4 text-xs font-mono">
               <div className="space-y-1">
-                <label className="text-[#A4AFBC]">Sandbox Identifier</label>
+                <label className="text-[#A3ADB7]">Sandbox Identifier</label>
                 <input
                   type="text"
                   value={sbxId}
                   onChange={(e) => setSbxId(e.target.value)}
-                  className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] focus:border-[#38D996] outline-none"
+                  className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] focus:border-[#45C995] outline-none"
                   required
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[#A4AFBC]">Display Name</label>
+                <label className="text-[#A3ADB7]">Display Name</label>
                 <input
                   type="text"
                   value={sbxName}
                   onChange={(e) => setSbxName(e.target.value)}
-                  className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] focus:border-[#38D996] outline-none"
+                  className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] focus:border-[#45C995] outline-none"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[#A4AFBC]">RPM Rate Limit</label>
+                  <label className="text-[#A3ADB7]">RPM Rate Limit</label>
                   <input
                     type="number"
                     value={sbxQuotaRpm}
                     onChange={(e) => setSbxQuotaRpm(Number(e.target.value))}
-                    className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] outline-none"
+                    className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] outline-none"
                     required
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[#A4AFBC]">Daily Token Budget</label>
+                  <label className="text-[#A3ADB7]">Daily Token Budget</label>
                   <input
                     type="number"
                     value={sbxQuotaTokens}
                     onChange={(e) => setSbxQuotaTokens(Number(e.target.value))}
-                    className="w-full p-2.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] outline-none"
+                    className="w-full p-2.5 rounded bg-[#080A0D] border border-[#1C242C] text-[#EEF2F5] outline-none"
                     required
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#1B252F]">
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#1C242C]">
                 <Button variant="ghost" size="sm" onClick={() => setShowCreateSandbox(false)}>
                   Cancel
                 </Button>

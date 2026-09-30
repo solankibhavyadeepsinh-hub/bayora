@@ -14,16 +14,12 @@ import {
   Server,
   Database,
   Lock,
-  Clock,
-  CheckCircle2,
-  AlertTriangle,
   Play,
   Flame,
-  Award,
-  BookOpen,
-  Filter,
+  CheckCircle2,
+  AlertTriangle,
   Eye,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 import {
   AreaChart,
@@ -34,7 +30,7 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  Cell
+  Cell,
 } from "recharts";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { Badge } from "@/components/ui/Badge";
@@ -45,7 +41,7 @@ import { apiGetObservabilityMetrics, apiGetThreatFeed } from "@/lib/api";
 
 export default function OverviewPage() {
   const [mounted, setMounted] = useState(false);
-  const [telemetryRange, setTelemetryRange] = useState<"1h" | "6h" | "24h">("24h");
+  const [timeRange, setTimeRange] = useState<"5m" | "15m" | "1h" | "6h" | "24h">("24h");
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [liveMetrics, setLiveMetrics] = useState<any>(null);
   const [threatEvents, setThreatEvents] = useState<any[]>([]);
@@ -67,18 +63,53 @@ export default function OverviewPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Telemetry time series
-  const telemetryData = [
-    { time: "00:00", requests: 780, latency: 42, errors: 0 },
-    { time: "03:00", requests: 520, latency: 38, errors: 0 },
-    { time: "06:00", requests: 1100, latency: 45, errors: 1 },
-    { time: "09:00", requests: 2450, latency: 54, errors: 4 },
-    { time: "12:00", requests: 3120, latency: 61, errors: 2 },
-    { time: "15:00", requests: 2890, latency: 50, errors: 3 },
-    { time: "18:00", requests: 1950, latency: 44, errors: 1 },
-    { time: "21:00", requests: 1420, latency: 41, errors: 0 },
-    { time: "23:59", requests: 980, latency: 39, errors: 0 },
-  ];
+  // Time-range specific request telemetry data
+  const telemetryDataSets: Record<
+    "5m" | "15m" | "1h" | "6h" | "24h",
+    Array<{ time: string; requests: number; latency: number; errors: number }>
+  > = {
+    "5m": [
+      { time: "15:40", requests: 48, latency: 22, errors: 0 },
+      { time: "15:41", requests: 52, latency: 24, errors: 0 },
+      { time: "15:42", requests: 64, latency: 26, errors: 0 },
+      { time: "15:43", requests: 58, latency: 23, errors: 0 },
+      { time: "15:44", requests: 61, latency: 25, errors: 0 },
+      { time: "Now", requests: 59, latency: 24, errors: 0 },
+    ],
+    "15m": [
+      { time: "15:30", requests: 140, latency: 23, errors: 0 },
+      { time: "15:33", requests: 162, latency: 25, errors: 0 },
+      { time: "15:36", requests: 180, latency: 28, errors: 1 },
+      { time: "15:39", requests: 175, latency: 24, errors: 0 },
+      { time: "15:42", requests: 190, latency: 26, errors: 0 },
+      { time: "Now", requests: 184, latency: 24, errors: 0 },
+    ],
+    "1h": [
+      { time: "14:45", requests: 620, latency: 26, errors: 0 },
+      { time: "15:00", requests: 780, latency: 28, errors: 1 },
+      { time: "15:15", requests: 840, latency: 29, errors: 0 },
+      { time: "15:30", requests: 790, latency: 25, errors: 0 },
+      { time: "Now", requests: 810, latency: 24, errors: 0 },
+    ],
+    "6h": [
+      { time: "10:00", requests: 1850, latency: 32, errors: 2 },
+      { time: "11:30", requests: 2400, latency: 35, errors: 1 },
+      { time: "13:00", requests: 2900, latency: 38, errors: 3 },
+      { time: "14:30", requests: 2750, latency: 31, errors: 1 },
+      { time: "Now", requests: 2820, latency: 24, errors: 0 },
+    ],
+    "24h": [
+      { time: "00:00", requests: 780, latency: 21, errors: 0 },
+      { time: "04:00", requests: 520, latency: 19, errors: 0 },
+      { time: "08:00", requests: 1850, latency: 27, errors: 1 },
+      { time: "12:00", requests: 3120, latency: 36, errors: 2 },
+      { time: "16:00", requests: 2890, latency: 30, errors: 1 },
+      { time: "20:00", requests: 1950, latency: 25, errors: 0 },
+      { time: "Now", requests: 1680, latency: 24, errors: 0 },
+    ],
+  };
+
+  const currentChartData = telemetryDataSets[timeRange];
 
   // System status components
   const systemStatusMatrix = [
@@ -87,8 +118,8 @@ export default function OverviewPage() {
       role: "Next.js 14 SSR",
       status: "HEALTHY",
       latency: "12 ms",
+      uptime: "99.99%",
       lastChecked: "Just now",
-      availability: "99.99%",
       icon: Server,
     },
     {
@@ -96,17 +127,17 @@ export default function OverviewPage() {
       role: "7-Stage Pipeline",
       status: "HEALTHY",
       latency: "24 ms",
+      uptime: "99.98%",
       lastChecked: "2s ago",
-      availability: "99.98%",
       icon: Zap,
     },
     {
       name: "LLM Engine",
-      role: "Isolated Personas",
-      status: "SANDBOX READY",
+      role: "Airgapped Personas",
+      status: "STANDBY",
       latency: "142 ms",
+      uptime: "100%",
       lastChecked: "5s ago",
-      availability: "100%",
       icon: Cpu,
     },
     {
@@ -114,8 +145,8 @@ export default function OverviewPage() {
       role: "Schema Isolation",
       status: "ISOLATED",
       latency: "4 ms",
+      uptime: "100%",
       lastChecked: "1s ago",
-      availability: "100%",
       icon: Database,
     },
     {
@@ -123,95 +154,95 @@ export default function OverviewPage() {
       role: "Default-Deny",
       status: "ENFORCING",
       latency: "18 ms",
+      uptime: "99.95%",
       lastChecked: "3s ago",
-      availability: "99.95%",
       icon: Layers,
     },
     {
       name: "Blue Guardrails",
-      role: "Active Regex & Heuristics",
+      role: "Active Regex & Canary",
       status: "7 ACTIVE",
-      latency: "9 ms",
+      latency: "8 ms",
+      uptime: "100%",
       lastChecked: "Just now",
-      availability: "100%",
       icon: ShieldCheck,
     },
   ];
 
-  // Live real-time activity stream
+  // Live real-time activity feed
   const liveActivities = [
     {
       id: "act-101",
-      timestamp: "15:42:11",
+      timestamp: "15:42:12",
       type: "MODEL EXECUTION",
-      target: "Client-Finance-GPT-4",
-      status: "COMPLETED",
+      target: "Bayora Core AI",
       latency: "142 ms",
-      details: "Direct financial query executed within sandbox boundary. Zero canary leakage detected.",
+      status: "COMPLETED",
+      details: "Direct banking inquiry completed in sandboxed finance core. Zero canary token leakage.",
       severity: "info",
     },
     {
       id: "act-102",
-      timestamp: "15:42:08",
-      type: "GUARDRAIL EVENT",
-      target: "Policy Check Stage 4",
-      status: "BLOCKED",
+      timestamp: "15:42:10",
+      type: "SECURITY CHECK",
+      target: "Guardrail Validation",
       latency: "8 ms",
-      details: "Adversarial DAN instruction pattern intercepted by Rule #BR-001 (DAN Jailbreak Guard).",
-      severity: "danger",
-    },
-    {
-      id: "act-103",
-      timestamp: "15:42:03",
-      type: "EVALUATION",
-      target: "OWASP Top 10 Suite",
-      status: "COMPLETED",
-      latency: "310 ms",
-      details: "Automated penetration batch completed across 10 vectors. Resilience score 98.2%.",
+      status: "PASSED",
+      details: "Stage 4 Input Filter heuristic check verified clean input payload.",
       severity: "success",
     },
     {
+      id: "act-103",
+      timestamp: "15:42:08",
+      type: "API REQUEST",
+      target: "POST /api/inference",
+      latency: "118 ms",
+      status: "200 OK",
+      details: "Enforcement gateway completed full 7-stage validation cycle.",
+      severity: "accent",
+    },
+    {
       id: "act-104",
-      timestamp: "15:41:49",
-      type: "AUDIT SEAL",
-      target: "Block #108",
-      status: "SEALED",
-      latency: "2 ms",
-      details: "SHA-256 hash continuous link sealed: e3b0c44298fc1c149afbf4c8996fb924...",
-      severity: "warning",
+      timestamp: "15:42:05",
+      type: "EVALUATION",
+      target: "Safety Suite #12",
+      latency: "310 ms",
+      status: "COMPLETED",
+      details: "Automated penetration test batch completed across 10 vectors. Resilience score 98.2%.",
+      severity: "success",
     },
     {
       id: "act-105",
-      timestamp: "15:41:12",
-      type: "CANARY PROBE",
-      target: "Client-Healthcare-LLM",
-      status: "DEFENDED",
-      latency: "11 ms",
-      details: "Output filter intercepted synthetic SSN token match [SSN-CANARY-9821]. Content redacted.",
-      severity: "violet",
+      timestamp: "15:41:49",
+      type: "AUDIT SEAL",
+      target: "Block #108",
+      latency: "2 ms",
+      status: "SEALED",
+      details: "SHA-256 continuous hash link sealed to head: e3b0c44298fc1c149afbf4c8996fb924...",
+      severity: "warning",
     },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Top Header Region */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#1C242C]">
         <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <span className="h-2 w-2 rounded-full bg-[#38D996] animate-pulse" />
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
+            <h1 className="text-lg md:text-xl font-bold font-heading text-[#EEF2F5]">
               BAYORA CONTROL CENTER
             </h1>
-            <Badge variant="cyan" size="xs">
+            <Badge variant="accent" size="xs">
               AIRGAP v2.4
             </Badge>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             Real-time visibility across models, security, infrastructure, evaluation and system activity.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <Link href="/red">
             <Button variant="danger" size="sm" icon={<Flame className="w-3.5 h-3.5" />}>
               Simulate Attack
@@ -231,13 +262,13 @@ export default function OverviewPage() {
       </div>
 
       {/* Top KPI Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         <MetricCard
           label="TOTAL REQUESTS"
           value={liveMetrics ? "24,821" : "24,821"}
           trend={{ value: "+12.4%", direction: "up", context: "vs 24h" }}
           sparklineData={[30, 42, 38, 55, 62, 70, 85]}
-          statusColor="cyan"
+          statusColor="accent"
           badgeText="TODAY"
         />
         <MetricCard
@@ -267,79 +298,93 @@ export default function OverviewPage() {
         <MetricCard
           label="SYSTEM HEALTH"
           value={liveMetrics ? `${liveMetrics.system_status}` : "OPERATIONAL"}
-          trend={{ value: "48 ms", direction: "neutral", context: "Avg latency" }}
-          sparklineData={[52, 49, 48, 50, 47, 48, 48]}
+          trend={{ value: "24 ms", direction: "neutral", context: "Gateway P50" }}
+          sparklineData={[28, 26, 25, 24, 24, 24, 24]}
           statusColor="success"
           badgeText="mTLS MESH"
         />
       </div>
 
-      {/* Request Telemetry & Pipeline Latency */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Telemetry Chart */}
-        <div className="lg:col-span-2 p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1B252F]">
-            <div>
+      {/* Request Telemetry & Security Signals */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Main Telemetry Chart (8 cols) */}
+        <div className="lg:col-span-8 p-4 rounded-md bg-[#12171D] border border-[#1C242C] space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-[#1C242C]">
+            <div className="space-y-0.5">
               <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-[#39D9FF]" />
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
-                  Gateway Pipeline Telemetry
+                <Activity className="w-3.5 h-3.5 text-[#4FD1C5]" />
+                <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
+                  Gateway Request & Latency Telemetry
                 </h3>
               </div>
-              <p className="text-[11px] text-[#A4AFBC] mt-0.5">
-                Ingress throughput (requests/min) and average latency across the 7-stage enforcement bus.
+              <p className="text-[10px] text-[#A3ADB7]">
+                Ingress throughput (requests/min) and average pipeline latency across the 7-stage conduit.
               </p>
             </div>
 
-            <div className="flex items-center gap-1 bg-[#070A0F] p-1 rounded-md border border-[#1B252F]">
-              {(["1h", "6h", "24h"] as const).map((r) => (
+            {/* Time-Range Selector */}
+            <div className="flex items-center gap-1 bg-[#080A0D] p-0.5 rounded border border-[#1C242C]">
+              {(["5m", "15m", "1h", "6h", "24h"] as const).map((r) => (
                 <button
                   key={r}
-                  onClick={() => setTelemetryRange(r)}
-                  className={`px-2 py-0.5 text-[10px] font-mono rounded transition ${
-                    telemetryRange === r
-                      ? "bg-[#151D27] text-[#39D9FF] font-semibold border border-[#25303C]"
-                      : "text-[#6C7886] hover:text-[#A4AFBC]"
+                  onClick={() => setTimeRange(r)}
+                  className={`px-2 py-0.5 text-[10px] font-mono rounded transition-colors ${
+                    timeRange === r
+                      ? "bg-[#171D24] text-[#4FD1C5] font-semibold border border-[#252D36]"
+                      : "text-[#68737E] hover:text-[#A3ADB7]"
                   }`}
                 >
-                  {r.toUpperCase()}
+                  {r}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="h-64 pt-2">
+          <div className="h-60 pt-2">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={telemetryData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <AreaChart
+                  data={currentChartData}
+                  margin={{ top: 8, right: 10, left: -22, bottom: 0 }}
+                >
                   <defs>
                     <linearGradient id="reqGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#39D9FF" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#39D9FF" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#4FD1C5" stopOpacity={0.18} />
+                      <stop offset="95%" stopColor="#4FD1C5" stopOpacity={0.0} />
                     </linearGradient>
                     <linearGradient id="latGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8C7DFF" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#8C7DFF" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#7C8CFF" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#7C8CFF" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="time" tick={{ fill: "#6C7886", fontSize: 10 }} axisLine={false} />
-                  <YAxis tick={{ fill: "#6C7886", fontSize: 10 }} axisLine={false} />
+                  <XAxis
+                    dataKey="time"
+                    tick={{ fill: "#68737E", fontSize: 10, fontFamily: "JetBrains Mono" }}
+                    axisLine={{ stroke: "#1C242C" }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={{ fill: "#68737E", fontSize: 10, fontFamily: "JetBrains Mono" }}
+                    axisLine={{ stroke: "#1C242C" }}
+                    tickLine={false}
+                  />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#0B1017",
-                      borderColor: "#25303C",
-                      color: "#F5F7FA",
+                      backgroundColor: "#0D1116",
+                      borderColor: "#252D36",
+                      color: "#EEF2F5",
                       fontSize: 11,
                       fontFamily: "JetBrains Mono",
-                      borderRadius: 6,
+                      borderRadius: 4,
+                      boxShadow: "none",
                     }}
                   />
                   <Area
                     type="monotone"
                     dataKey="requests"
                     name="Requests / min"
-                    stroke="#39D9FF"
-                    strokeWidth={2}
+                    stroke="#4FD1C5"
+                    strokeWidth={1.5}
                     fillOpacity={1}
                     fill="url(#reqGradient)"
                   />
@@ -347,42 +392,42 @@ export default function OverviewPage() {
                     type="monotone"
                     dataKey="latency"
                     name="Latency (ms)"
-                    stroke="#8C7DFF"
-                    strokeWidth={1.5}
+                    stroke="#7C8CFF"
+                    strokeWidth={1.25}
                     fillOpacity={1}
                     fill="url(#latGradient)"
                   />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-xs text-[#6C7886] font-mono">
+              <div className="h-full flex items-center justify-center text-xs text-[#68737E] font-mono">
                 Loading telemetry visualizer...
               </div>
             )}
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-[#1B252F] text-[11px] font-mono text-[#6C7886]">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between pt-2 border-t border-[#1C242C] text-[10px] font-mono text-[#68737E]">
+            <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-[#39D9FF]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#4FD1C5]" />
                 Throughput (Req/m)
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-[#8C7DFF]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#7C8CFF]" />
                 Pipeline Latency (ms)
               </span>
             </div>
-            <span>P99: 72 ms • 0 Drops</span>
+            <span>P99: 48 ms • 0 Dropped Packets</span>
           </div>
         </div>
 
-        {/* Security Signals Breakdown */}
-        <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] flex flex-col justify-between space-y-4">
+        {/* Security Signals Breakdown (4 cols) */}
+        <div className="lg:col-span-4 p-4 rounded-md bg-[#12171D] border border-[#1C242C] flex flex-col justify-between space-y-3">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+            <div className="flex items-center justify-between pb-2.5 border-b border-[#1C242C]">
               <div className="flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-[#FF6074]" />
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+                <ShieldAlert className="w-3.5 h-3.5 text-[#E66A77]" />
+                <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
                   Active Security Signals
                 </h3>
               </div>
@@ -391,60 +436,60 @@ export default function OverviewPage() {
               </Badge>
             </div>
 
-            <div className="mt-4 space-y-3">
-              <div className="p-3 rounded-md bg-[#0B1017] border border-[#1B252F] flex items-center justify-between">
+            <div className="mt-3 space-y-2">
+              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#FF6074]">
+                  <span className="text-xs font-mono font-medium text-[#E66A77]">
                     Prompt Injections (LLM01)
                   </span>
-                  <p className="text-[10px] text-[#A4AFBC] mt-0.5">
+                  <p className="text-[10px] text-[#A3ADB7]">
                     DAN & instruction override vectors
                   </p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#F5F7FA]">42</span>
+                <span className="text-sm font-mono font-bold text-[#EEF2F5]">42</span>
               </div>
 
-              <div className="p-3 rounded-md bg-[#0B1017] border border-[#1B252F] flex items-center justify-between">
+              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#FFB84D]">
+                  <span className="text-xs font-mono font-medium text-[#E6B35A]">
                     Canary Leak Interceptions (LLM02)
                   </span>
-                  <p className="text-[10px] text-[#A4AFBC] mt-0.5">
+                  <p className="text-[10px] text-[#A3ADB7]">
                     PII & financial canary exfiltration
                   </p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#F5F7FA]">18</span>
+                <span className="text-sm font-mono font-bold text-[#EEF2F5]">18</span>
               </div>
 
-              <div className="p-3 rounded-md bg-[#0B1017] border border-[#1B252F] flex items-center justify-between">
+              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#8C7DFF]">
+                  <span className="text-xs font-mono font-medium text-[#7C8CFF]">
                     Model Extraction Probes (LLM10)
                   </span>
-                  <p className="text-[10px] text-[#A4AFBC] mt-0.5">
+                  <p className="text-[10px] text-[#A3ADB7]">
                     System prompt reverse-engineering
                   </p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#F5F7FA]">7</span>
+                <span className="text-sm font-mono font-bold text-[#EEF2F5]">7</span>
               </div>
 
-              <div className="p-3 rounded-md bg-[#0B1017] border border-[#1B252F] flex items-center justify-between">
+              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#38D996]">
+                  <span className="text-xs font-mono font-medium text-[#45C995]">
                     SHA-256 Ledger Seals
                   </span>
-                  <p className="text-[10px] text-[#A4AFBC] mt-0.5">
+                  <p className="text-[10px] text-[#A3ADB7]">
                     Continuous unbroken block seals
                   </p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#38D996]">100%</span>
+                <span className="text-sm font-mono font-bold text-[#45C995]">100%</span>
               </div>
             </div>
           </div>
 
-          <Link href="/blue" className="w-full">
+          <Link href="/blue" className="w-full pt-1">
             <Button variant="outline" size="sm" className="w-full justify-between">
-              <span>Inspect Security Center</span>
+              <span>Security Center</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
@@ -452,39 +497,39 @@ export default function OverviewPage() {
       </div>
 
       {/* System Status Matrix */}
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Server className="w-4 h-4 text-[#38D996]" />
-            <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
-              Zero-Trust Infrastructure Status Matrix
+            <Server className="w-3.5 h-3.5 text-[#45C995]" />
+            <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
+              Subsystem Health Matrix
             </h3>
           </div>
-          <span className="text-[11px] font-mono text-[#6C7886]">
+          <span className="text-[10px] font-mono text-[#68737E]">
             All 6 isolated subsystems active
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5">
           {systemStatusMatrix.map((sub, idx) => {
             const Icon = sub.icon;
             return (
               <div
                 key={idx}
-                className="p-3.5 rounded-lg bg-[#101720] border border-[#1B252F] hover:border-[#25303C] transition space-y-2"
+                className="p-3 rounded-md bg-[#12171D] border border-[#1C242C] hover:border-[#252D36] transition-colors space-y-1.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#F5F7FA] font-sans truncate">
+                  <span className="text-xs font-semibold text-[#EEF2F5] font-sans truncate">
                     {sub.name}
                   </span>
-                  <span className="h-2 w-2 rounded-full bg-[#38D996]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
                 </div>
-                <p className="text-[10px] font-mono text-[#6C7886] truncate">
+                <p className="text-[10px] font-mono text-[#68737E] truncate">
                   {sub.role}
                 </p>
-                <div className="pt-2 border-t border-[#1B252F] flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-[#38D996] font-medium">{sub.status}</span>
-                  <span className="text-[#A4AFBC]">{sub.latency}</span>
+                <div className="pt-1.5 border-t border-[#1C242C] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-[#45C995] font-medium">{sub.status}</span>
+                  <span className="text-[#A3ADB7]">{sub.latency}</span>
                 </div>
               </div>
             );
@@ -492,37 +537,37 @@ export default function OverviewPage() {
         </div>
       </div>
 
-      {/* Live Activity Feed */}
-      <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#1B252F]">
+      {/* Live Operational Activity Feed */}
+      <div className="p-4 rounded-md bg-[#12171D] border border-[#1C242C] space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-[#1C242C]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#39D9FF] animate-pulse" />
-              <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
-                Live Operational Activity Feed
+              <span className="h-1.5 w-1.5 rounded-full bg-[#4FD1C5]" />
+              <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
+                Live Operational Activity Stream
               </h3>
             </div>
-            <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+            <p className="text-[10px] text-[#A3ADB7] mt-0.5">
               Live audit events, model executions, guardrail triggers, and verification receipts.
             </p>
           </div>
 
           <Link href="/observability">
-            <Button variant="ghost" size="xs" icon={<Eye className="w-3.5 h-3.5" />}>
+            <Button variant="ghost" size="xs" icon={<Eye className="w-3 h-3" />}>
               Open Telemetry Console
             </Button>
           </Link>
         </div>
 
-        <div className="divide-y divide-[#1B252F]">
+        <div className="divide-y divide-[#1C242C]">
           {liveActivities.map((act) => (
             <div
               key={act.id}
               onClick={() => setSelectedEvent(act)}
-              className="py-3 px-2 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#151D27]/50 rounded-md transition cursor-pointer"
+              className="py-2.5 px-2 flex flex-col md:flex-row md:items-center justify-between gap-2.5 hover:bg-[#171D24]/50 rounded transition-colors cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono text-[#6C7886] shrink-0">
+              <div className="flex items-center gap-2.5">
+                <span className="text-[11px] font-mono text-[#68737E] shrink-0">
                   {act.timestamp}
                 </span>
                 <Badge
@@ -535,51 +580,40 @@ export default function OverviewPage() {
                       ? "success"
                       : act.severity === "violet"
                       ? "violet"
-                      : "cyan"
+                      : "accent"
                   }
                   size="xs"
                 >
                   {act.type}
                 </Badge>
-                <span className="text-xs font-mono text-[#F5F7FA] font-medium">
+                <span className="text-xs font-mono text-[#EEF2F5] font-medium">
                   {act.target}
                 </span>
-                <span className="hidden lg:inline text-xs text-[#A4AFBC] truncate max-w-md">
+                <span className="hidden lg:inline text-xs text-[#A3ADB7] truncate max-w-md">
                   {act.details}
                 </span>
               </div>
 
-              <div className="flex items-center gap-3 text-xs font-mono shrink-0">
-                <span className="text-[#6C7886]">{act.latency}</span>
+              <div className="flex items-center gap-2.5 text-xs font-mono shrink-0">
+                <span className="text-[#68737E] text-[11px]">{act.latency}</span>
                 <span
                   className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                     act.status === "BLOCKED"
-                      ? "bg-[#FF6074]/15 text-[#FF6074] border border-[#FF6074]/30"
-                      : "bg-[#38D996]/15 text-[#38D996] border border-[#38D996]/30"
+                      ? "bg-[#E66A77]/12 text-[#E66A77] border border-[#E66A77]/25"
+                      : "bg-[#45C995]/12 text-[#45C995] border border-[#45C995]/25"
                   }`}
                 >
                   {act.status}
                 </span>
-                <ArrowRight className="w-3 h-3 text-[#6C7886]" />
+                <ArrowRight className="w-3 h-3 text-[#68737E]" />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Interactive Architecture Diagram Explorer */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
-            Airgapped Zero-Trust Architecture Diagram
-          </h3>
-          <p className="text-xs text-[#A4AFBC] mt-0.5">
-            Click any zone to inspect isolation policies, CNI network boundaries, and role permissions.
-          </p>
-        </div>
-
-        <ArchitectureDiagram />
-      </div>
+      {/* Architecture Diagram */}
+      <ArchitectureDiagram />
 
       {/* Event Inspection Drawer */}
       <Drawer
@@ -594,40 +628,40 @@ export default function OverviewPage() {
         rawJson={selectedEvent}
         actions={
           <Button variant="primary" size="sm" onClick={() => setSelectedEvent(null)}>
-            Close Inspection
+            Dismiss
           </Button>
         }
       >
         {selectedEvent && (
-          <div className="space-y-4 text-xs font-mono">
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-2">
-              <span className="text-[#6C7886] uppercase text-[10px] block">
+          <div className="space-y-3.5 text-xs font-mono">
+            <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[#68737E] uppercase text-[10px] block">
                 Target Entity
               </span>
-              <span className="text-sm font-bold text-[#F5F7FA]">
+              <span className="text-xs font-bold text-[#EEF2F5]">
                 {selectedEvent.target}
               </span>
             </div>
 
-            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-2">
-              <span className="text-[#6C7886] uppercase text-[10px] block">
-                Security Evaluation Summary
+            <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
+              <span className="text-[#68737E] uppercase text-[10px] block">
+                Event Description
               </span>
-              <p className="text-xs text-[#A4AFBC] font-sans leading-relaxed">
+              <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
                 {selectedEvent.details}
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Latency</span>
-                <span className="text-sm font-bold text-[#39D9FF]">
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Latency</span>
+                <span className="text-xs font-bold text-[#4FD1C5]">
                   {selectedEvent.latency}
                 </span>
               </div>
-              <div className="p-3 rounded bg-[#070A0F] border border-[#1B252F]">
-                <span className="text-[10px] text-[#6C7886] block">Status</span>
-                <span className="text-sm font-bold text-[#38D996]">
+              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
+                <span className="text-[10px] text-[#68737E] block">Status</span>
+                <span className="text-xs font-bold text-[#45C995]">
                   {selectedEvent.status}
                 </span>
               </div>

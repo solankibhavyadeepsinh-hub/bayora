@@ -1,6 +1,14 @@
 import React from "react";
 
-export type BadgeVariant = "cyan" | "violet" | "success" | "warning" | "danger" | "info" | "neutral";
+export type BadgeVariant =
+  | "accent"
+  | "cyan" // alias for backward compatibility
+  | "violet"
+  | "success"
+  | "warning"
+  | "danger"
+  | "info"
+  | "neutral";
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -17,48 +25,54 @@ export function Badge({
   className = "",
   dot = false,
 }: BadgeProps) {
-  const variantStyles: Record<BadgeVariant, { bg: string; text: string; border: string; dotColor: string }> = {
-    cyan: {
-      bg: "bg-[#39D9FF]/10",
-      text: "text-[#39D9FF]",
-      border: "border-[#39D9FF]/30",
-      dotColor: "bg-[#39D9FF]",
+  // Map cyan to accent
+  const effectiveVariant = variant === "cyan" ? "accent" : variant;
+
+  const variantStyles: Record<
+    "accent" | "violet" | "success" | "warning" | "danger" | "info" | "neutral",
+    { bg: string; text: string; border: string; dotColor: string }
+  > = {
+    accent: {
+      bg: "bg-[#4FD1C5]/10",
+      text: "text-[#4FD1C5]",
+      border: "border-[#4FD1C5]/25",
+      dotColor: "bg-[#4FD1C5]",
     },
     violet: {
-      bg: "bg-[#8C7DFF]/10",
-      text: "text-[#8C7DFF]",
-      border: "border-[#8C7DFF]/30",
-      dotColor: "bg-[#8C7DFF]",
+      bg: "bg-[#7C8CFF]/10",
+      text: "text-[#7C8CFF]",
+      border: "border-[#7C8CFF]/25",
+      dotColor: "bg-[#7C8CFF]",
     },
     success: {
-      bg: "bg-[#38D996]/10",
-      text: "text-[#38D996]",
-      border: "border-[#38D996]/30",
-      dotColor: "bg-[#38D996]",
+      bg: "bg-[#45C995]/10",
+      text: "text-[#45C995]",
+      border: "border-[#45C995]/25",
+      dotColor: "bg-[#45C995]",
     },
     warning: {
-      bg: "bg-[#FFB84D]/10",
-      text: "text-[#FFB84D]",
-      border: "border-[#FFB84D]/30",
-      dotColor: "bg-[#FFB84D]",
+      bg: "bg-[#E6B35A]/10",
+      text: "text-[#E6B35A]",
+      border: "border-[#E6B35A]/25",
+      dotColor: "bg-[#E6B35A]",
     },
     danger: {
-      bg: "bg-[#FF6074]/10",
-      text: "text-[#FF6074]",
-      border: "border-[#FF6074]/30",
-      dotColor: "bg-[#FF6074]",
+      bg: "bg-[#E66A77]/10",
+      text: "text-[#E66A77]",
+      border: "border-[#E66A77]/25",
+      dotColor: "bg-[#E66A77]",
     },
     info: {
-      bg: "bg-[#5D9CFF]/10",
-      text: "text-[#5D9CFF]",
-      border: "border-[#5D9CFF]/30",
-      dotColor: "bg-[#5D9CFF]",
+      bg: "bg-[#6EA8FE]/10",
+      text: "text-[#6EA8FE]",
+      border: "border-[#6EA8FE]/25",
+      dotColor: "bg-[#6EA8FE]",
     },
     neutral: {
-      bg: "bg-[#1B252F]",
-      text: "text-[#A4AFBC]",
-      border: "border-[#25303C]",
-      dotColor: "bg-[#6C7886]",
+      bg: "bg-[#171D24]",
+      text: "text-[#A3ADB7]",
+      border: "border-[#252D36]",
+      dotColor: "bg-[#68737E]",
     },
   };
 
@@ -68,7 +82,7 @@ export function Badge({
     md: "px-2.5 py-1 text-xs gap-1.5",
   };
 
-  const current = variantStyles[variant];
+  const current = variantStyles[effectiveVariant];
 
   return (
     <span

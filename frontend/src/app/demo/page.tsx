@@ -77,8 +77,8 @@ export default function DemoWalkthroughPage() {
       title: "1. Red Team Attack",
       actor: "Red Operator",
       icon: Terminal,
-      color: "text-[#FF6074]",
-      border: "border-[#FF6074]/30",
+      color: "text-[#E66A77]",
+      border: "border-[#E66A77]/30",
       desc: "Adversary injects malicious instruction override payload.",
     },
     {
@@ -86,8 +86,8 @@ export default function DemoWalkthroughPage() {
       title: "2. Gateway Interception",
       actor: "Enforcement Gateway",
       icon: Lock,
-      color: "text-[#FFB84D]",
-      border: "border-[#FFB84D]/30",
+      color: "text-[#E6B35A]",
+      border: "border-[#E6B35A]/30",
       desc: "Blue input filter triggers BLOCK; Red receives generic error.",
     },
     {
@@ -95,8 +95,8 @@ export default function DemoWalkthroughPage() {
       title: "3. Sanitized Threat Feed",
       actor: "Blue Operator",
       icon: Shield,
-      color: "text-[#5D9CFF]",
-      border: "border-[#5D9CFF]/30",
+      color: "text-[#6EA8FE]",
+      border: "border-[#6EA8FE]/30",
       desc: "Blue receives redacted OWASP alert with raw payload masked.",
     },
     {
@@ -104,8 +104,8 @@ export default function DemoWalkthroughPage() {
       title: "4. Auditor Verification",
       actor: "Compliance Auditor",
       icon: FileCheck,
-      color: "text-[#38D996]",
-      border: "border-[#38D996]/30",
+      color: "text-[#45C995]",
+      border: "border-[#45C995]/30",
       desc: "SHA-256 hash continuity mathematically proven intact.",
     },
   ];
@@ -113,18 +113,18 @@ export default function DemoWalkthroughPage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <Sparkles className="w-5 h-5 text-[#8C7DFF]" />
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+            <Sparkles className="w-5 h-5 text-[#7C8CFF]" />
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
               DUAL-BLIND INTERACTIVE SIMULATOR
             </h1>
             <Badge variant="violet" size="xs">
               4-STEP VERIFICATION
             </Badge>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             End-to-end interactive demonstration proving strict isolation: Attack &rarr; Block &rarr; Sanitized Telemetry &rarr; Audit Proof.
           </p>
         </div>
@@ -151,22 +151,22 @@ export default function DemoWalkthroughPage() {
               onClick={() => setActiveStep(s.num)}
               className={`p-4 rounded-lg cursor-pointer transition border text-xs font-mono space-y-2 ${
                 isActive
-                  ? `bg-[#151D27] ${s.border} shadow-sm`
-                  : "bg-[#101720] border-[#1B252F] hover:border-[#25303C]"
+                  ? `bg-[#171D24] ${s.border} shadow-sm`
+                  : "bg-[#12171D] border-[#1C242C] hover:border-[#252D36]"
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Icon className={`w-4 h-4 ${s.color}`} />
-                  <span className="font-bold text-[#F5F7FA] font-heading">
+                  <span className="font-bold text-[#EEF2F5] font-heading">
                     {s.title}
                   </span>
                 </div>
                 {isActive && (
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#39D9FF]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#4FD1C5]" />
                 )}
               </div>
-              <p className="text-[11px] text-[#A4AFBC] font-sans">
+              <p className="text-[11px] text-[#A3ADB7] font-sans">
                 {s.desc}
               </p>
             </div>
@@ -175,14 +175,14 @@ export default function DemoWalkthroughPage() {
       </div>
 
       {/* Step View Card */}
-      <div className="p-6 rounded-lg bg-[#101720] border border-[#1B252F] space-y-6">
+      <div className="p-6 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-6">
         {/* Step 1 */}
         {activeStep === 1 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
               <div className="flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-[#FF6074]" />
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+                <Terminal className="w-4 h-4 text-[#E66A77]" />
+                <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                   Step 1: Adversarial Prompt Submission (Red Team)
                 </h3>
               </div>
@@ -191,15 +191,15 @@ export default function DemoWalkthroughPage() {
               </Badge>
             </div>
 
-            <p className="text-xs text-[#A4AFBC]">
+            <p className="text-xs text-[#A3ADB7]">
               The red team operator submits a direct prompt injection attack targeting the client banking core to extract internal secrets.
             </p>
 
-            <div className="p-4 rounded bg-[#070A0F] border border-[#1B252F] space-y-2 text-xs font-mono">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-4 rounded bg-[#080A0D] border border-[#1C242C] space-y-2 text-xs font-mono">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Raw Attack Prompt
               </span>
-              <p className="text-xs text-[#FF6074]">
+              <p className="text-xs text-[#E66A77]">
                 {demoData.step_1_red_attack.prompt}
               </p>
             </div>
@@ -216,10 +216,10 @@ export default function DemoWalkthroughPage() {
         {/* Step 2 */}
         {activeStep === 2 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-[#FFB84D]" />
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+                <Lock className="w-4 h-4 text-[#E6B35A]" />
+                <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                   Step 2: Gateway Interception & Generic Red Response
                 </h3>
               </div>
@@ -228,31 +228,31 @@ export default function DemoWalkthroughPage() {
               </Badge>
             </div>
 
-            <p className="text-xs text-[#A4AFBC]">
+            <p className="text-xs text-[#A3ADB7]">
               The 7-stage gateway intercepts the prompt at Stage 4 (Blue Input Filter). In accordance with dual-blind rules, Red receives only a generic message.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-              <div className="p-4 rounded bg-[#070A0F] border border-[#1B252F] space-y-2">
-                <span className="text-[10px] text-[#6C7886] uppercase block">
+              <div className="p-4 rounded bg-[#080A0D] border border-[#1C242C] space-y-2">
+                <span className="text-[10px] text-[#68737E] uppercase block">
                   What Red Team Sees
                 </span>
-                <div className="p-3 rounded bg-[#101720] border border-[#FF6074]/30 text-[#FF6074]">
+                <div className="p-3 rounded bg-[#12171D] border border-[#E66A77]/30 text-[#E66A77]">
                   {demoData.step_2_gateway_interception.red_view.model_response}
                 </div>
-                <span className="text-[10px] text-[#38D996] block">
+                <span className="text-[10px] text-[#45C995] block">
                   Rule names revealed: ZERO
                 </span>
               </div>
 
-              <div className="p-4 rounded bg-[#070A0F] border border-[#1B252F] space-y-2">
-                <span className="text-[10px] text-[#6C7886] uppercase block">
+              <div className="p-4 rounded bg-[#080A0D] border border-[#1C242C] space-y-2">
+                <span className="text-[10px] text-[#68737E] uppercase block">
                   Gateway Enforcement Logic
                 </span>
-                <div className="space-y-1.5 text-[11px] text-[#A4AFBC]">
-                  <div>Decision: <span className="text-[#FF6074] font-bold">BLOCK</span></div>
-                  <div>Stage: <span className="text-[#39D9FF]">BLUE_INPUT_FILTER</span></div>
-                  <div>Inference Bypassed: <span className="text-[#38D996]">YES (0 tokens billed)</span></div>
+                <div className="space-y-1.5 text-[11px] text-[#A3ADB7]">
+                  <div>Decision: <span className="text-[#E66A77] font-bold">BLOCK</span></div>
+                  <div>Stage: <span className="text-[#4FD1C5]">BLUE_INPUT_FILTER</span></div>
+                  <div>Inference Bypassed: <span className="text-[#45C995]">YES (0 tokens billed)</span></div>
                 </div>
               </div>
             </div>
@@ -272,10 +272,10 @@ export default function DemoWalkthroughPage() {
         {/* Step 3 */}
         {activeStep === 3 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#5D9CFF]" />
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+                <Shield className="w-4 h-4 text-[#6EA8FE]" />
+                <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                   Step 3: Blue Operator Sanitized Threat Telemetry
                 </h3>
               </div>
@@ -284,20 +284,20 @@ export default function DemoWalkthroughPage() {
               </Badge>
             </div>
 
-            <p className="text-xs text-[#A4AFBC]">
+            <p className="text-xs text-[#A3ADB7]">
               The defense team receives a normalized security event categorized under OWASP LLM taxonomy. Raw attack payloads and attacker identities are masked.
             </p>
 
-            <div className="p-4 rounded bg-[#070A0F] border border-[#1B252F] space-y-3 text-xs font-mono">
-              <span className="text-[10px] text-[#6C7886] uppercase block">
+            <div className="p-4 rounded bg-[#080A0D] border border-[#1C242C] space-y-3 text-xs font-mono">
+              <span className="text-[10px] text-[#68737E] uppercase block">
                 Sanitized Telemetry Snippet
               </span>
-              <div className="p-3 rounded bg-[#101720] border border-[#5D9CFF]/30 text-[#5D9CFF]">
+              <div className="p-3 rounded bg-[#12171D] border border-[#6EA8FE]/30 text-[#6EA8FE]">
                 {demoData.step_3_blue_threat_event.sanitized_snippet}
               </div>
               <div className="grid grid-cols-2 gap-3 pt-2 text-[11px]">
-                <div>Category: <span className="text-[#F5F7FA]">{demoData.step_3_blue_threat_event.owasp_category}</span></div>
-                <div>Raw Payload Masked: <span className="text-[#38D996]">TRUE</span></div>
+                <div>Category: <span className="text-[#EEF2F5]">{demoData.step_3_blue_threat_event.owasp_category}</span></div>
+                <div>Raw Payload Masked: <span className="text-[#45C995]">TRUE</span></div>
               </div>
             </div>
 
@@ -316,10 +316,10 @@ export default function DemoWalkthroughPage() {
         {/* Step 4 */}
         {activeStep === 4 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
               <div className="flex items-center gap-2">
-                <FileCheck className="w-4 h-4 text-[#38D996]" />
-                <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+                <FileCheck className="w-4 h-4 text-[#45C995]" />
+                <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
                   Step 4: Auditor SHA-256 Ledger Verification
                 </h3>
               </div>
@@ -328,18 +328,18 @@ export default function DemoWalkthroughPage() {
               </Badge>
             </div>
 
-            <p className="text-xs text-[#A4AFBC]">
+            <p className="text-xs text-[#A3ADB7]">
               The event and all telemetry are cryptographically sealed into the SHA-256 append-only ledger. An independent auditor verifies continuity.
             </p>
 
-            <div className="p-4 rounded bg-[#070A0F] border border-[#38D996]/30 space-y-3 text-xs font-mono">
+            <div className="p-4 rounded bg-[#080A0D] border border-[#45C995]/30 space-y-3 text-xs font-mono">
               <div className="flex items-center justify-between">
-                <span className="text-[#38D996] font-bold">Ledger Integrity: VALID & UNBROKEN</span>
-                <span className="text-[#A4AFBC]">12 Blocks Verified</span>
+                <span className="text-[#45C995] font-bold">Ledger Integrity: VALID & UNBROKEN</span>
+                <span className="text-[#A3ADB7]">12 Blocks Verified</span>
               </div>
-              <div className="space-y-1 text-[11px] text-[#6C7886]">
-                <div>Chain Head Hash: <span className="text-[#FFB84D]">{demoData.step_4_auditor_verification.chain_head_hash}</span></div>
-                <div>Digital Seal: <span className="text-[#38D996]">{demoData.step_4_auditor_verification.digital_seal}</span></div>
+              <div className="space-y-1 text-[11px] text-[#68737E]">
+                <div>Chain Head Hash: <span className="text-[#E6B35A]">{demoData.step_4_auditor_verification.chain_head_hash}</span></div>
+                <div>Digital Seal: <span className="text-[#45C995]">{demoData.step_4_auditor_verification.digital_seal}</span></div>
               </div>
             </div>
 

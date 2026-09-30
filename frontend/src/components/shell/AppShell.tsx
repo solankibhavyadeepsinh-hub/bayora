@@ -20,27 +20,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#070A0F] text-[#F5F7FA] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#080A0D] text-[#EEF2F5] flex flex-col font-sans">
       {/* Permanent Sidebar */}
       <Sidebar onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} />
 
-      {/* Main Workspace Frame (shifted right by sidebar width) */}
-      <div className="flex-1 flex flex-col pl-16 lg:pl-64 transition-all duration-200 min-h-screen">
+      {/* Main Workspace Frame */}
+      <div className="flex-1 flex flex-col pl-16 lg:pl-60 transition-all duration-200 min-h-screen">
         <TopBar onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} />
 
-        <main className="flex-1 p-6 md:p-8 max-w-[1600px] w-full mx-auto space-y-8">
+        <main className="flex-1 p-5 md:p-7 max-w-[1550px] w-full mx-auto space-y-7">
           {children}
         </main>
 
-        <footer className="border-t border-[#1B252F] bg-[#070A0F] py-4 px-8 text-xs font-mono text-[#6C7886] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <footer className="border-t border-[#1C242C] bg-[#080A0D] py-3.5 px-6 text-[11px] font-mono text-[#68737E] flex flex-col sm:flex-row items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#38D996]" />
-            <span>BAYORA ENTERPRISE AI SECURITY LABORATORY • AIRGAP EDITION v2.4</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
+            <span>BAYORA AI SECURITY PLATFORM • ENTERPRISE AIRGAP v2.4</span>
           </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>SHA-256 LEDGER</span>
+          <div className="flex items-center gap-3 text-[10px]">
+            <span>SHA-256 CONTINUITY</span>
             <span>•</span>
-            <span>DEFAULT-DENY</span>
+            <span>DEFAULT-DENY CNI</span>
             <span>•</span>
             <span>mTLS ZERO-TRUST</span>
           </div>

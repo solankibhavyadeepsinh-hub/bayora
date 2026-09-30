@@ -37,10 +37,10 @@ function SettingRow({
   onAction,
 }: SettingRowProps) {
   return (
-    <div className="py-3.5 px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#151D27]/40 transition rounded-md">
+    <div className="py-3.5 px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#171D24]/40 transition rounded-md">
       <div className="space-y-0.5 max-w-xl">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#F5F7FA] font-sans">
+          <span className="text-xs font-semibold text-[#EEF2F5] font-sans">
             {title}
           </span>
           {badge && (
@@ -49,13 +49,13 @@ function SettingRow({
             </Badge>
           )}
         </div>
-        <p className="text-[11px] text-[#A4AFBC] font-sans">
+        <p className="text-[11px] text-[#A3ADB7] font-sans">
           {description}
         </p>
       </div>
 
       <div className="flex items-center gap-3 shrink-0">
-        <span className="text-xs font-mono text-[#39D9FF] px-2 py-0.5 rounded bg-[#070A0F] border border-[#1B252F]">
+        <span className="text-xs font-mono text-[#4FD1C5] px-2 py-0.5 rounded bg-[#080A0D] border border-[#1C242C]">
           {value}
         </span>
         {actionText && (
@@ -83,18 +83,18 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5 text-[#39D9FF]" />
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+            <Settings className="w-5 h-5 text-[#4FD1C5]" />
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
               OPERATIONAL CONFIGURATION
             </h1>
             <Badge variant="cyan" size="xs">
               SYSTEM CONFIG
             </Badge>
           </div>
-          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
             Manage platform environment settings, zero-trust perimeter policies, token quotas, and audit configurations.
           </p>
         </div>
@@ -103,14 +103,14 @@ export default function SettingsPage() {
           variant="primary"
           size="sm"
           onClick={handleSave}
-          icon={saved ? <CheckCircle2 className="w-3.5 h-3.5 text-[#070A0F]" /> : <Save className="w-3.5 h-3.5" />}
+          icon={saved ? <CheckCircle2 className="w-3.5 h-3.5 text-[#080A0D]" /> : <Save className="w-3.5 h-3.5" />}
         >
           {saved ? "Configuration Saved" : "Save Changes"}
         </Button>
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-mono border-b border-[#1B252F]">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-mono border-b border-[#1C242C]">
         {[
           { id: "general", label: "General" },
           { id: "workspace", label: "Workspace" },
@@ -125,8 +125,8 @@ export default function SettingsPage() {
             onClick={() => setActiveSection(sec.id as any)}
             className={`pb-3 px-2 font-medium transition border-b-2 whitespace-nowrap ${
               activeSection === sec.id
-                ? "border-[#39D9FF] text-[#39D9FF]"
-                : "border-transparent text-[#6C7886] hover:text-[#A4AFBC]"
+                ? "border-[#4FD1C5] text-[#4FD1C5]"
+                : "border-transparent text-[#68737E] hover:text-[#A3ADB7]"
             }`}
           >
             {sec.label}
@@ -135,20 +135,20 @@ export default function SettingsPage() {
       </div>
 
       {/* Section Content */}
-      <div className="p-6 rounded-lg bg-[#101720] border border-[#1B252F] space-y-6">
+      <div className="p-6 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-6">
         {/* GENERAL */}
         {activeSection === "general" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 General System Parameters
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Core identity, versioning, and environment declarations.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="Platform Name"
                 description="Canonical application name displayed across telemetry streams and audit packages."
@@ -178,15 +178,15 @@ export default function SettingsPage() {
         {activeSection === "workspace" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 Workspace & Sandboxing
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Default sandbox templates and network boundary constraints.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="Default Evaluation Target"
                 description="Default sandbox target selected for Red Team campaigns."
@@ -211,15 +211,15 @@ export default function SettingsPage() {
         {activeSection === "api" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 API Gateway Configuration
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Gateway port parameters, token bucket limits, and mTLS verification.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="FastAPI Gateway Endpoint"
                 description="Base URL for 7-stage gateway proxy."
@@ -244,15 +244,15 @@ export default function SettingsPage() {
         {activeSection === "models" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 Target Model Guardrail Configuration
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Canary token patterns and context boundary rules.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="Canary Token Prefix"
                 description="Deterministic prefix used to intercept exfiltration in output stage 6."
@@ -277,15 +277,15 @@ export default function SettingsPage() {
         {activeSection === "security" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 Security & Dual-Blind Policies
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Dual-blind secrecy guarantees and cryptographic audit sealing.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="Dual-Blind Red Team Obfuscation"
                 description="Red operators strictly receive generic error messages with zero defense disclosures."
@@ -311,15 +311,15 @@ export default function SettingsPage() {
         {activeSection === "notifications" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 Security Alerts & Webhooks
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Dispatch normalized threat alerts to SIEM and incident response channels.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="Critical Threat Webhook"
                 description="Endpoint receiving real-time SSE threat notifications."
@@ -338,18 +338,18 @@ export default function SettingsPage() {
         {activeSection === "appearance" && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-semibold text-[#F5F7FA] font-heading">
+              <h3 className="text-sm font-semibold text-[#EEF2F5] font-heading">
                 Design System & Interface Appearance
               </h3>
-              <p className="text-xs text-[#A4AFBC] mt-0.5">
+              <p className="text-xs text-[#A3ADB7] mt-0.5">
                 Engineered dark-first enterprise security palette.
               </p>
             </div>
 
-            <div className="divide-y divide-[#1B252F]">
+            <div className="divide-y divide-[#1C242C]">
               <SettingRow
                 title="Color Theme"
-                description="Near-black graphite environment (#070A0F) with semantic zone accents."
+                description="Near-black graphite environment (#080A0D) with semantic zone accents."
                 value="Bayora Deep Graphite"
                 badge="DARK-FIRST"
               />
