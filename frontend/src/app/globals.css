@@ -1,58 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-main: #070B12;
-  --bg-surface: #0D1322;
-  --bg-subtle: #131C31;
-  --border-color: #1E293B;
+  --bayora-bg: #070A0F;
+  --bayora-secondary: #0B1017;
+  --bayora-surface: #101720;
+  --bayora-elevated: #151D27;
+  --bayora-border: #25303C;
+  --bayora-border-subtle: #1B252F;
+  --bayora-text: #F5F7FA;
+  --bayora-text-secondary: #A4AFBC;
+  --bayora-muted: #6C7886;
   
-  --zone-red: #E5484D;
-  --zone-blue: #3B82F6;
-  --zone-llm: #8B5CF6;
-  --zone-control: #10B981;
+  --bayora-cyan: #39D9FF;
+  --bayora-violet: #8C7DFF;
+  --bayora-success: #38D996;
+  --bayora-warning: #FFB84D;
+  --bayora-danger: #FF6074;
+  --bayora-info: #5D9CFF;
 }
 
 body {
-  background-color: var(--bg-main);
-  color: #F8FAFC;
-  font-family: 'Inter', sans-serif;
+  background-color: #070A0F;
+  color: #F5F7FA;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .font-heading {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.02em;
 }
 
 code, pre, .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-/* Custom scrollbars for security console aesthetic */
+/* Minimalist Engineered Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090D16;
+  background: #070A0F;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
-  border-radius: 3px;
+  background: #1B252F;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #25303C;
 }
 
-/* Subtle glowing accents for zone security status */
-.glow-red {
-  box-shadow: 0 0 20px -5px rgba(229, 72, 77, 0.35);
+/* Subtle Micro Accents */
+.border-grid {
+  border-color: #1B252F;
 }
-.glow-blue {
-  box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.35);
+
+.surface-card {
+  background-color: #101720;
+  border: 1px solid #1B252F;
+  border-radius: 8px;
 }
-.glow-llm {
-  box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.35);
+
+.surface-card:hover {
+  border-color: #25303C;
 }
-.glow-control {
-  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.35);
+
+.surface-elevated {
+  background-color: #151D27;
+  border: 1px solid #25303C;
+  border-radius: 8px;
+}
+
+/* Keyboard focus rings */
+*:focus-visible {
+  outline: 2px solid #39D9FF;
+  outline-offset: 1px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

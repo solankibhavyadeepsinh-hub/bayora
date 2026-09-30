@@ -303,16 +303,39 @@ tests/test_zone_isolation.py::test_audit_hash_chain_integrity PASSED     [100%]
     - Real-time audit assurance mapping for EU AI Act (Regulation 2024/1689), SOC 2 Type II, and NIST AI RMF 1.0.
     - Article-by-article compliance status, SHA-256 evidence trail verification, and signed JSON attestation package export.
 
+12. **Operational Configuration & Settings (`/settings`)**:
+    - Centralized platform configurations: General, Workspace sandboxes, API gateway, Target models, Dual-blind security policies, SIEM webhooks, and UI themes.
+
 ---
 
-## Design System
+## Enterprise Design System (Pro Max Architecture)
 
-- **Aesthetic**: Dark-first enterprise security (CrowdStrike / Wiz aesthetic).
-- **Zone Color Palette**:
-  - Red Zone: `#E5484D`
-  - Blue Zone: `#3B82F6`
-  - Client LLM Zone: `#8B5CF6`
-  - Control Plane Zone: `#10B981`
-  - Audit Zone: `#F59E0B`
-- **Typography**: Inter (UI / Headings) & JetBrains Mono (Hashes / Logs / Payloads).
-- **Strict Accessibility**: Zero emojis in the UI (lucide-react icons exclusively).
+Bayora features a custom enterprise design system engineered for high-assurance cybersecurity platforms (Linear, Datadog, Stripe, Cloudflare quality standards):
+
+### 1. Palette & Surfaces
+- **Primary Background**: `#070A0F` (Deep graphite)
+- **Secondary Background**: `#0B1017`
+- **Surface**: `#101720`
+- **Elevated Surface**: `#151D27`
+- **Border**: `#25303C`
+- **Subtle Border**: `#1B252F`
+- **Semantic Accents**:
+  - Cyan (`#39D9FF`): Primary interactive elements & system triggers
+  - Violet (`#8C7DFF`): Target LLM intelligence & model card features
+  - Green (`#38D996`): Healthy state, unbroken cryptographic proofs, normal flow
+  - Amber (`#FFB84D`): Warnings, canary token disclosures, SHA-256 ledger seals
+  - Red (`#FF6074`): Critical prompt injections, policy blocks, tamper detection
+  - Blue (`#5D9CFF`): Informational telemetry & OWASP classifications
+
+### 2. Typography Scale
+- **Headings**: `Space Grotesk` (Engineered, geometric tracking)
+- **Body UI**: `Inter` (Legible, accessible, balanced optical hierarchy)
+- **Technical Data**: `JetBrains Mono` (Block hashes, JWT tokens, attack payloads, latencies)
+
+### 3. Application Shell & Interaction Systems
+- **Permanent Desktop Sidebar**: Categorized navigation (`Core Modules` and `Assurance & Hub`), live mTLS mesh heartbeat indicator, and quick user session switcher.
+- **Top Bar**: Real-time breadcrumb tracking, environment chip (`SANDBOX / SIMULATED`), global status pill (`SYSTEM SECURE`), and Command Palette trigger.
+- **Global Command Palette (`Cmd + K` / `Ctrl + K`)**: Instant keyboard-driven search modal across all routes, models, threat vectors, audit proofs, and settings.
+- **Slide-Over Detail Drawers**: Non-disruptive inspection drawers for deep dive telemetry, raw canonical JSON previews, and verification certificates.
+- **Zero-Trust Topology Map**: Interactive service flow diagram connecting `CLIENT -> FRONTEND -> GATEWAY -> MODEL -> DATABASE`.
+

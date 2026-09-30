@@ -1,11 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { AuthProvider } from "@/lib/auth-context";
-import { Navbar } from "@/components/Navbar";
+import { AppShell } from "@/components/shell/AppShell";
 
 export const metadata: Metadata = {
-  title: "Bayora | AI Security Laboratory",
-  description: "Enterprise-grade isolated AI security platform: Red Team adversarial workbench, Blue Team defenses, and SHA-256 audit ledger.",
+  title: "Bayora | Enterprise AI Security Platform",
+  description: "Enterprise-grade isolated AI security platform: Red Team adversarial workbench, Blue Team defenses, SHA-256 audit ledger, and regulatory assurance.",
 };
 
 export default function RootLayout({
@@ -15,20 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#070B12] text-slate-100 antialiased selection:bg-purple-900 selection:text-white">
+      <body className="min-h-screen bg-[#070A0F] text-[#F5F7FA] antialiased selection:bg-[#39D9FF]/20 selection:text-[#39D9FF]">
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <footer className="border-t border-[#1E293B] bg-[#070B12] py-6 px-6 text-center text-xs font-mono text-slate-500">
-              <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-4">
-                <span>BAYORA AI SECURITY PLATFORM • ENTERPRISE AIRGAP EDITION</span>
-                <span>SHA-256 HASH CHAIN • DEFAULT-DENY NETWORK POLICY • STRICT RBAC</span>
-              </div>
-            </footer>
-          </div>
+          <AppShell>
+            {children}
+          </AppShell>
         </AuthProvider>
       </body>
     </html>

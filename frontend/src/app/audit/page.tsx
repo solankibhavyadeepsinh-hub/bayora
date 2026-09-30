@@ -2,31 +2,38 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth-context";
-import { ZoneBadge } from "@/components/ZoneBadge";
-import { 
-  apiGetAuditBlocks, 
-  apiVerifyAuditIntegrity, 
-  apiSimulateTamper, 
-  apiRepairChain, 
-  apiExportAuditEvidence 
+import {
+  apiGetAuditBlocks,
+  apiVerifyAuditIntegrity,
+  apiSimulateTamper,
+  apiRepairChain,
+  apiExportAuditEvidence,
 } from "@/lib/api";
-import { 
-  FileCheck, 
-  ShieldCheck, 
-  AlertTriangle, 
-  RefreshCw, 
-  Download, 
-  Lock, 
-  CheckCircle2, 
-  XCircle, 
-  Hash, 
+import {
+  FileCheck,
+  ShieldCheck,
+  AlertTriangle,
+  RefreshCw,
+  Download,
+  Lock,
+  CheckCircle2,
+  XCircle,
+  Hash,
   Database,
   ExternalLink,
   Flame,
-  Wrench
+  Wrench,
+  Copy,
+  Check,
+  ArrowRight,
+  ShieldAlert,
 } from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Drawer } from "@/components/ui/Drawer";
+import { MetricCard } from "@/components/ui/MetricCard";
 
-export default function AuditPage() {
+export default function EvidenceLedgerPage() {
   const { user, switchRole } = useAuth();
 
   const [blocks, setBlocks] = useState<any[]>([]);
@@ -36,6 +43,7 @@ export default function AuditPage() {
   const [tampering, setTampering] = useState(false);
   const [repairing, setRepairing] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [selectedBlock, setSelectedBlock] = useState<any | null>(null);
 
   const isAuthorized = user?.role === "auditor" || user?.role === "admin";
 
@@ -65,7 +73,13 @@ export default function AuditPage() {
   };
 
   const handleSimulateTamper = async () => {
-    if (!confirm("This will intentionally mutate the metadata of block #1 in the database to test the cryptographic tamper detection algorithm. Proceed?")) return;
+    if (
+      !confirm(
+        "This will deliberately mutate the database payload of block #1 to demonstrate instant cryptographic tamper detection. Proceed?"
+      )
+    )
+      return;
+
     setTampering(true);
     try {
       await apiSimulateTamper(1);
@@ -95,17 +109,19 @@ export default function AuditPage() {
     setExporting(true);
     try {
       const evidence = await apiExportAuditEvidence();
-      const blob = new Blob([JSON.stringify(evidence, null, 2)], { type: "application/json" });
+      const blob = new Blob([JSON.stringify(evidence, null, 2)], {
+        type: "application/json",
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `bayora-audit-evidence-${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `bayora-evidence-${new Date().toISOString().substring(0, 10)}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err: any) {
-      alert(err.message || "Evidence export failed");
+      alert(err.message || "Export failed");
     } finally {
       setExporting(false);
     }
@@ -120,191 +136,268 @@ export default function AuditPage() {
 
   if (!isAuthorized) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="rounded-2xl border border-amber-500/40 bg-[#0D1322] p-8 text-center space-y-4">
-          <div className="mx-auto w-12 h-12 rounded-full bg-amber-500/15 flex items-center justify-center border border-amber-500/40">
-            <Lock className="w-6 h-6 text-amber-400" />
-          </div>
-          <h2 className="text-xl font-bold text-white">Zone Policy Violation (403 Forbidden)</h2>
-          <p className="text-sm text-slate-300 max-w-lg mx-auto">
-            You are currently authenticated as <span className="font-mono text-purple-400 font-medium">{user?.role || "anonymous"}</span>.
-            Under Bayora's 4-pillar isolation architecture, access to the Audit & Evidence Zone requires Compliance Auditor or Admin privileges.
-          </p>
-          <div className="pt-2">
-            <button
-              onClick={() => switchRole("auditor")}
-              className="px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs shadow-lg transition"
-            >
-              Switch to Auditor Role
-            </button>
-          </div>
-        </div>
+      <div className="p-12 rounded-lg border border-[#FF6074]/30 bg-[#FF6074]/5 text-center max-w-lg mx-auto my-12 space-y-4">
+        <Lock className="w-8 h-8 text-[#FF6074] mx-auto" />
+        <h2 className="text-base font-semibold font-heading text-[#F5F7FA]">
+          ZONE ACCESS RESTRICTED: AUDITOR ROLE
+        </h2>
+        <p className="text-xs text-[#A4AFBC] leading-relaxed">
+          Current identity <span className="font-mono text-[#39D9FF]">({user?.role})</span> lacks Auditor privileges. Switch role to inspect cryptographic proofs.
+        </p>
+        <Button variant="outline" size="sm" onClick={() => switchRole("auditor")}>
+          Switch to Auditor Role
+        </Button>
       </div>
     );
   }
 
+  const isChainValid = verification?.status === "VALID" && !verification?.tamper_detected;
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
-      {/* Zone Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#1E293B]">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400">
-            <FileCheck className="w-5 h-5" />
+    <div className="space-y-8">
+      {/* Top Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B252F]">
+        <div className="space-y-1">
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F5F7FA]">
+              EVIDENCE & CRYPTOGRAPHIC LEDGER
+            </h1>
+            <Badge variant="warning" size="xs">
+              SHA-256 HASH CHAIN
+            </Badge>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-white">Cryptographic Audit & Evidence Ledger</h1>
-              <ZoneBadge zone="audit_zone" size="sm" />
-            </div>
-            <p className="text-xs text-slate-400">
-              SHA-256 hash-chained append-only log ensuring mathematical non-repudiation and tamper detection.
-            </p>
-          </div>
+          <p className="text-xs text-[#A4AFBC] max-w-2xl font-sans">
+            Append-only immutable audit trail linking all evaluations, defense actions, and model inferences.
+          </p>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <Button
+            variant="primary"
+            size="sm"
             onClick={handleVerify}
-            disabled={verifying}
-            className="px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-mono font-medium flex items-center gap-1.5 transition disabled:opacity-50"
+            loading={verifying}
+            icon={<ShieldCheck className="w-3.5 h-3.5" />}
           >
-            <ShieldCheck className={`w-3.5 h-3.5 ${verifying ? "animate-spin" : ""}`} />
-            Verify Chain Integrity
-          </button>
+            Verify Integrity
+          </Button>
 
-          <button
-            onClick={handleExport}
-            disabled={exporting}
-            className="px-3.5 py-2 rounded-lg border border-slate-700 bg-[#0D1322] hover:bg-slate-800 text-white text-xs font-mono font-medium flex items-center gap-1.5 transition disabled:opacity-50"
-          >
-            <Download className="w-3.5 h-3.5 text-amber-400" />
-            Export Evidence JSON
-          </button>
-
-          <button
+          <Button
+            variant="danger"
+            size="sm"
             onClick={handleSimulateTamper}
-            disabled={tampering}
-            className="px-3.5 py-2 rounded-lg border border-red-500/40 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-mono font-medium flex items-center gap-1.5 transition"
-            title="Deliberately corrupts block #1 to prove tamper detection works"
+            loading={tampering}
+            icon={<Flame className="w-3.5 h-3.5" />}
           >
-            <Flame className="w-3.5 h-3.5 text-red-400" />
             Simulate Tamper
-          </button>
+          </Button>
 
-          {verification?.tamper_detected && (
-            <button
+          {!isChainValid && (
+            <Button
+              variant="outline"
+              size="sm"
               onClick={handleRepairChain}
-              disabled={repairing}
-              className="px-3.5 py-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-mono font-medium flex items-center gap-1.5 transition"
+              loading={repairing}
+              icon={<Wrench className="w-3.5 h-3.5 text-[#38D996]" />}
             >
-              <Wrench className="w-3.5 h-3.5 text-emerald-400" />
-              Repair Chain
-            </button>
+              Repair Ledger
+            </Button>
           )}
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExport}
+            loading={exporting}
+            icon={<Download className="w-3.5 h-3.5" />}
+          >
+            Export Proof
+          </Button>
         </div>
       </div>
 
-      {/* Cryptographic Verification Proof Banner */}
+      {/* Verification State Banner */}
       {verification && (
-        <div className={`p-5 rounded-xl border text-xs font-mono transition-all ${
-          verification.tamper_detected
-            ? "border-red-500 bg-red-500/10 text-red-200"
-            : "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
-        }`}>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-start gap-3">
-              {verification.tamper_detected ? (
-                <XCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div
+          className={`p-4 rounded-lg border transition ${
+            isChainValid
+              ? "bg-[#38D996]/10 border-[#38D996]/30 text-[#38D996]"
+              : "bg-[#FF6074]/10 border-[#FF6074]/30 text-[#FF6074]"
+          }`}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              {isChainValid ? (
+                <CheckCircle2 className="w-5 h-5 shrink-0" />
               ) : (
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                <AlertTriangle className="w-5 h-5 shrink-0" />
               )}
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-sm">
-                    {verification.tamper_detected ? "CRITICAL: CRYPTOGRAPHIC TAMPER DETECTED" : "SHA-256 HASH CHAIN INTEGRITY: 100% VALID"}
-                  </span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    verification.tamper_detected ? "bg-red-500 text-white" : "bg-emerald-500/20 text-emerald-300"
-                  }`}>
-                    {verification.status}
-                  </span>
-                </div>
-                <p className="text-slate-300 mt-1">
-                  {verification.tamper_detected
-                    ? `Corrupted block identified at Block #${verification.corrupted_block_index} (${verification.failure_type}). Unbroken mathematical continuity broken.`
-                    : `All ${verification.total_blocks} sequential blocks verified from Genesis (0000000...) to Head.`
-                  }
+                <h3 className="font-semibold text-sm font-sans">
+                  {isChainValid
+                    ? "Cryptographic Hash Chain: VERIFIED INTACT"
+                    : `Cryptographic Tamper Detected in Block #${verification.corrupted_block_index}!`}
+                </h3>
+                <p className="text-xs text-[#A4AFBC] font-mono mt-0.5">
+                  {isChainValid
+                    ? `All ${verification.total_blocks} blocks cryptographically linked from Genesis to Head with unbroken SHA-256 continuity.`
+                    : `Discontinuity discovered: ${verification.failure_type}. Hash recomputation mismatched stored block signature.`}
                 </p>
               </div>
             </div>
 
-            <div className="text-[11px] text-slate-400 space-y-1">
-              <div>Verified Blocks: <strong className="text-white">{verification.verified_blocks} / {verification.total_blocks}</strong></div>
-              <div>Digital Seal: <span className="text-purple-300">{verification.seal?.slice(0, 24)}...</span></div>
-            </div>
+            <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#070A0F] border border-[#1B252F] text-[#F5F7FA] shrink-0">
+              {verification.verification_timestamp?.substring(11, 19)} UTC
+            </span>
           </div>
         </div>
       )}
 
+      {/* Top KPI Metrics Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <MetricCard
+          label="SEALED BLOCKS"
+          value={blocks.length}
+          trend={{ value: "Append-only", direction: "neutral", context: "Blocks" }}
+          statusColor="warning"
+          badgeText="IMMUTABLE"
+        />
+        <MetricCard
+          label="CHAIN INTEGRITY"
+          value={isChainValid ? "VALID" : "CORRUPTED"}
+          trend={{
+            value: isChainValid ? "100% Intact" : "Tamper Alert",
+            direction: isChainValid ? "up" : "down",
+          }}
+          statusColor={isChainValid ? "success" : "danger"}
+          badgeText="SHA-256"
+        />
+        <MetricCard
+          label="GENESIS BLOCK"
+          value="00000000..."
+          trend={{ value: "Immutable Anchor", direction: "neutral", context: "Block #0" }}
+          statusColor="cyan"
+          badgeText="ROOT ANCHOR"
+        />
+        <MetricCard
+          label="CHAIN HEAD"
+          value={blocks.length > 0 ? blocks[blocks.length - 1].block_hash.substring(0, 10) + "..." : "Standby"}
+          trend={{ value: "Latest Seal", direction: "neutral", context: "Continuous" }}
+          statusColor="violet"
+          badgeText="VERIFIED"
+        />
+      </div>
+
       {/* Ledger Table */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-sm text-white">Append-Only Sequential Block Ledger</h3>
-          <button
-            onClick={loadBlocks}
-            className="text-xs font-mono text-slate-400 hover:text-white flex items-center gap-1.5"
-          >
-            <RefreshCw className="w-3 h-3" /> Refresh Blocks
-          </button>
+      <div className="p-5 rounded-lg bg-[#101720] border border-[#1B252F] space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#1B252F]">
+          <div>
+            <h3 className="font-heading font-semibold text-sm text-[#F5F7FA]">
+              SHA-256 Immutable Audit Ledger
+            </h3>
+            <p className="text-[11px] text-[#A4AFBC] mt-0.5">
+              Click any block to inspect full cryptographic headers, previous hash links, and raw JSON evidence.
+            </p>
+          </div>
+          <span className="text-xs font-mono text-[#6C7886]">
+            {blocks.length} blocks sealed
+          </span>
         </div>
 
-        <div className="rounded-xl border border-[#1E293B] bg-[#0D1322] overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#090D16] border-b border-[#1E293B] text-slate-400 uppercase text-[10px]">
-                <tr>
-                  <th className="py-3 px-4">Block #</th>
-                  <th className="py-3 px-4">Action Type</th>
-                  <th className="py-3 px-4">Actor Role</th>
-                  <th className="py-3 px-4">Previous Hash</th>
-                  <th className="py-3 px-4">Current Block Hash</th>
-                  <th className="py-3 px-4">Payload SHA-256</th>
-                  <th className="py-3 px-4">Verified</th>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs font-mono">
+            <thead className="bg-[#070A0F] border-b border-[#1B252F] text-[#6C7886] uppercase text-[10px]">
+              <tr>
+                <th className="py-2.5 px-3">Block #</th>
+                <th className="py-2.5 px-3">Timestamp</th>
+                <th className="py-2.5 px-3">Action Type</th>
+                <th className="py-2.5 px-3">Actor Role</th>
+                <th className="py-2.5 px-3">Previous Block Hash</th>
+                <th className="py-2.5 px-3">Current Block SHA-256</th>
+                <th className="py-2.5 px-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1B252F]">
+              {blocks.map((b) => (
+                <tr
+                  key={b.block_index}
+                  onClick={() => setSelectedBlock(b)}
+                  className="hover:bg-[#151D27]/50 cursor-pointer transition"
+                >
+                  <td className="py-2.5 px-3 font-bold text-[#FFB84D]">
+                    #{b.block_index}
+                  </td>
+                  <td className="py-2.5 px-3 text-[#6C7886]">
+                    {b.timestamp ? b.timestamp.substring(11, 19) : "15:42:01"}
+                  </td>
+                  <td className="py-2.5 px-3 font-semibold text-[#F5F7FA]">
+                    {b.action_type}
+                  </td>
+                  <td className="py-2.5 px-3 text-[#39D9FF]">{b.actor_role}</td>
+                  <td className="py-2.5 px-3 text-[#6C7886] truncate max-w-[120px]">
+                    {b.prev_block_hash}
+                  </td>
+                  <td className="py-2.5 px-3 text-[#8C7DFF] truncate max-w-[140px]">
+                    {b.block_hash}
+                  </td>
+                  <td className="py-2.5 px-3 text-right text-[#FFB84D] hover:underline">
+                    Inspect
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1E293B]">
-                {blocks.map((b) => (
-                  <tr key={b.block_index} className="hover:bg-slate-900/40">
-                    <td className="py-3 px-4 font-bold text-white">
-                      #{b.block_index}
-                      {b.block_index === 0 && <span className="ml-1 text-[9px] text-amber-400 font-normal">(GENESIS)</span>}
-                    </td>
-                    <td className="py-3 px-4 text-purple-300">{b.action_type}</td>
-                    <td className="py-3 px-4">
-                      <span className="text-slate-300">{b.actor_role}</span>
-                    </td>
-                    <td className="py-3 px-4 text-slate-400 truncate max-w-[120px]" title={b.prev_block_hash}>
-                      {b.prev_block_hash.slice(0, 14)}...
-                    </td>
-                    <td className="py-3 px-4 text-emerald-400 font-bold truncate max-w-[120px]" title={b.block_hash}>
-                      {b.block_hash.slice(0, 14)}...
-                    </td>
-                    <td className="py-3 px-4 text-slate-400 truncate max-w-[120px]" title={b.payload_sha256}>
-                      {b.payload_sha256.slice(0, 14)}...
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> Sealed
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
+
+      {/* Block Inspection Drawer */}
+      <Drawer
+        isOpen={!!selectedBlock}
+        onClose={() => setSelectedBlock(null)}
+        title={`Audit Block #${selectedBlock?.block_index}`}
+        subtitle={`Action: ${selectedBlock?.action_type} • Actor: ${selectedBlock?.actor_role}`}
+        badge={{
+          text: "SEALED",
+          variant: "warning",
+        }}
+        rawJson={selectedBlock}
+        actions={
+          <Button variant="primary" size="sm" onClick={() => setSelectedBlock(null)}>
+            Dismiss
+          </Button>
+        }
+      >
+        {selectedBlock && (
+          <div className="space-y-4 text-xs font-mono">
+            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
+              <span className="text-[10px] text-[#6C7886] uppercase block">
+                Current Block SHA-256 Hash
+              </span>
+              <span className="text-xs font-bold text-[#39D9FF] break-all">
+                {selectedBlock.block_hash}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
+              <span className="text-[10px] text-[#6C7886] uppercase block">
+                Previous Block Hash (Link)
+              </span>
+              <span className="text-xs font-bold text-[#6C7886] break-all">
+                {selectedBlock.prev_block_hash}
+              </span>
+            </div>
+
+            <div className="p-3.5 rounded bg-[#070A0F] border border-[#1B252F] space-y-1">
+              <span className="text-[10px] text-[#6C7886] uppercase block">
+                Actor Identity Hash
+              </span>
+              <span className="text-xs text-[#A4AFBC] break-all">
+                {selectedBlock.actor_id_hash}
+              </span>
+            </div>
+          </div>
+        )}
+      </Drawer>
     </div>
   );
 }
