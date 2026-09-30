@@ -1,0 +1,157 @@
+# ====================================================================
+# Default-Deny All Ingress and Egress across all Bayora Namespaces
+# ====================================================================
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: bayora-red
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: bayora-blue
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: bayora-llm
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: bayora-audit
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+
+# ====================================================================
+# Red Zone: Restricted Egress ONLY to Control Plane Gateway
+# Direct connection to Blue Zone or LLM Zone is blocked.
+# ====================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-red-to-gateway-only
+  namespace: bayora-red
+spec:
+  podSelector:
+    matchLabels:
+      app: bayora-red-operator
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              bayora.zone: control-plane
+          podSelector:
+            matchLabels:
+              app: bayora-gateway
+      ports:
+        - protocol: TCP
+          port: 8000
+---
+
+# ====================================================================
+# Blue Zone: Ingress ONLY from Control Plane Gateway (Sanitized Bus)
+# ====================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-blue-ingress-from-gateway
+  namespace: bayora-blue
+spec:
+  podSelector:
+    matchLabels:
+      app: bayora-blue-defense-engine
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              bayora.zone: control-plane
+          podSelector:
+            matchLabels:
+              app: bayora-gateway
+      ports:
+        - protocol: TCP
+          port: 8000
+---
+
+# ====================================================================
+# Client LLM Zone: Strict Airgap. Ingress ONLY from Gateway.
+# ZERO Direct Egress.
+# ====================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-llm-ingress-from-gateway-only
+  namespace: bayora-llm
+spec:
+  podSelector:
+    matchLabels:
+      app: bayora-client-llm
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              bayora.zone: control-plane
+          podSelector:
+            matchLabels:
+              app: bayora-gateway
+      ports:
+        - protocol: TCP
+          port: 8000
+---
+
+# ====================================================================
+# Audit Zone: Ingress ONLY from Control Plane for SHA-256 Ledger
+# ====================================================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-audit-ingress-from-gateway
+  namespace: bayora-audit
+spec:
+  podSelector:
+    matchLabels:
+      app: bayora-audit-ledger
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              bayora.zone: control-plane
+          podSelector:
+            matchLabels:
+              app: bayora-gateway
+      ports:
+        - protocol: TCP
+          port: 8000

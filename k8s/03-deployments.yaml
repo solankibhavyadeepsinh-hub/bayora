@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bayora-backend-gateway
+  namespace: bayora-control
+  labels:
+    app: bayora-gateway
+    bayora.zone: control-plane
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bayora-gateway
+  template:
+    metadata:
+      labels:
+        app: bayora-gateway
+        bayora.zone: control-plane
+    spec:
+      containers:
+        - name: gateway
+          image: bayora/backend:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql+asyncpg://bayora_admin:bayora_secure_password_2026@postgres.bayora-control.svc.cluster.local:5432/bayora"
+            - name: REDIS_URL
+              value: "redis://redis.bayora-control.svc.cluster.local:6379/0"
+            - name: ENVIRONMENT
+              value: "production"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bayora-backend-svc
+  namespace: bayora-control
+spec:
+  selector:
+    app: bayora-gateway
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bayora-frontend
+  namespace: bayora-control
+  labels:
+    app: bayora-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bayora-frontend
+  template:
+    metadata:
+      labels:
+        app: bayora-frontend
+    spec:
+      containers:
+        - name: web
+          image: bayora/frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              value: "http://bayora-backend-svc.bayora-control.svc.cluster.local:8000/api"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bayora-frontend-svc
+  namespace: bayora-control
+spec:
+  type: LoadBalancer
+  selector:
+    app: bayora-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-main: #070B12;
+  --bg-surface: #0D1322;
+  --bg-subtle: #131C31;
+  --border-color: #1E293B;
+  
+  --zone-red: #E5484D;
+  --zone-blue: #3B82F6;
+  --zone-llm: #8B5CF6;
+  --zone-control: #10B981;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: #F8FAFC;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom scrollbars for security console aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090D16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Subtle glowing accents for zone security status */
+.glow-red {
+  box-shadow: 0 0 20px -5px rgba(229, 72, 77, 0.35);
+}
+.glow-blue {
+  box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.35);
+}
+.glow-llm {
+  box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.35);
+}
+.glow-control {
+  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.35);
+}

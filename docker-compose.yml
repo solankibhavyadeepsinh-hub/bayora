@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bayora-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bayora
+      POSTGRES_USER: bayora_admin
+      POSTGRES_PASSWORD: bayora_secure_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init-schemas.sql:/docker-entrypoint-initdb.d/init-schemas.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bayora_admin -d bayora"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bayora_internal_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: bayora-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bayora_internal_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bayora-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://bayora_admin:bayora_secure_password_2026@postgres:5432/bayora
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=bayora-super-secret-jwt-key-for-isolated-evaluations-2026
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - bayora_internal_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bayora-frontend
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - bayora_internal_net
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  bayora_internal_net:
+    driver: bridge

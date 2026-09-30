@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: red-zone-quota
+  namespace: bayora-red
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+    pods: "10"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: blue-zone-quota
+  namespace: bayora-blue
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+    pods: "10"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: llm-zone-quota
+  namespace: bayora-llm
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "16"
+    limits.memory: 32Gi
+    pods: "15"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: audit-zone-quota
+  namespace: bayora-audit
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 8Gi
+    pods: "5"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: control-plane-quota
+  namespace: bayora-control
+spec:
+  hard:
+    requests.cpu: "6"
+    requests.memory: 12Gi
+    limits.cpu: "12"
+    limits.memory: 24Gi
+    pods: "20"
