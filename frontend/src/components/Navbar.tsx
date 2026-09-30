@@ -16,22 +16,32 @@ import {
   Play, 
   UserCheck, 
   ChevronDown,
-  ExternalLink 
+  ShieldAlert,
+  Cpu,
+  Award,
+  MoreHorizontal
 } from "lucide-react";
 
 export function Navbar() {
   const pathname = usePathname();
-  const { user, switchRole, logout } = useAuth();
+  const { user, switchRole } = useAuth();
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
 
-  const navLinks = [
+  const primaryNavLinks = [
     { href: "/", label: "Architecture", icon: Layers },
-    { href: "/demo", label: "Interactive Demo", icon: Play, highlight: true },
+    { href: "/demo", label: "Demo", icon: Play, highlight: true },
     { href: "/red", label: "Red Console", icon: Terminal, roleReq: "red_operator", zoneColor: "#E5484D" },
     { href: "/blue", label: "Blue Console", icon: Shield, roleReq: "blue_operator", zoneColor: "#3B82F6" },
     { href: "/control", label: "Control Plane", icon: Database, roleReq: "admin", zoneColor: "#10B981" },
-    { href: "/audit", label: "Audit & Evidence", icon: Eye, roleReq: "auditor", zoneColor: "#F59E0B" },
-    { href: "/observability", label: "Observability", icon: Activity },
+    { href: "/audit", label: "Audit & Ledger", icon: Eye, roleReq: "auditor", zoneColor: "#F59E0B" },
+  ];
+
+  const secondaryNavLinks = [
+    { href: "/taxonomy", label: "OWASP Threat Directory", icon: ShieldAlert, desc: "OWASP Top 10 for LLMs directory" },
+    { href: "/models", label: "Model Security Cards", icon: Cpu, desc: "Sandbox model cards & canaries" },
+    { href: "/compliance", label: "Compliance Hub", icon: Award, desc: "EU AI Act, SOC2 & NIST AI RMF" },
+    { href: "/observability", label: "Observability", icon: Activity, desc: "Latency & traffic profiler" },
   ];
 
   const roles = [
@@ -45,7 +55,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-[#1E293B] bg-[#070B12]/95 backdrop-blur">
       <div className="flex h-16 items-center justify-between px-6">
         {/* Brand */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-5">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 shadow-md">
               <Lock className="w-5 h-5 text-white" />
@@ -61,9 +71,9 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-1 ml-4">
-            {navLinks.map((item) => {
+          {/* Primary Nav Links */}
+          <nav className="hidden lg:flex items-center gap-1 ml-2">
+            {primaryNavLinks.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
               const isLocked = item.roleReq && user && user.role !== "admin" && user.role !== item.roleReq;
@@ -72,7 +82,7 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
                     isActive
                       ? "bg-[#131E35] text-white border border-[#1E293B]"
                       : item.highlight
@@ -86,12 +96,55 @@ export function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Knowledge & Assurance Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  ["/taxonomy", "/models", "/compliance", "/observability"].includes(pathname)
+                    ? "bg-[#131E35] text-white border border-[#1E293B]"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
+                }`}
+              >
+                <span>Assurance & Hub</span>
+                <ChevronDown className="w-3 h-3 text-slate-400" />
+              </button>
+
+              {moreDropdownOpen && (
+                <div 
+                  className="absolute left-0 mt-2 w-64 rounded-xl border border-[#1E293B] bg-[#0D1322] p-2 shadow-2xl z-50 space-y-1"
+                  onMouseLeave={() => setMoreDropdownOpen(false)}
+                >
+                  {secondaryNavLinks.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = pathname === item.href;
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setMoreDropdownOpen(false)}
+                        className={`flex items-start gap-2.5 p-2 rounded-lg text-xs transition ${
+                          isActive ? "bg-[#131E35] text-white" : "hover:bg-slate-800 text-slate-300"
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 text-purple-400 mt-0.5 shrink-0" />
+                        <div>
+                          <p className="font-medium text-white">{item.label}</p>
+                          <p className="text-[10px] text-slate-400 mt-0.5">{item.desc}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </nav>
         </div>
 
         {/* Right Action: Role Switcher & User Profile */}
         <div className="flex items-center gap-3">
-          {/* Quick Role Switcher Pill Bar */}
           <div className="relative">
             <button
               onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
@@ -145,8 +198,8 @@ export function Navbar() {
       </div>
 
       {/* Sub-bar for mobile/tablet responsive nav */}
-      <div className="flex xl:hidden overflow-x-auto px-4 py-2 border-t border-[#1E293B] gap-2 bg-[#090D16]">
-        {navLinks.map((item) => (
+      <div className="flex lg:hidden overflow-x-auto px-4 py-2 border-t border-[#1E293B] gap-2 bg-[#090D16]">
+        {[...primaryNavLinks, ...secondaryNavLinks].map((item) => (
           <Link
             key={item.href}
             href={item.href}

@@ -15,7 +15,9 @@ import {
   ExternalLink,
   Cpu,
   Layers,
-  Sparkles
+  Sparkles,
+  ShieldAlert,
+  Award
 } from "lucide-react";
 
 export default function LandingPage() {
@@ -52,6 +54,33 @@ export default function LandingPage() {
       desc: "Append-only cryptographic ledger linking every evaluation to previous block hashes. Real-time integrity verification and tamper detection.",
       icon: FileCheck
     },
+  ];
+
+  const assuranceHubs = [
+    {
+      title: "OWASP LLM Threat Directory",
+      desc: "Comprehensive directory of all 10 OWASP AI risks with adversarial attack vectors, CWE mappings, and Blue defense rules.",
+      href: "/taxonomy",
+      icon: ShieldAlert,
+      badge: "10 RISKS MAPPED",
+      color: "border-red-500/40 text-red-400"
+    },
+    {
+      title: "Target LLM Model Cards",
+      desc: "Detailed security dossiers, canary token registers, and vulnerability resilience benchmarks for evaluated models.",
+      href: "/models",
+      icon: Cpu,
+      badge: "3 SANDBOX PERSONAS",
+      color: "border-purple-500/40 text-purple-400"
+    },
+    {
+      title: "Regulatory Compliance Hub",
+      desc: "Automated assurance crosswalks connecting EU AI Act, SOC 2 Type II, and NIST AI RMF to cryptographic audit proofs.",
+      href: "/compliance",
+      icon: Award,
+      badge: "EU AI ACT & SOC 2",
+      color: "border-emerald-500/40 text-emerald-400"
+    }
   ];
 
   const demoAccounts = [
@@ -151,6 +180,52 @@ export default function LandingPage() {
                   <span>Enforced & Verified</span>
                 </div>
               </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Dedicated Knowledge & Assurance Hubs */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-slate-400">
+            Assurance, Threat Taxonomy & Model Cards
+          </h2>
+          <span className="text-xs font-mono text-slate-500">Dedicated Specialized Views</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {assuranceHubs.map((hub) => {
+            const Icon = hub.icon;
+
+            return (
+              <Link
+                key={hub.title}
+                href={hub.href}
+                className="p-6 rounded-2xl border border-[#1E293B] bg-[#0D1322] hover:bg-[#131E35] hover:border-slate-700 transition flex flex-col justify-between space-y-4 group"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-800 text-white">
+                      <Icon className="w-5 h-5 text-purple-400" />
+                    </div>
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded border uppercase ${hub.color}`}>
+                      {hub.badge}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-base text-white group-hover:text-purple-300 transition">
+                    {hub.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    {hub.desc}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-slate-800 text-xs font-mono text-purple-400 flex items-center justify-between">
+                  <span>Explore Dossier</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
             );
           })}
         </div>

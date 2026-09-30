@@ -28,6 +28,7 @@ import {
 export default function ObservabilityPage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const loadMetrics = async () => {
     setLoading(true);
@@ -42,6 +43,7 @@ export default function ObservabilityPage() {
   };
 
   useEffect(() => {
+    setMounted(true);
     loadMetrics();
     const interval = setInterval(loadMetrics, 8000);
     return () => clearInterval(interval);
@@ -121,20 +123,26 @@ export default function ObservabilityPage() {
             </div>
 
             <div className="h-64 pt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data.pipeline_latency_stages}>
-                  <XAxis dataKey="stage" tick={{ fill: "#94a3b8", fontSize: 10 }} />
-                  <YAxis tick={{ fill: "#94a3b8", fontSize: 10 }} unit="ms" />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: "#0D1322", borderColor: "#1E293B", color: "#fff", fontSize: 12 }} 
-                  />
-                  <Bar dataKey="latency_ms" radius={[4, 4, 0, 0]}>
-                    {data.pipeline_latency_stages.map((entry: any, index: number) => (
-                      <Cell key={`cell-${index}`} fill={STAGE_COLORS[index % STAGE_COLORS.length]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+              {mounted ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={data.pipeline_latency_stages}>
+                    <XAxis dataKey="stage" tick={{ fill: "#94a3b8", fontSize: 10 }} />
+                    <YAxis tick={{ fill: "#94a3b8", fontSize: 10 }} unit="ms" />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: "#0D1322", borderColor: "#1E293B", color: "#fff", fontSize: 12 }} 
+                    />
+                    <Bar dataKey="latency_ms" radius={[4, 4, 0, 0]}>
+                      {data.pipeline_latency_stages.map((entry: any, index: number) => (
+                        <Cell key={`cell-${index}`} fill={STAGE_COLORS[index % STAGE_COLORS.length]} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full flex items-center justify-center text-xs text-slate-500 font-mono">
+                  Initializing pipeline latency charts...
+                </div>
+              )}
             </div>
           </div>
 

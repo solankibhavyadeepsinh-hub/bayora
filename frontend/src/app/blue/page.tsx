@@ -33,14 +33,12 @@ import {
   XAxis, 
   YAxis, 
   Tooltip, 
-  ResponsiveContainer, 
-  PieChart, 
-  Pie, 
-  Cell 
+  ResponsiveContainer 
 } from "recharts";
 
 export default function BlueConsolePage() {
   const { user, switchRole } = useAuth();
+  const [mounted, setMounted] = useState(false);
 
   const [defenses, setDefenses] = useState<any[]>([]);
   const [threatFeed, setThreatFeed] = useState<any[]>([]);
@@ -81,6 +79,7 @@ export default function BlueConsolePage() {
   };
 
   useEffect(() => {
+    setMounted(true);
     if (isAuthorized) {
       loadData();
     }
@@ -152,8 +151,6 @@ export default function BlueConsolePage() {
       </div>
     );
   }
-
-  const CHART_COLORS = ["#3B82F6", "#8B5CF6", "#10B981", "#F59E0B", "#E5484D"];
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
@@ -410,16 +407,22 @@ export default function BlueConsolePage() {
                 Interceptions by OWASP LLM Taxonomy
               </h4>
               <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={metrics.category_breakdown}>
-                    <XAxis dataKey="category" tick={{ fill: "#94a3b8", fontSize: 10 }} />
-                    <YAxis tick={{ fill: "#94a3b8", fontSize: 10 }} />
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: "#0D1322", borderColor: "#1E293B", color: "#fff" }} 
-                    />
-                    <Bar dataKey="count" fill="#3B82F6" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                {mounted ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={metrics.category_breakdown}>
+                      <XAxis dataKey="category" tick={{ fill: "#94a3b8", fontSize: 10 }} />
+                      <YAxis tick={{ fill: "#94a3b8", fontSize: 10 }} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: "#0D1322", borderColor: "#1E293B", color: "#fff" }} 
+                      />
+                      <Bar dataKey="count" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-xs text-slate-500 font-mono">
+                    Loading telemetry chart...
+                  </div>
+                )}
               </div>
             </div>
 

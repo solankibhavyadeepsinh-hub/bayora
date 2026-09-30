@@ -291,6 +291,18 @@ tests/test_zone_isolation.py::test_audit_hash_chain_integrity PASSED     [100%]
    - Step-by-step interactive simulator: Attack → Block → Sanitized Blue Event → Auditor Verification.
    - Side-by-side comparison of Red, Blue, and Auditor perspectives.
 
+9. **OWASP LLM Vulnerability Taxonomy (`/taxonomy`)**:
+   - Comprehensive interactive directory of the OWASP Top 10 for Large Language Applications.
+   - CWE mappings, severity classifications, sanitized attack payload vectors, and live Blue Team guardrail crosswalk.
+
+10. **Client AI Model Security Dossiers (`/models`)**:
+    - Enterprise model comparison cards across `Client-Finance-GPT-4`, `Client-Healthcare-LLM`, and `Llama-3-8B-Secured`.
+    - Canary token registries, safety benchmark scores, and zone isolation parameter matrices.
+
+11. **Regulatory Compliance & Assurance Hub (`/compliance`)**:
+    - Real-time audit assurance mapping for EU AI Act (Regulation 2024/1689), SOC 2 Type II, and NIST AI RMF 1.0.
+    - Article-by-article compliance status, SHA-256 evidence trail verification, and signed JSON attestation package export.
+
 ---
 
 ## Design System
