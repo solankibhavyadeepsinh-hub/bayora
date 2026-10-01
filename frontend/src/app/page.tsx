@@ -20,6 +20,7 @@ import {
   AlertTriangle,
   Eye,
   RefreshCw,
+  Box,
 } from "lucide-react";
 import {
   AreaChart,
@@ -28,20 +29,21 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell,
 } from "recharts";
 import { MetricCard } from "@/components/ui/MetricCard";
+import { LiveCounter } from "@/components/ui/LiveCounter";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
 import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+import { DimensionalTopology } from "@/components/dimensional/DimensionalTopology";
+import { DimensionalSandboxMatrix } from "@/components/dimensional/DimensionalSandboxMatrix";
 import { apiGetObservabilityMetrics, apiGetThreatFeed } from "@/lib/api";
 
 export default function OverviewPage() {
   const [mounted, setMounted] = useState(false);
   const [timeRange, setTimeRange] = useState<"5m" | "15m" | "1h" | "6h" | "24h">("24h");
+  const [architectureTab, setArchitectureTab] = useState<"topology" | "sandboxes" | "pillars">("topology");
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [liveMetrics, setLiveMetrics] = useState<any>(null);
   const [threatEvents, setThreatEvents] = useState<any[]>([]);
@@ -74,7 +76,7 @@ export default function OverviewPage() {
       { time: "15:42", requests: 64, latency: 26, errors: 0 },
       { time: "15:43", requests: 58, latency: 23, errors: 0 },
       { time: "15:44", requests: 61, latency: 25, errors: 0 },
-      { time: "Now", requests: 59, latency: 24, errors: 0 },
+      { time: "NOW", requests: 59, latency: 24, errors: 0 },
     ],
     "15m": [
       { time: "15:30", requests: 140, latency: 23, errors: 0 },
@@ -82,21 +84,21 @@ export default function OverviewPage() {
       { time: "15:36", requests: 180, latency: 28, errors: 1 },
       { time: "15:39", requests: 175, latency: 24, errors: 0 },
       { time: "15:42", requests: 190, latency: 26, errors: 0 },
-      { time: "Now", requests: 184, latency: 24, errors: 0 },
+      { time: "NOW", requests: 184, latency: 24, errors: 0 },
     ],
     "1h": [
       { time: "14:45", requests: 620, latency: 26, errors: 0 },
       { time: "15:00", requests: 780, latency: 28, errors: 1 },
       { time: "15:15", requests: 840, latency: 29, errors: 0 },
       { time: "15:30", requests: 790, latency: 25, errors: 0 },
-      { time: "Now", requests: 810, latency: 24, errors: 0 },
+      { time: "NOW", requests: 810, latency: 24, errors: 0 },
     ],
     "6h": [
       { time: "10:00", requests: 1850, latency: 32, errors: 2 },
       { time: "11:30", requests: 2400, latency: 35, errors: 1 },
       { time: "13:00", requests: 2900, latency: 38, errors: 3 },
       { time: "14:30", requests: 2750, latency: 31, errors: 1 },
-      { time: "Now", requests: 2820, latency: 24, errors: 0 },
+      { time: "NOW", requests: 2820, latency: 24, errors: 0 },
     ],
     "24h": [
       { time: "00:00", requests: 780, latency: 21, errors: 0 },
@@ -105,47 +107,56 @@ export default function OverviewPage() {
       { time: "12:00", requests: 3120, latency: 36, errors: 2 },
       { time: "16:00", requests: 2890, latency: 30, errors: 1 },
       { time: "20:00", requests: 1950, latency: 25, errors: 0 },
-      { time: "Now", requests: 1680, latency: 24, errors: 0 },
+      { time: "NOW", requests: 1680, latency: 24, errors: 0 },
     ],
   };
 
   const currentChartData = telemetryDataSets[timeRange];
 
-  // System status components
+  // 7-Service System Health Matrix as requested in Section 12
   const systemStatusMatrix = [
     {
       name: "Frontend Console",
       role: "Next.js 14 SSR",
       status: "HEALTHY",
       latency: "12 ms",
-      uptime: "99.99%",
+      availability: "99.99%",
       lastChecked: "Just now",
       icon: Server,
     },
     {
       name: "API Gateway",
       role: "7-Stage Pipeline",
-      status: "HEALTHY",
-      latency: "24 ms",
-      uptime: "99.98%",
+      status: "ENFORCING",
+      latency: "22 ms",
+      availability: "99.98%",
       lastChecked: "2s ago",
       icon: Zap,
     },
     {
       name: "LLM Engine",
-      role: "Airgapped Personas",
+      role: "Airgap Sandboxes",
       status: "STANDBY",
-      latency: "142 ms",
-      uptime: "100%",
+      latency: "135 ms",
+      availability: "100%",
       lastChecked: "5s ago",
       icon: Cpu,
+    },
+    {
+      name: "Policy Engine",
+      role: "Dual-Blind Filters",
+      status: "ENFORCING",
+      latency: "6.8 ms",
+      availability: "100%",
+      lastChecked: "Just now",
+      icon: ShieldCheck,
     },
     {
       name: "Data Layer",
       role: "Schema Isolation",
       status: "ISOLATED",
-      latency: "4 ms",
-      uptime: "100%",
+      latency: "3.8 ms",
+      availability: "100%",
       lastChecked: "1s ago",
       icon: Database,
     },
@@ -154,98 +165,108 @@ export default function OverviewPage() {
       role: "Default-Deny",
       status: "ENFORCING",
       latency: "18 ms",
-      uptime: "99.95%",
+      availability: "99.95%",
       lastChecked: "3s ago",
       icon: Layers,
     },
     {
-      name: "Blue Guardrails",
-      role: "Active Regex & Canary",
-      status: "7 ACTIVE",
-      latency: "8 ms",
-      uptime: "100%",
+      name: "Audit Layer",
+      role: "SHA-256 Ledger",
+      status: "SEALED",
+      latency: "2.8 ms",
+      availability: "100%",
       lastChecked: "Just now",
-      icon: ShieldCheck,
+      icon: FileCheck,
     },
   ];
 
   // Live real-time activity feed
   const liveActivities = [
     {
-      id: "act-101",
+      id: "ev-001",
       timestamp: "15:42:12",
-      type: "MODEL EXECUTION",
-      target: "Bayora Core AI",
-      latency: "142 ms",
-      status: "COMPLETED",
-      details: "Direct banking inquiry completed in sandboxed finance core. Zero canary token leakage.",
+      type: "MODEL EXECUTED",
+      actor: "sec_operator",
+      resource: "Bayora Core AI (sbx-finance)",
+      latency: "138 ms",
+      decision: "COMPLETED",
       severity: "info",
+      details: "Direct banking inquiry completed in sandboxed finance core. Zero canary token leakage.",
+      hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     },
     {
-      id: "act-102",
+      id: "ev-002",
       timestamp: "15:42:10",
-      type: "SECURITY CHECK",
-      target: "Guardrail Validation",
-      latency: "8 ms",
-      status: "PASSED",
-      details: "Stage 4 Input Filter heuristic check verified clean input payload.",
-      severity: "success",
+      type: "GUARDRAIL TRIGGERED",
+      actor: "red_eval_suite",
+      resource: "Rule #BR-001 (DAN Interceptor)",
+      latency: "6.4 ms",
+      decision: "BLOCKED",
+      severity: "danger",
+      details: "Stage 4 Input Filter heuristic identified jailbreak override pattern. Request denied.",
+      hash: "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
     },
     {
-      id: "act-103",
+      id: "ev-003",
       timestamp: "15:42:08",
-      type: "API REQUEST",
-      target: "POST /api/inference",
-      latency: "118 ms",
-      status: "200 OK",
-      details: "Enforcement gateway completed full 7-stage validation cycle.",
-      severity: "accent",
-    },
-    {
-      id: "act-104",
-      timestamp: "15:42:05",
-      type: "EVALUATION",
-      target: "Safety Suite #12",
-      latency: "310 ms",
-      status: "COMPLETED",
-      details: "Automated penetration test batch completed across 10 vectors. Resilience score 98.2%.",
+      type: "POLICY CHECK",
+      actor: "blue_analyst",
+      resource: "Gateway RBAC Validator",
+      latency: "2.1 ms",
+      decision: "PASSED",
       severity: "success",
+      details: "Caller role blue_operator verified. Access to raw red payloads denied per dual-blind policy.",
+      hash: "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
     },
     {
-      id: "act-105",
+      id: "ev-004",
+      timestamp: "15:42:05",
+      type: "RESOURCE LIMIT",
+      actor: "tenant_quota_daemon",
+      resource: "RateLimiter (RPM Token Bucket)",
+      latency: "1.0 ms",
+      decision: "SYNCHRONIZED",
+      severity: "amber",
+      details: "Synchronized RPM bucket for tenant sbx-finance-prod. Available quota: 60/60 RPM.",
+      hash: "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+    },
+    {
+      id: "ev-005",
       timestamp: "15:41:49",
-      type: "AUDIT SEAL",
-      target: "Block #108",
-      latency: "2 ms",
-      status: "SEALED",
-      details: "SHA-256 continuous hash link sealed to head: e3b0c44298fc1c149afbf4c8996fb924...",
-      severity: "warning",
+      type: "AUDIT WRITTEN",
+      actor: "gateway_evidence_pipeline",
+      resource: "Block #108 (Merkle Head)",
+      latency: "2.8 ms",
+      decision: "SEALED",
+      severity: "teal",
+      details: "SHA-256 continuous hash link sealed to head: H(N) = SHA256(H(N-1) || EventPayload).",
+      hash: "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
     },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       {/* Top Header Region */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#1C242C]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-[#2A333C]">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
-            <h1 className="text-lg md:text-xl font-bold font-heading text-[#EEF2F5]">
-              BAYORA CONTROL CENTER
+            <span className="h-2 w-2 rounded-full bg-[#42B883] animate-pulse" />
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F1F4F6]">
+              BAYORA SECURITY CONTROL CENTER
             </h1>
-            <Badge variant="accent" size="xs">
-              AIRGAP v2.4
+            <Badge variant="teal" size="xs">
+              AIRGAP v2.5
             </Badge>
           </div>
-          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
-            Real-time visibility across models, security, infrastructure, evaluation and system activity.
+          <p className="text-xs text-[#A6B0BA] max-w-2xl font-sans">
+            Enterprise visibility across isolated sandboxes, 7-stage enforcement pipelines, and cryptographic audit proofs.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <Link href="/red">
             <Button variant="danger" size="sm" icon={<Flame className="w-3.5 h-3.5" />}>
-              Simulate Attack
+              Adversarial Probe
             </Button>
           </Link>
           <Link href="/blue">
@@ -255,83 +276,83 @@ export default function OverviewPage() {
           </Link>
           <Link href="/demo">
             <Button variant="primary" size="sm" icon={<Play className="w-3.5 h-3.5" />}>
-              Interactive Walkthrough
+              Security Walkthrough
             </Button>
           </Link>
         </div>
       </div>
 
       {/* Top KPI Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
         <MetricCard
-          label="TOTAL REQUESTS"
-          value={liveMetrics ? "24,821" : "24,821"}
-          trend={{ value: "+12.4%", direction: "up", context: "vs 24h" }}
+          label="TOTAL INGRESS REQUESTS"
+          value={<LiveCounter value={24821} />}
+          trend={{ value: "+12.4%", direction: "up", context: "vs 24h peak" }}
           sparklineData={[30, 42, 38, 55, 62, 70, 85]}
-          statusColor="accent"
+          statusColor="teal"
           badgeText="TODAY"
         />
         <MetricCard
-          label="ACTIVE MODELS"
+          label="ACTIVE AIRGAP PODS"
           value="3 Sandboxes"
-          trend={{ value: "100%", direction: "neutral", context: "Isolated" }}
+          trend={{ value: "100%", direction: "neutral", context: "Airgap active" }}
           sparklineData={[3, 3, 3, 3, 3, 3, 3]}
-          statusColor="violet"
-          badgeText="AIRGAPPED"
+          statusColor="indigo"
+          badgeText="STRICT"
         />
         <MetricCard
-          label="SECURITY EVENTS"
-          value={threatEvents.length > 0 ? `${threatEvents.length * 28 + 12}` : "189"}
-          trend={{ value: "14 Blocked", direction: "up", context: "Dual-blind" }}
+          label="SECURITY THREATS"
+          value={<LiveCounter value={threatEvents.length > 0 ? threatEvents.length * 28 + 12 : 189} />}
+          trend={{ value: "18 Blocked", direction: "up", context: "Dual-blind" }}
           sparklineData={[12, 18, 14, 25, 20, 28, 34]}
           statusColor="danger"
           badgeText="INTERCEPTED"
         />
         <MetricCard
-          label="EVALUATION RUNS"
+          label="EVALUATION BENCHMARKS"
           value="42 Suites"
           trend={{ value: "98.2%", direction: "up", context: "Pass rate" }}
           sparklineData={[92, 94, 95, 96, 98, 98, 98]}
-          statusColor="success"
-          badgeText="BENCHMARKS"
+          statusColor="green"
+          badgeText="OWASP LLM"
         />
         <MetricCard
-          label="SYSTEM HEALTH"
-          value={liveMetrics ? `${liveMetrics.system_status}` : "OPERATIONAL"}
-          trend={{ value: "24 ms", direction: "neutral", context: "Gateway P50" }}
-          sparklineData={[28, 26, 25, 24, 24, 24, 24]}
-          statusColor="success"
+          label="GATEWAY LATENCY P50"
+          value="22.4 ms"
+          trend={{ value: "-3.2 ms", direction: "down", context: "Optimized" }}
+          sparklineData={[28, 26, 25, 24, 23, 23, 22]}
+          statusColor="green"
           badgeText="mTLS MESH"
         />
       </div>
 
-      {/* Request Telemetry & Security Signals */}
+      {/* Observability Telemetry & Security Signals */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Main Telemetry Chart (8 cols) */}
-        <div className="lg:col-span-8 p-4 rounded-md bg-[#12171D] border border-[#1C242C] space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-[#1C242C]">
+        {/* Main Observability Telemetry Chart (8 cols) */}
+        <div className="lg:col-span-8 surface-panel p-5 space-y-3 bg-[#11161B] border border-[#2A333C] rounded-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#2A333C]">
             <div className="space-y-0.5">
               <div className="flex items-center gap-2">
-                <Activity className="w-3.5 h-3.5 text-[#4FD1C5]" />
-                <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
-                  Gateway Request & Latency Telemetry
+                <Activity className="w-3.5 h-3.5 text-[#4BC7B5]" />
+                <h3 className="font-heading font-semibold text-xs text-[#F1F4F6]">
+                  Gateway Pipeline Throughput & Latency Observability
                 </h3>
               </div>
-              <p className="text-[10px] text-[#A3ADB7]">
-                Ingress throughput (requests/min) and average pipeline latency across the 7-stage conduit.
+              <p className="text-[10px] text-[#A6B0BA] font-mono">
+                Real-time ingress requests/minute and end-to-end 7-stage conduit execution time.
               </p>
             </div>
 
             {/* Time-Range Selector */}
-            <div className="flex items-center gap-1 bg-[#080A0D] p-0.5 rounded border border-[#1C242C]">
+            <div className="flex items-center gap-1 bg-[#0A0D10] p-1 rounded border border-[#2A333C]">
               {(["5m", "15m", "1h", "6h", "24h"] as const).map((r) => (
                 <button
                   key={r}
                   onClick={() => setTimeRange(r)}
                   className={`px-2 py-0.5 text-[10px] font-mono rounded transition-colors ${
                     timeRange === r
-                      ? "bg-[#171D24] text-[#4FD1C5] font-semibold border border-[#252D36]"
-                      : "text-[#68737E] hover:text-[#A3ADB7]"
+                      ? "bg-[#171D23] text-[#4BC7B5] font-semibold border border-[#2A333C]"
+                      : "text-[#707B85] hover:text-[#A6B0BA]"
                   }`}
                 >
                   {r}
@@ -340,7 +361,7 @@ export default function OverviewPage() {
             </div>
           </div>
 
-          <div className="h-60 pt-2">
+          <div className="h-64 pt-2">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
@@ -349,32 +370,32 @@ export default function OverviewPage() {
                 >
                   <defs>
                     <linearGradient id="reqGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#4FD1C5" stopOpacity={0.18} />
-                      <stop offset="95%" stopColor="#4FD1C5" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#4BC7B5" stopOpacity={0.16} />
+                      <stop offset="95%" stopColor="#4BC7B5" stopOpacity={0.0} />
                     </linearGradient>
                     <linearGradient id="latGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#7C8CFF" stopOpacity={0.15} />
-                      <stop offset="95%" stopColor="#7C8CFF" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#6675D9" stopOpacity={0.14} />
+                      <stop offset="95%" stopColor="#6675D9" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
                   <XAxis
                     dataKey="time"
-                    tick={{ fill: "#68737E", fontSize: 10, fontFamily: "JetBrains Mono" }}
-                    axisLine={{ stroke: "#1C242C" }}
+                    tick={{ fill: "#707B85", fontSize: 10, fontFamily: "IBM Plex Mono" }}
+                    axisLine={{ stroke: "#2A333C" }}
                     tickLine={false}
                   />
                   <YAxis
-                    tick={{ fill: "#68737E", fontSize: 10, fontFamily: "JetBrains Mono" }}
-                    axisLine={{ stroke: "#1C242C" }}
+                    tick={{ fill: "#707B85", fontSize: 10, fontFamily: "IBM Plex Mono" }}
+                    axisLine={{ stroke: "#2A333C" }}
                     tickLine={false}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#0D1116",
-                      borderColor: "#252D36",
-                      color: "#EEF2F5",
+                      backgroundColor: "#0A0D10",
+                      borderColor: "#2A333C",
+                      color: "#F1F4F6",
                       fontSize: 11,
-                      fontFamily: "JetBrains Mono",
+                      fontFamily: "IBM Plex Mono",
                       borderRadius: 4,
                       boxShadow: "none",
                     }}
@@ -382,8 +403,8 @@ export default function OverviewPage() {
                   <Area
                     type="monotone"
                     dataKey="requests"
-                    name="Requests / min"
-                    stroke="#4FD1C5"
+                    name="Throughput (Req/m)"
+                    stroke="#4BC7B5"
                     strokeWidth={1.5}
                     fillOpacity={1}
                     fill="url(#reqGradient)"
@@ -391,8 +412,8 @@ export default function OverviewPage() {
                   <Area
                     type="monotone"
                     dataKey="latency"
-                    name="Latency (ms)"
-                    stroke="#7C8CFF"
+                    name="Pipeline Latency (ms)"
+                    stroke="#6675D9"
                     strokeWidth={1.25}
                     fillOpacity={1}
                     fill="url(#latGradient)"
@@ -400,136 +421,169 @@ export default function OverviewPage() {
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-full flex items-center justify-center text-xs text-[#68737E] font-mono">
-                Loading telemetry visualizer...
+              <div className="h-full flex items-center justify-center text-xs text-[#707B85] font-mono">
+                Loading live telemetry visualizer...
               </div>
             )}
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-[#1C242C] text-[10px] font-mono text-[#68737E]">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between pt-2 border-t border-[#1B2229] text-[10px] font-mono text-[#707B85]">
+            <div className="flex items-center gap-4">
               <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#4FD1C5]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#4BC7B5]" />
                 Throughput (Req/m)
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#7C8CFF]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#6675D9]" />
                 Pipeline Latency (ms)
               </span>
             </div>
-            <span>P99: 48 ms • 0 Dropped Packets</span>
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#42B883] animate-pulse" />
+              <span>LIVE "NOW" MARKER ACTIVE</span>
+            </div>
           </div>
         </div>
 
-        {/* Security Signals Breakdown (4 cols) */}
-        <div className="lg:col-span-4 p-4 rounded-md bg-[#12171D] border border-[#1C242C] flex flex-col justify-between space-y-3">
+        {/* Security Analytics Breakdown (4 cols) */}
+        <div className="lg:col-span-4 surface-panel p-5 bg-[#11161B] border border-[#2A333C] rounded-lg flex flex-col justify-between space-y-4">
           <div>
-            <div className="flex items-center justify-between pb-2.5 border-b border-[#1C242C]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#2A333C]">
               <div className="flex items-center gap-2">
-                <ShieldAlert className="w-3.5 h-3.5 text-[#E66A77]" />
-                <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
-                  Active Security Signals
+                <ShieldAlert className="w-3.5 h-3.5 text-[#D96573]" />
+                <h3 className="font-heading font-semibold text-xs text-[#F1F4F6]">
+                  Security Analytics Breakdown
                 </h3>
               </div>
               <Badge variant="danger" size="xs">
-                DEFENDING
+                INTERCEPTING
               </Badge>
             </div>
 
-            <div className="mt-3 space-y-2">
-              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
+            <div className="mt-3.5 space-y-2.5 font-mono text-xs">
+              <div className="p-2.5 rounded bg-[#0A0D10] border border-[#2A333C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#E66A77]">
-                    Prompt Injections (LLM01)
-                  </span>
-                  <p className="text-[10px] text-[#A3ADB7]">
-                    DAN & instruction override vectors
-                  </p>
+                  <span className="font-medium text-[#D96573]">Prompt Injections (LLM01)</span>
+                  <p className="text-[10px] text-[#A6B0BA] font-sans">DAN & instruction overrides</p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#EEF2F5]">42</span>
+                <span className="text-sm font-bold text-[#F1F4F6]">42</span>
               </div>
 
-              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
+              <div className="p-2.5 rounded bg-[#0A0D10] border border-[#2A333C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#E6B35A]">
-                    Canary Leak Interceptions (LLM02)
-                  </span>
-                  <p className="text-[10px] text-[#A3ADB7]">
-                    PII & financial canary exfiltration
-                  </p>
+                  <span className="font-medium text-[#D6A856]">Canary Leak Interceptions (LLM02)</span>
+                  <p className="text-[10px] text-[#A6B0BA] font-sans">PII & internal ledger tokens</p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#EEF2F5]">18</span>
+                <span className="text-sm font-bold text-[#F1F4F6]">18</span>
               </div>
 
-              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
+              <div className="p-2.5 rounded bg-[#0A0D10] border border-[#2A333C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#7C8CFF]">
-                    Model Extraction Probes (LLM10)
-                  </span>
-                  <p className="text-[10px] text-[#A3ADB7]">
-                    System prompt reverse-engineering
-                  </p>
+                  <span className="font-medium text-[#6675D9]">Model Extraction Probes (LLM10)</span>
+                  <p className="text-[10px] text-[#A6B0BA] font-sans">Reverse-engineering queries</p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#EEF2F5]">7</span>
+                <span className="text-sm font-bold text-[#F1F4F6]">7</span>
               </div>
 
-              <div className="p-2.5 rounded bg-[#0D1116] border border-[#1C242C] flex items-center justify-between">
+              <div className="p-2.5 rounded bg-[#0A0D10] border border-[#2A333C] flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-mono font-medium text-[#45C995]">
-                    SHA-256 Ledger Seals
-                  </span>
-                  <p className="text-[10px] text-[#A3ADB7]">
-                    Continuous unbroken block seals
-                  </p>
+                  <span className="font-medium text-[#42B883]">Cryptographic Ledger Proofs</span>
+                  <p className="text-[10px] text-[#A6B0BA] font-sans">Continuous SHA-256 integrity</p>
                 </div>
-                <span className="text-sm font-mono font-bold text-[#45C995]">100%</span>
+                <span className="text-sm font-bold text-[#42B883]">100%</span>
               </div>
             </div>
           </div>
 
           <Link href="/blue" className="w-full pt-1">
             <Button variant="outline" size="sm" className="w-full justify-between">
-              <span>Security Center</span>
+              <span>Inspect Security Center</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* System Status Matrix */}
-      <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Server className="w-3.5 h-3.5 text-[#45C995]" />
-            <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
-              Subsystem Health Matrix
-            </h3>
+      {/* Architecture Perspectives Tabs Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-[#2A333C] pb-2 text-xs font-mono">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setArchitectureTab("topology")}
+              className={`pb-2 px-1 font-semibold transition border-b-2 ${
+                architectureTab === "topology"
+                  ? "border-[#4BC7B5] text-[#4BC7B5]"
+                  : "border-transparent text-[#707B85] hover:text-[#A6B0BA]"
+              }`}
+            >
+              System Topology (Dimensional)
+            </button>
+            <button
+              onClick={() => setArchitectureTab("sandboxes")}
+              className={`pb-2 px-1 font-semibold transition border-b-2 ${
+                architectureTab === "sandboxes"
+                  ? "border-[#4BC7B5] text-[#4BC7B5]"
+                  : "border-transparent text-[#707B85] hover:text-[#A6B0BA]"
+              }`}
+            >
+              Sandbox Isolation Matrix
+            </button>
+            <button
+              onClick={() => setArchitectureTab("pillars")}
+              className={`pb-2 px-1 font-semibold transition border-b-2 ${
+                architectureTab === "pillars"
+                  ? "border-[#4BC7B5] text-[#4BC7B5]"
+                  : "border-transparent text-[#707B85] hover:text-[#A6B0BA]"
+              }`}
+            >
+              4-Pillar Zone Conduit
+            </button>
           </div>
-          <span className="text-[10px] font-mono text-[#68737E]">
-            All 6 isolated subsystems active
+
+          <span className="hidden md:inline text-[11px] text-[#707B85]">
+            Architectural Assurance: Default-Deny Ingress
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5">
+        {architectureTab === "topology" && <DimensionalTopology />}
+        {architectureTab === "sandboxes" && <DimensionalSandboxMatrix />}
+        {architectureTab === "pillars" && <ArchitectureDiagram />}
+      </div>
+
+      {/* 7-Service Subsystem Health Matrix */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Server className="w-3.5 h-3.5 text-[#42B883]" />
+            <h3 className="font-heading font-semibold text-xs text-[#F1F4F6]">
+              Subsystem Health Telemetry (7 Core Services)
+            </h3>
+          </div>
+          <span className="text-[10px] font-mono text-[#707B85]">
+            All services operating within SLA boundaries
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-2.5">
           {systemStatusMatrix.map((sub, idx) => {
             const Icon = sub.icon;
             return (
               <div
                 key={idx}
-                className="p-3 rounded-md bg-[#12171D] border border-[#1C242C] hover:border-[#252D36] transition-colors space-y-1.5"
+                className="p-3 rounded-md bg-[#11161B] border border-[#2A333C] hover:border-[#384450] transition-colors space-y-1.5"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#EEF2F5] font-sans truncate">
+                  <span className="text-xs font-semibold text-[#F1F4F6] font-sans truncate">
                     {sub.name}
                   </span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#45C995]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#42B883] animate-pulse" />
                 </div>
-                <p className="text-[10px] font-mono text-[#68737E] truncate">
+                <p className="text-[10px] font-mono text-[#707B85] truncate">
                   {sub.role}
                 </p>
-                <div className="pt-1.5 border-t border-[#1C242C] flex items-center justify-between text-[10px] font-mono">
-                  <span className="text-[#45C995] font-medium">{sub.status}</span>
-                  <span className="text-[#A3ADB7]">{sub.latency}</span>
+                <div className="pt-1.5 border-t border-[#1B2229] flex items-center justify-between text-[10px] font-mono">
+                  <span className="text-[#42B883] font-medium">{sub.status}</span>
+                  <span className="text-[#A6B0BA]">{sub.latency}</span>
                 </div>
               </div>
             );
@@ -538,17 +592,17 @@ export default function OverviewPage() {
       </div>
 
       {/* Live Operational Activity Feed */}
-      <div className="p-4 rounded-md bg-[#12171D] border border-[#1C242C] space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-[#1C242C]">
+      <div className="surface-panel p-5 bg-[#11161B] border border-[#2A333C] rounded-lg space-y-3.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#2A333C]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#4FD1C5]" />
-              <h3 className="font-heading font-semibold text-xs text-[#EEF2F5]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#4BC7B5] animate-pulse" />
+              <h3 className="font-heading font-semibold text-xs text-[#F1F4F6]">
                 Live Operational Activity Stream
               </h3>
             </div>
-            <p className="text-[10px] text-[#A3ADB7] mt-0.5">
-              Live audit events, model executions, guardrail triggers, and verification receipts.
+            <p className="text-[10px] text-[#A6B0BA] font-mono mt-0.5">
+              Click any event row to inspect full telemetry, execution timeline, and cryptographic evidence.
             </p>
           </div>
 
@@ -559,111 +613,128 @@ export default function OverviewPage() {
           </Link>
         </div>
 
-        <div className="divide-y divide-[#1C242C]">
+        <div className="divide-y divide-[#1B2229]">
           {liveActivities.map((act) => (
             <div
               key={act.id}
               onClick={() => setSelectedEvent(act)}
-              className="py-2.5 px-2 flex flex-col md:flex-row md:items-center justify-between gap-2.5 hover:bg-[#171D24]/50 rounded transition-colors cursor-pointer"
+              className="py-2.5 px-2 flex flex-col md:flex-row md:items-center justify-between gap-2.5 hover:bg-[#171D23]/60 rounded transition-colors cursor-pointer group"
             >
-              <div className="flex items-center gap-2.5">
-                <span className="text-[11px] font-mono text-[#68737E] shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] font-mono text-[#707B85] shrink-0">
                   {act.timestamp}
                 </span>
                 <Badge
                   variant={
                     act.severity === "danger"
                       ? "danger"
-                      : act.severity === "warning"
+                      : act.severity === "amber"
                       ? "warning"
-                      : act.severity === "success"
-                      ? "success"
-                      : act.severity === "violet"
-                      ? "violet"
-                      : "accent"
+                      : act.severity === "teal"
+                      ? "teal"
+                      : act.severity === "indigo"
+                      ? "indigo"
+                      : "success"
                   }
                   size="xs"
                 >
                   {act.type}
                 </Badge>
-                <span className="text-xs font-mono text-[#EEF2F5] font-medium">
-                  {act.target}
+                <span className="text-xs font-mono text-[#F1F4F6] font-medium truncate max-w-xs">
+                  {act.resource}
                 </span>
-                <span className="hidden lg:inline text-xs text-[#A3ADB7] truncate max-w-md">
+                <span className="hidden lg:inline text-xs text-[#A6B0BA] truncate max-w-sm">
                   {act.details}
                 </span>
               </div>
 
-              <div className="flex items-center gap-2.5 text-xs font-mono shrink-0">
-                <span className="text-[#68737E] text-[11px]">{act.latency}</span>
+              <div className="flex items-center gap-3 text-xs font-mono shrink-0">
+                <span className="text-[#707B85] text-[11px]">{act.latency}</span>
                 <span
                   className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                    act.status === "BLOCKED"
-                      ? "bg-[#E66A77]/12 text-[#E66A77] border border-[#E66A77]/25"
-                      : "bg-[#45C995]/12 text-[#45C995] border border-[#45C995]/25"
+                    act.decision === "BLOCKED"
+                      ? "bg-[#D96573]/15 text-[#D96573] border border-[#D96573]/30"
+                      : act.decision === "SYNCHRONIZED" || act.decision === "SEALED"
+                      ? "bg-[#D6A856]/15 text-[#D6A856] border border-[#D6A856]/30"
+                      : "bg-[#42B883]/15 text-[#42B883] border border-[#42B883]/30"
                   }`}
                 >
-                  {act.status}
+                  {act.decision}
                 </span>
-                <ArrowRight className="w-3 h-3 text-[#68737E]" />
+                <ArrowRight className="w-3 h-3 text-[#707B85] group-hover:text-[#4BC7B5] transition" />
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Architecture Diagram */}
-      <ArchitectureDiagram />
-
       {/* Event Inspection Drawer */}
       <Drawer
         isOpen={!!selectedEvent}
         onClose={() => setSelectedEvent(null)}
-        title={selectedEvent?.type || "Activity Event"}
+        title={selectedEvent?.type || "Security Event"}
         subtitle={`Event ID: ${selectedEvent?.id} • Timestamp: ${selectedEvent?.timestamp}`}
         badge={{
-          text: selectedEvent?.status || "LOGGED",
-          variant: selectedEvent?.status === "BLOCKED" ? "danger" : "success",
+          text: selectedEvent?.decision || "LOGGED",
+          variant: selectedEvent?.decision === "BLOCKED" ? "danger" : "teal",
         }}
+        evidenceHash={selectedEvent?.hash}
+        metadata={
+          selectedEvent
+            ? {
+                EventId: selectedEvent.id,
+                Timestamp: selectedEvent.timestamp,
+                Actor: selectedEvent.actor,
+                Resource: selectedEvent.resource,
+                Decision: selectedEvent.decision,
+                Latency: selectedEvent.latency,
+              }
+            : undefined
+        }
+        timeline={
+          selectedEvent
+            ? [
+                { time: "00.0ms", stage: "Ingress Gateway Auth", status: "PASSED", detail: "JWT token verified" },
+                { time: "02.1ms", stage: "RBAC Zone Policy", status: "PASSED", detail: "Zone boundary confirmed" },
+                {
+                  time: "06.4ms",
+                  stage: "Guardrail Inspection",
+                  status: selectedEvent.decision === "BLOCKED" ? "BLOCKED" : "PASSED",
+                  detail: selectedEvent.details,
+                },
+                { time: "128.0ms", stage: "Evidence Seal", status: "EXECUTED", detail: "SHA-256 continuous hash link written" },
+              ]
+            : undefined
+        }
         rawJson={selectedEvent}
         actions={
           <Button variant="primary" size="sm" onClick={() => setSelectedEvent(null)}>
-            Dismiss
+            Dismiss Inspector
           </Button>
         }
       >
         {selectedEvent && (
           <div className="space-y-3.5 text-xs font-mono">
-            <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
-              <span className="text-[#68737E] uppercase text-[10px] block">
-                Target Entity
-              </span>
-              <span className="text-xs font-bold text-[#EEF2F5]">
-                {selectedEvent.target}
-              </span>
+            <div className="p-3 rounded bg-[#0A0D10] border border-[#2A333C] space-y-1">
+              <span className="text-[#707B85] uppercase text-[10px] block">Target Resource</span>
+              <span className="text-xs font-bold text-[#F1F4F6]">{selectedEvent.resource}</span>
             </div>
 
-            <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
-              <span className="text-[#68737E] uppercase text-[10px] block">
-                Event Description
-              </span>
-              <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
+            <div className="p-3 rounded bg-[#0A0D10] border border-[#2A333C] space-y-1">
+              <span className="text-[#707B85] uppercase text-[10px] block">Event Description</span>
+              <p className="text-xs text-[#A6B0BA] font-sans leading-relaxed">
                 {selectedEvent.details}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
-              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
-                <span className="text-[10px] text-[#68737E] block">Latency</span>
-                <span className="text-xs font-bold text-[#4FD1C5]">
-                  {selectedEvent.latency}
-                </span>
+              <div className="p-2.5 rounded bg-[#0A0D10] border border-[#2A333C]">
+                <span className="text-[10px] text-[#707B85] block">Latency</span>
+                <span className="text-xs font-bold text-[#4BC7B5]">{selectedEvent.latency}</span>
               </div>
-              <div className="p-2.5 rounded bg-[#080A0D] border border-[#1C242C]">
-                <span className="text-[10px] text-[#68737E] block">Status</span>
-                <span className="text-xs font-bold text-[#45C995]">
-                  {selectedEvent.status}
-                </span>
+              <div className="p-2.5 rounded bg-[#0A0D10] border border-[#2A333C]">
+                <span className="text-[10px] text-[#707B85] block">Decision</span>
+                <span className="text-xs font-bold text-[#42B883]">{selectedEvent.decision}</span>
               </div>
             </div>
           </div>

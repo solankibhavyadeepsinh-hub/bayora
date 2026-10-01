@@ -55,15 +55,15 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       title: "Overview Command Center",
       category: "Navigation",
       shortcut: "G O",
-      icon: <LayoutDashboard className="w-3.5 h-3.5 text-[#4FD1C5]" />,
+      icon: <LayoutDashboard className="w-3.5 h-3.5 text-[#4BC7B5]" />,
       action: () => navigateTo("/"),
     },
     {
       id: "nav-models",
-      title: "Model Lab & Security Cards",
+      title: "Model Lab & Airgap Sandboxes",
       category: "Navigation",
       shortcut: "G M",
-      icon: <Cpu className="w-3.5 h-3.5 text-[#7C8CFF]" />,
+      icon: <Cpu className="w-3.5 h-3.5 text-[#6675D9]" />,
       action: () => navigateTo("/models"),
     },
     {
@@ -71,7 +71,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       title: "Security Center & Threat Feed",
       category: "Navigation",
       shortcut: "G S",
-      icon: <ShieldCheck className="w-3.5 h-3.5 text-[#6EA8FE]" />,
+      icon: <ShieldCheck className="w-3.5 h-3.5 text-[#5B91D6]" />,
       action: () => navigateTo("/blue"),
     },
     {
@@ -79,136 +79,138 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       title: "Evaluation Center & Campaigns",
       category: "Navigation",
       shortcut: "G E",
-      icon: <Flame className="w-3.5 h-3.5 text-[#E66A77]" />,
+      icon: <Flame className="w-3.5 h-3.5 text-[#D96573]" />,
       action: () => navigateTo("/red"),
     },
     {
-      id: "nav-live",
+      id: "nav-activity",
       title: "Live Activity & Telemetry",
       category: "Navigation",
       shortcut: "G L",
-      icon: <Activity className="w-3.5 h-3.5 text-[#4FD1C5]" />,
+      icon: <Activity className="w-3.5 h-3.5 text-[#42B883]" />,
       action: () => navigateTo("/observability"),
     },
     {
-      id: "nav-evidence",
-      title: "Evidence & Cryptographic Ledger",
+      id: "nav-audit",
+      title: "Cryptographic Evidence Ledger",
       category: "Navigation",
       shortcut: "G A",
-      icon: <FileCheck className="w-3.5 h-3.5 text-[#E6B35A]" />,
+      icon: <FileCheck className="w-3.5 h-3.5 text-[#D6A856]" />,
       action: () => navigateTo("/audit"),
     },
     {
-      id: "nav-reports",
+      id: "nav-compliance",
       title: "Regulatory Assurance & Reports",
       category: "Navigation",
       shortcut: "G R",
-      icon: <Award className="w-3.5 h-3.5 text-[#45C995]" />,
+      icon: <Award className="w-3.5 h-3.5 text-[#4BC7B5]" />,
       action: () => navigateTo("/compliance"),
     },
     {
       id: "nav-control",
-      title: "System Health & Topology",
+      title: "System Health & Control Plane",
       category: "Navigation",
-      shortcut: "G C",
-      icon: <Layers className="w-3.5 h-3.5 text-[#45C995]" />,
+      shortcut: "G H",
+      icon: <Layers className="w-3.5 h-3.5 text-[#42B883]" />,
       action: () => navigateTo("/control"),
     },
     {
       id: "nav-taxonomy",
-      title: "OWASP Top 10 for LLMs Directory",
-      category: "Navigation",
+      title: "OWASP LLM Taxonomy Directory",
+      category: "Assurance",
       shortcut: "G T",
-      icon: <BookOpen className="w-3.5 h-3.5 text-[#6EA8FE]" />,
+      icon: <BookOpen className="w-3.5 h-3.5 text-[#5B91D6]" />,
       action: () => navigateTo("/taxonomy"),
     },
     {
       id: "nav-demo",
-      title: "Dual-Blind Interactive Walkthrough",
-      category: "Navigation",
+      title: "Interactive Attack Walkthrough",
+      category: "Assurance",
       shortcut: "G D",
-      icon: <Sparkles className="w-3.5 h-3.5 text-[#7C8CFF]" />,
+      icon: <Sparkles className="w-3.5 h-3.5 text-[#6675D9]" />,
       action: () => navigateTo("/demo"),
     },
     {
-      id: "nav-login",
-      title: "RBAC Identity & Role Switcher",
-      category: "Navigation",
-      shortcut: "G U",
-      icon: <UserCheck className="w-3.5 h-3.5 text-[#A3ADB7]" />,
-      action: () => navigateTo("/login"),
-    },
-    {
       id: "nav-settings",
-      title: "Operational Configuration & Settings",
-      category: "Navigation",
-      shortcut: "G S",
-      icon: <Settings className="w-3.5 h-3.5 text-[#4FD1C5]" />,
+      title: "Operational Configuration",
+      category: "Assurance",
+      shortcut: "G C",
+      icon: <Settings className="w-3.5 h-3.5 text-[#707B85]" />,
       action: () => navigateTo("/settings"),
     },
+    {
+      id: "nav-identity",
+      title: "Identity & RBAC Role Switcher",
+      category: "Assurance",
+      shortcut: "G I",
+      icon: <UserCheck className="w-3.5 h-3.5 text-[#4BC7B5]" />,
+      action: () => navigateTo("/login"),
+    },
+
     // Actions
     {
-      id: "act-attack",
-      title: "Simulate Adversarial Injection Vector",
+      id: "act-new-attack",
+      title: "Launch Adversarial Attack Probe",
       category: "Actions",
-      icon: <Zap className="w-3.5 h-3.5 text-[#E66A77]" />,
-      action: () => navigateTo("/red"),
+      icon: <Flame className="w-3.5 h-3.5 text-[#D96573]" />,
+      action: () => navigateTo("/red?tab=workbench"),
     },
     {
-      id: "act-defense",
-      title: "Deploy Defensive Guardrail Rule",
+      id: "act-new-rule",
+      title: "Deploy Input/Output Defense Guardrail",
       category: "Actions",
-      icon: <ShieldCheck className="w-3.5 h-3.5 text-[#6EA8FE]" />,
-      action: () => navigateTo("/blue"),
+      icon: <ShieldCheck className="w-3.5 h-3.5 text-[#42B883]" />,
+      action: () => navigateTo("/blue?tab=guardrails"),
     },
     {
-      id: "act-verify",
-      title: "Run SHA-256 Ledger Integrity Verification",
+      id: "act-run-eval",
+      title: "Execute OWASP Penetration Suite",
+      category: "Actions",
+      icon: <Zap className="w-3.5 h-3.5 text-[#D6A856]" />,
+      action: () => navigateTo("/red?tab=campaigns"),
+    },
+    {
+      id: "act-verify-audit",
+      title: "Verify SHA-256 Ledger Integrity",
       category: "Security & Audit",
-      icon: <Lock className="w-3.5 h-3.5 text-[#E6B35A]" />,
+      icon: <Lock className="w-3.5 h-3.5 text-[#42B883]" />,
       action: () => navigateTo("/audit"),
     },
     {
-      id: "act-export",
-      title: "Export Verifiable Audit Evidence Certificate",
+      id: "act-export-evidence",
+      title: "Export Cryptographic Audit Bundle (JSON)",
       category: "Security & Audit",
-      icon: <FileText className="w-3.5 h-3.5 text-[#45C995]" />,
+      icon: <FileText className="w-3.5 h-3.5 text-[#4BC7B5]" />,
       action: () => navigateTo("/audit"),
+    },
+    {
+      id: "act-generate-report",
+      title: "Generate Compliance Audit Package",
+      category: "Security & Audit",
+      icon: <Award className="w-3.5 h-3.5 text-[#6675D9]" />,
+      action: () => navigateTo("/compliance"),
     },
   ];
 
-  const filteredCommands = commands.filter((c) => {
-    const q = query.toLowerCase();
-    return (
-      c.title.toLowerCase().includes(q) ||
-      c.category.toLowerCase().includes(q)
-    );
-  });
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
+  const filteredCommands = commands.filter(
+    (c) =>
+      c.title.toLowerCase().includes(query.toLowerCase()) ||
+      c.category.toLowerCase().includes(query.toLowerCase())
+  );
 
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
+      setSelectedIndex(0);
+      setQuery("");
     }
   }, [isOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) {
-        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-          e.preventDefault();
-          onClose();
-        }
-        return;
-      }
+      if (!isOpen) return;
 
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-      } else if (e.key === "ArrowDown") {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
         setSelectedIndex((prev) =>
           prev < filteredCommands.length - 1 ? prev + 1 : 0
@@ -223,6 +225,9 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         if (filteredCommands[selectedIndex]) {
           filteredCommands[selectedIndex].action();
         }
+      } else if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
       }
     };
 
@@ -237,34 +242,34 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-[#080A0D]/80 backdrop-blur-[2px] transition-opacity"
+        className="fixed inset-0 bg-[#07090C]/80 backdrop-blur-[2px] transition-opacity"
       />
 
       {/* Palette Modal */}
-      <div className="relative w-full max-w-2xl bg-[#12171D] border border-[#252D36] rounded-lg shadow-2xl overflow-hidden z-10 animate-fade-in flex flex-col max-h-[80vh]">
+      <div className="relative w-full max-w-2xl bg-[#11161B] border border-[#2A333C] rounded-lg shadow-2xl overflow-hidden z-10 animate-fade-in flex flex-col max-h-[80vh]">
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3 border-b border-[#1C242C] bg-[#0D1116] gap-3">
-          <Search className="w-4 h-4 text-[#4FD1C5] shrink-0" />
+        <div className="flex items-center px-4 py-3 border-b border-[#1B2229] bg-[#0A0D10] gap-3">
+          <Search className="w-4 h-4 text-[#4BC7B5] shrink-0" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a command or search pages, models, telemetry..."
-            className="flex-1 bg-transparent text-xs text-[#EEF2F5] placeholder-[#68737E] outline-none font-sans"
+            className="flex-1 bg-transparent text-xs text-[#F1F4F6] placeholder-[#707B85] outline-none font-sans"
           />
           <button
             onClick={onClose}
-            className="p-1 text-[#68737E] hover:text-[#EEF2F5] rounded transition"
+            className="p-1 text-[#707B85] hover:text-[#F1F4F6] rounded transition"
           >
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Command List */}
-        <div className="overflow-y-auto p-1.5 divide-y divide-[#1C242C]/40 flex-1">
+        <div className="overflow-y-auto p-1.5 divide-y divide-[#1B2229]/40 flex-1">
           {filteredCommands.length === 0 ? (
-            <div className="py-10 text-center text-xs text-[#68737E] font-mono">
+            <div className="py-10 text-center text-xs text-[#707B85] font-mono">
               No matching commands found for "{query}".
             </div>
           ) : (
@@ -278,19 +283,19 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     onMouseEnter={() => setSelectedIndex(idx)}
                     className={`flex items-center justify-between px-3 py-2 rounded cursor-pointer transition-colors text-xs ${
                       isSelected
-                        ? "bg-[#171D24] text-[#EEF2F5] border border-[#252D36]"
-                        : "text-[#A3ADB7] hover:bg-[#171D24]/50 border border-transparent"
+                        ? "bg-[#171D23] text-[#F1F4F6] border border-[#2A333C]"
+                        : "text-[#A6B0BA] hover:bg-[#171D23]/50 border border-transparent"
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="p-1 rounded bg-[#080A0D] border border-[#1C242C]">
+                      <div className="p-1 rounded bg-[#0A0D10] border border-[#1B2229]">
                         {cmd.icon}
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-medium text-[#EEF2F5]">
+                        <span className="font-medium text-[#F1F4F6]">
                           {cmd.title}
                         </span>
-                        <span className="text-[10px] font-mono text-[#68737E]">
+                        <span className="text-[10px] font-mono text-[#707B85]">
                           {cmd.category}
                         </span>
                       </div>
@@ -298,12 +303,12 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
                     <div className="flex items-center gap-2">
                       {cmd.shortcut && (
-                        <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-[#080A0D] text-[#68737E] border border-[#1C242C]">
+                        <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-[#0A0D10] text-[#707B85] border border-[#1B2229]">
                           {cmd.shortcut}
                         </span>
                       )}
                       {isSelected && (
-                        <CornerDownLeft className="w-3 h-3 text-[#4FD1C5]" />
+                        <CornerDownLeft className="w-3 h-3 text-[#4BC7B5]" />
                       )}
                     </div>
                   </div>
@@ -314,31 +319,31 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         </div>
 
         {/* Palette Footer */}
-        <div className="px-4 py-2 border-t border-[#1C242C] bg-[#080A0D] flex items-center justify-between text-[10px] font-mono text-[#68737E]">
+        <div className="px-4 py-2 border-t border-[#1B2229] bg-[#0A0D10] flex items-center justify-between text-[10px] font-mono text-[#707B85]">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="px-1 py-0.5 rounded bg-[#12171D] border border-[#252D36] text-[9px]">
+              <kbd className="px-1 py-0.5 rounded bg-[#11161B] border border-[#2A333C] text-[9px]">
                 ↑
               </kbd>{" "}
-              <kbd className="px-1 py-0.5 rounded bg-[#12171D] border border-[#252D36] text-[9px]">
+              <kbd className="px-1 py-0.5 rounded bg-[#11161B] border border-[#2A333C] text-[9px]">
                 ↓
               </kbd>{" "}
               Navigate
             </span>
             <span>
-              <kbd className="px-1 py-0.5 rounded bg-[#12171D] border border-[#252D36] text-[9px]">
+              <kbd className="px-1 py-0.5 rounded bg-[#11161B] border border-[#2A333C] text-[9px]">
                 ↵
               </kbd>{" "}
               Select
             </span>
             <span>
-              <kbd className="px-1 py-0.5 rounded bg-[#12171D] border border-[#252D36] text-[9px]">
+              <kbd className="px-1 py-0.5 rounded bg-[#11161B] border border-[#2A333C] text-[9px]">
                 ESC
               </kbd>{" "}
               Close
             </span>
           </div>
-          <span className="text-[#4FD1C5]">BAYORA PALETTE</span>
+          <span className="text-[#4BC7B5]">BAYORA PALETTE</span>
         </div>
       </div>
     </div>

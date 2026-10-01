@@ -159,17 +159,17 @@ export default function ReportsAssurancePage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B2229]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F1F4F6]">
               REPORTS & ASSURANCE HUB
             </h1>
             <Badge variant="success" size="xs">
               VERIFIED COMPLIANCE
             </Badge>
           </div>
-          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
+          <p className="text-xs text-[#A6B0BA] max-w-2xl font-sans">
             Regulatory compliance crosswalks for EU AI Act, SOC 2 Type II, and NIST AI RMF backed by cryptographic proofs.
           </p>
         </div>
@@ -225,7 +225,7 @@ export default function ReportsAssurancePage() {
 
       {/* Category Filter Chips */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-mono">
-        <span className="text-[#68737E] uppercase text-[10px] mr-1">Category:</span>
+        <span className="text-[#707B85] uppercase text-[10px] mr-1">Category:</span>
         {["All", "Audit", "Security", "Evaluation", "Performance", "Infrastructure"].map(
           (cat) => (
             <button
@@ -233,8 +233,8 @@ export default function ReportsAssurancePage() {
               onClick={() => setCategoryFilter(cat)}
               className={`px-3 py-1 rounded-md transition ${
                 categoryFilter === cat
-                  ? "bg-[#171D24] text-[#4FD1C5] font-semibold border border-[#252D36]"
-                  : "bg-[#12171D] text-[#A3ADB7] border border-[#1C242C] hover:border-[#252D36]"
+                  ? "bg-[#171D23] text-[#4BC7B5] font-semibold border border-[#2A333C]"
+                  : "bg-[#11161B] text-[#A6B0BA] border border-[#1B2229] hover:border-[#2A333C]"
               }`}
             >
               {cat}
@@ -244,24 +244,24 @@ export default function ReportsAssurancePage() {
       </div>
 
       {/* Reports Table */}
-      <div className="p-5 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#1C242C]">
+      <div className="p-5 rounded-lg bg-[#11161B] border border-[#1B2229] space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#1B2229]">
           <div>
-            <h3 className="font-heading font-semibold text-sm text-[#EEF2F5]">
+            <h3 className="font-heading font-semibold text-sm text-[#F1F4F6]">
               Enterprise Assurance Reports & Attestations
             </h3>
-            <p className="text-[11px] text-[#A3ADB7] mt-0.5">
+            <p className="text-[11px] text-[#A6B0BA] mt-0.5">
               Click any report to view document summary, framework crosswalks, and cryptographic evidence.
             </p>
           </div>
-          <span className="text-xs font-mono text-[#68737E]">
+          <span className="text-xs font-mono text-[#707B85]">
             {filteredReports.length} reports available
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-[#080A0D] border-b border-[#1C242C] text-[#68737E] uppercase text-[10px]">
+            <thead className="bg-[#0A0D10] border-b border-[#1B2229] text-[#707B85] uppercase text-[10px]">
               <tr>
                 <th className="py-2.5 px-3">Report ID</th>
                 <th className="py-2.5 px-3">Report Name</th>
@@ -272,27 +272,27 @@ export default function ReportsAssurancePage() {
                 <th className="py-2.5 px-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1C242C]">
+            <tbody className="divide-y divide-[#1B2229]">
               {filteredReports.map((rep) => (
                 <tr
                   key={rep.id}
                   onClick={() => setSelectedReport(rep)}
-                  className="hover:bg-[#171D24]/50 cursor-pointer transition"
+                  className="hover:bg-[#171D23]/50 cursor-pointer transition"
                 >
-                  <td className="py-2.5 px-3 font-mono text-[#68737E]">{rep.id}</td>
-                  <td className="py-2.5 px-3 font-semibold text-[#EEF2F5]">
+                  <td className="py-2.5 px-3 font-mono text-[#707B85]">{rep.id}</td>
+                  <td className="py-2.5 px-3 font-semibold text-[#F1F4F6]">
                     {rep.name}
                   </td>
-                  <td className="py-2.5 px-3 text-[#4FD1C5]">{rep.category}</td>
-                  <td className="py-2.5 px-3 text-[#68737E]">{rep.date}</td>
-                  <td className="py-2.5 px-3 text-[#45C995] font-bold">{rep.score}</td>
+                  <td className="py-2.5 px-3 text-[#4BC7B5]">{rep.category}</td>
+                  <td className="py-2.5 px-3 text-[#707B85]">{rep.date}</td>
+                  <td className="py-2.5 px-3 text-[#42B883] font-bold">{rep.score}</td>
                   <td className="py-2.5 px-3">
                     <Badge variant={rep.status === "SIGNED" ? "success" : "info"} size="xs" dot>
                       {rep.status}
                     </Badge>
                   </td>
                   <td className="py-2.5 px-3 text-right space-x-2">
-                    <span className="text-[#4FD1C5] hover:underline">Preview</span>
+                    <span className="text-[#4BC7B5] hover:underline">Preview</span>
                   </td>
                 </tr>
               ))}
@@ -330,38 +330,38 @@ export default function ReportsAssurancePage() {
       >
         {selectedReport && (
           <div className="space-y-5 text-xs font-mono">
-            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
-              <span className="text-[10px] text-[#68737E] uppercase block">
+            <div className="p-3.5 rounded bg-[#0A0D10] border border-[#1B2229] space-y-1">
+              <span className="text-[10px] text-[#707B85] uppercase block">
                 Executive Compliance Summary
               </span>
-              <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
+              <p className="text-xs text-[#A6B0BA] font-sans leading-relaxed">
                 {selectedReport.executiveSummary}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
-                <span className="text-[10px] text-[#68737E] block">Author</span>
-                <span className="text-xs font-bold text-[#EEF2F5]">
+              <div className="p-3 rounded bg-[#0A0D10] border border-[#1B2229]">
+                <span className="text-[10px] text-[#707B85] block">Author</span>
+                <span className="text-xs font-bold text-[#F1F4F6]">
                   {selectedReport.author}
                 </span>
               </div>
-              <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C]">
-                <span className="text-[10px] text-[#68737E] block">Controls Verified</span>
-                <span className="text-xs font-bold text-[#45C995]">
+              <div className="p-3 rounded bg-[#0A0D10] border border-[#1B2229]">
+                <span className="text-[10px] text-[#707B85] block">Controls Verified</span>
+                <span className="text-xs font-bold text-[#42B883]">
                   {selectedReport.controlsChecked} / {selectedReport.controlsChecked} Passed
                 </span>
               </div>
             </div>
 
-            <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
-              <span className="text-[10px] text-[#68737E] uppercase block">
+            <div className="p-3.5 rounded bg-[#0A0D10] border border-[#1B2229] space-y-1">
+              <span className="text-[10px] text-[#707B85] uppercase block">
                 Cryptographic Evidence Chain
               </span>
-              <p className="text-[11px] text-[#A3ADB7] font-mono leading-relaxed">
-                Seal Hash: <span className="text-[#E6B35A]">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+              <p className="text-[11px] text-[#A6B0BA] font-mono leading-relaxed">
+                Seal Hash: <span className="text-[#D6A856]">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
                 <br />
-                Integrity Status: <span className="text-[#45C995]">MATHEMATICALLY CONTINUOUS</span>
+                Integrity Status: <span className="text-[#42B883]">MATHEMATICALLY CONTINUOUS</span>
               </p>
             </div>
           </div>

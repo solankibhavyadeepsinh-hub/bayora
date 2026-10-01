@@ -1,44 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bayora-bg: #080A0D;
-  --bayora-secondary: #0D1116;
-  --bayora-surface: #12171D;
-  --bayora-elevated: #171D24;
-  --bayora-border: #252D36;
-  --bayora-border-subtle: #1C242C;
-  --bayora-text: #EEF2F5;
-  --bayora-text-secondary: #A3ADB7;
-  --bayora-muted: #68737E;
+  --bayora-bg: #0A0D10;
+  --bayora-deep: #07090C;
+  --bayora-surface: #11161B;
+  --bayora-elevated: #171D23;
+  --bayora-subtle: #1B2229;
+  --bayora-border: #2A333C;
+  --bayora-text: #F1F4F6;
+  --bayora-secondary: #A6B0BA;
+  --bayora-muted: #707B85;
   
-  --bayora-accent: #4FD1C5;
-  --bayora-violet: #7C8CFF;
-  --bayora-success: #45C995;
-  --bayora-warning: #E6B35A;
-  --bayora-danger: #E66A77;
-  --bayora-info: #6EA8FE;
+  --bayora-teal: #4BC7B5;
+  --bayora-indigo: #6675D9;
+  --bayora-steel: #5B91D6;
+  --bayora-green: #42B883;
+  --bayora-amber: #D6A856;
+  --bayora-red: #D96573;
 }
 
 body {
-  background-color: #080A0D;
-  color: #EEF2F5;
+  background-color: #0A0D10;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(75, 199, 181, 0.03), transparent 75%),
+    linear-gradient(to bottom, transparent 60%, rgba(7, 9, 12, 0.75)),
+    linear-gradient(to right, rgba(42, 51, 60, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42, 51, 60, 0.045) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-position: 0 0, 0 0, -1px -1px, -1px -1px;
+  color: #F1F4F6;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, .font-heading {
-  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  letter-spacing: -0.025em;
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: -0.022em;
 }
 
 code, pre, .font-mono {
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* Minimalist Engineered Scrollbars */
@@ -47,33 +54,45 @@ code, pre, .font-mono {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #080A0D;
+  background: #0A0D10;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1C242C;
+  background: #1B2229;
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #252D36;
+  background: #2A333C;
 }
 
 /* Restrained Focus States */
 *:focus-visible {
-  outline: 1.5px solid #4FD1C5;
+  outline: 1.5px solid #4BC7B5;
   outline-offset: 1px;
 }
 
-/* Controlled Surface Layering */
+/* Layered Technical Surfaces */
 .surface-panel {
-  background-color: #12171D;
-  border: 1px solid #1C242C;
+  background-color: #11161B;
+  border: 1px solid #2A333C;
   border-radius: 6px;
 }
 
 .surface-elevated {
-  background-color: #171D24;
-  border: 1px solid #252D36;
+  background-color: #171D23;
+  border: 1px solid #2A333C;
   border-radius: 6px;
+}
+
+.surface-subtle {
+  background-color: #1B2229;
+  border: 1px solid #2A333C;
+  border-radius: 4px;
+}
+
+/* 2.5D Isometric Architecture Grid */
+.isometric-view {
+  transform: rotateX(55deg) rotateZ(-40deg);
+  transform-style: preserve-3d;
 }
 
 /* Reduced Motion Safety */

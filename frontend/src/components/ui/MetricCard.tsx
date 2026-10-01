@@ -3,14 +3,14 @@ import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 interface MetricCardProps {
   label: string;
-  value: string | number;
+  value: React.ReactNode;
   trend?: {
     value: string;
     direction: "up" | "down" | "neutral";
     context?: string;
   };
   sparklineData?: number[];
-  statusColor?: "accent" | "cyan" | "violet" | "success" | "warning" | "danger" | "info";
+  statusColor?: "teal" | "accent" | "cyan" | "indigo" | "violet" | "green" | "success" | "amber" | "warning" | "danger" | "red" | "info" | "steel";
   icon?: React.ReactNode;
   badgeText?: string;
   className?: string;
@@ -22,7 +22,7 @@ export function MetricCard({
   value,
   trend,
   sparklineData,
-  statusColor = "accent",
+  statusColor = "teal",
   icon,
   badgeText,
   className = "",
@@ -49,7 +49,7 @@ export function MetricCard({
           <svg className="w-16 h-5 shrink-0 overflow-visible" viewBox="0 0 64 20">
             <polyline
               fill="none"
-              stroke={trend?.direction === "down" ? "#E66A77" : "#45C995"}
+              stroke={trend?.direction === "down" ? "#D96573" : "#42B883"}
               strokeWidth="1.25"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -60,68 +60,77 @@ export function MetricCard({
       })()
     ) : null;
 
-  const colorDots = {
-    accent: "bg-[#4FD1C5]",
-    cyan: "bg-[#4FD1C5]",
-    violet: "bg-[#7C8CFF]",
-    success: "bg-[#45C995]",
-    warning: "bg-[#E6B35A]",
-    danger: "bg-[#E66A77]",
-    info: "bg-[#6EA8FE]",
+  const colorDots: Record<string, string> = {
+    teal: "bg-[#4BC7B5]",
+    accent: "bg-[#4BC7B5]",
+    indigo: "bg-[#6675D9]",
+    violet: "bg-[#6675D9]",
+    green: "bg-[#42B883]",
+    success: "bg-[#42B883]",
+    amber: "bg-[#D6A856]",
+    warning: "bg-[#D6A856]",
+    danger: "bg-[#D96573]",
+    red: "bg-[#D96573]",
+    info: "bg-[#5B91D6]",
+    steel: "bg-[#5B91D6]",
   };
+
+  const dotClass = colorDots[statusColor] || "bg-[#4BC7B5]";
 
   return (
     <div
       onClick={onClick}
-      className={`p-3.5 rounded-md bg-[#12171D] border border-[#1C242C] hover:border-[#252D36] transition-colors duration-150 flex flex-col justify-between ${
-        onClick ? "cursor-pointer hover:bg-[#171D24]" : ""
+      className={`p-3.5 rounded-md bg-[#11161B] border border-[#2A333C] hover:border-[#384450] transition-colors duration-160 flex flex-col justify-between ${
+        onClick ? "cursor-pointer hover:bg-[#171D23]" : ""
       } ${className}`}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <span className={`h-1.5 w-1.5 rounded-full ${colorDots[statusColor]}`} />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-[#A3ADB7]">
+          <span className={`h-1.5 w-1.5 rounded-full ${dotClass}`} />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#A6B0BA]">
             {label}
           </span>
         </div>
         {badgeText ? (
-          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#171D24] text-[#68737E] border border-[#252D36]">
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[#171D23] text-[#707B85] border border-[#2A333C]">
             {badgeText}
           </span>
         ) : icon ? (
-          <div className="text-[#68737E]">{icon}</div>
+          <div className="text-[#707B85]">{icon}</div>
         ) : null}
       </div>
 
       <div className="mt-2.5 flex items-baseline justify-between gap-2">
-        <span className="text-xl font-mono font-bold text-[#EEF2F5] tracking-tight">
+        <span className="text-xl font-mono font-bold text-[#F1F4F6] tracking-tight">
           {value}
         </span>
         {sparklineSvg}
       </div>
 
       {trend && (
-        <div className="mt-2 flex items-center gap-1.5 text-[10px] font-mono">
-          <span
-            className={`inline-flex items-center gap-0.5 font-medium ${
-              trend.direction === "up"
-                ? "text-[#45C995]"
-                : trend.direction === "down"
-                ? "text-[#E66A77]"
-                : "text-[#A3ADB7]"
-            }`}
-          >
+        <div className="mt-2 pt-2 border-t border-[#1B2229] flex items-center justify-between text-[11px] font-mono">
+          <div className="flex items-center gap-1">
             {trend.direction === "up" ? (
-              <TrendingUp className="w-2.5 h-2.5" />
+              <TrendingUp className="w-3 h-3 text-[#42B883]" />
             ) : trend.direction === "down" ? (
-              <TrendingDown className="w-2.5 h-2.5" />
+              <TrendingDown className="w-3 h-3 text-[#D96573]" />
             ) : (
-              <Minus className="w-2.5 h-2.5" />
+              <Minus className="w-3 h-3 text-[#707B85]" />
             )}
-            {trend.value}
-          </span>
+            <span
+              className={
+                trend.direction === "up"
+                  ? "text-[#42B883]"
+                  : trend.direction === "down"
+                  ? "text-[#D96573]"
+                  : "text-[#707B85]"
+              }
+            >
+              {trend.value}
+            </span>
+          </div>
           {trend.context && (
-            <span className="text-[#68737E] truncate">{trend.context}</span>
+            <span className="text-[10px] text-[#707B85] truncate">{trend.context}</span>
           )}
         </div>
       )}

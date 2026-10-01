@@ -1,7 +1,7 @@
 import React from "react";
 import { Loader2 } from "lucide-react";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "violet";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger" | "indigo" | "violet";
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -21,19 +21,22 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const variantStyles: Record<ButtonVariant, string> = {
+  // Normalize alias
+  const effVariant = variant === "violet" ? "indigo" : variant;
+
+  const variantStyles: Record<"primary" | "secondary" | "outline" | "ghost" | "danger" | "indigo", string> = {
     primary:
-      "bg-[#4FD1C5] text-[#080A0D] font-semibold hover:bg-[#5EEAD4] active:bg-[#38B2AC] shadow-none disabled:bg-[#4FD1C5]/30 disabled:text-[#080A0D]/50",
+      "bg-[#4BC7B5] text-[#0A0D10] font-semibold hover:bg-[#5BD9C7] active:bg-[#3BA898] shadow-none disabled:bg-[#4BC7B5]/30 disabled:text-[#0A0D10]/50",
     secondary:
-      "bg-[#12171D] text-[#EEF2F5] border border-[#1C242C] hover:bg-[#171D24] hover:border-[#252D36] active:bg-[#12171D] disabled:opacity-50",
+      "bg-[#11161B] text-[#F1F4F6] border border-[#2A333C] hover:bg-[#171D23] hover:border-[#384450] active:bg-[#11161B] disabled:opacity-50",
     outline:
-      "bg-transparent text-[#A3ADB7] border border-[#252D36] hover:text-[#EEF2F5] hover:border-[#4FD1C5]/40 hover:bg-[#4FD1C5]/5 disabled:opacity-40",
+      "bg-transparent text-[#A6B0BA] border border-[#2A333C] hover:text-[#F1F4F6] hover:border-[#4BC7B5]/40 hover:bg-[#4BC7B5]/5 disabled:opacity-40",
     ghost:
-      "bg-transparent text-[#A3ADB7] hover:text-[#EEF2F5] hover:bg-[#12171D] disabled:opacity-40",
+      "bg-transparent text-[#A6B0BA] hover:text-[#F1F4F6] hover:bg-[#11161B] disabled:opacity-40",
     danger:
-      "bg-[#E66A77]/12 text-[#E66A77] border border-[#E66A77]/25 hover:bg-[#E66A77]/20 hover:border-[#E66A77]/40 disabled:opacity-40",
-    violet:
-      "bg-[#7C8CFF] text-[#080A0D] font-semibold hover:bg-[#92A0FF] active:bg-[#6878FF] disabled:opacity-50",
+      "bg-[#D96573]/12 text-[#D96573] border border-[#D96573]/25 hover:bg-[#D96573]/20 hover:border-[#D96573]/40 disabled:opacity-40",
+    indigo:
+      "bg-[#6675D9] text-[#F1F4F6] font-semibold hover:bg-[#7A87E5] active:bg-[#5463C4] disabled:opacity-50",
   };
 
   const sizeStyles: Record<ButtonSize, string> = {
@@ -45,7 +48,7 @@ export function Button({
 
   return (
     <button
-      className={`inline-flex items-center justify-center transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed select-none font-sans ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center justify-center transition-colors duration-160 cursor-pointer disabled:cursor-not-allowed select-none font-sans ${variantStyles[effVariant]} ${sizeStyles[size]} ${className}`}
       disabled={disabled || loading}
       {...props}
     >

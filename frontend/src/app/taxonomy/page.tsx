@@ -204,18 +204,18 @@ export default function TaxonomyDirectoryPage() {
   return (
     <div className="space-y-8">
       {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1C242C]">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1B2229]">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <BookOpen className="w-5 h-5 text-[#6EA8FE]" />
-            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#EEF2F5]">
+            <BookOpen className="w-5 h-5 text-[#5B91D6]" />
+            <h1 className="text-xl md:text-2xl font-bold font-heading text-[#F1F4F6]">
               OWASP TOP 10 FOR LLMS DIRECTORY
             </h1>
             <Badge variant="info" size="xs">
               2025 EDITION
             </Badge>
           </div>
-          <p className="text-xs text-[#A3ADB7] max-w-2xl font-sans">
+          <p className="text-xs text-[#A6B0BA] max-w-2xl font-sans">
             Comprehensive catalog of generative AI security risks, CWE mappings, adversarial vectors, and Blue defense crosswalks.
           </p>
         </div>
@@ -271,13 +271,13 @@ export default function TaxonomyDirectoryPage() {
         {/* LEFT: Search & List (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
           <div className="relative">
-            <Search className="w-4 h-4 text-[#68737E] absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-[#707B85] absolute left-3 top-3" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search taxonomy by title, CWE, or severity..."
-              className="w-full pl-9 pr-4 py-2.5 rounded-lg bg-[#12171D] border border-[#1C242C] text-xs font-mono text-[#EEF2F5] placeholder-[#68737E] focus:border-[#6EA8FE] outline-none"
+              className="w-full pl-9 pr-4 py-2.5 rounded-lg bg-[#11161B] border border-[#1B2229] text-xs font-mono text-[#F1F4F6] placeholder-[#707B85] focus:border-[#5B91D6] outline-none"
             />
           </div>
 
@@ -297,22 +297,22 @@ export default function TaxonomyDirectoryPage() {
                   onClick={() => setSelectedThreatId(threat.id)}
                   className={`p-3.5 rounded-lg cursor-pointer transition border text-xs ${
                     isSelected
-                      ? "bg-[#171D24] border-[#6EA8FE] shadow-sm"
-                      : "bg-[#12171D] border-[#1C242C] hover:border-[#252D36]"
+                      ? "bg-[#171D23] border-[#5B91D6] shadow-sm"
+                      : "bg-[#11161B] border-[#1B2229] hover:border-[#2A333C]"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-[#6EA8FE]">
+                    <span className="font-mono font-bold text-[#5B91D6]">
                       {threat.id}
                     </span>
                     <Badge variant={sevVariant} size="xs">
                       {threat.severity}
                     </Badge>
                   </div>
-                  <h4 className="font-semibold text-[#EEF2F5] font-sans mt-1.5">
+                  <h4 className="font-semibold text-[#F1F4F6] font-sans mt-1.5">
                     {threat.title}
                   </h4>
-                  <span className="text-[10px] font-mono text-[#68737E] block mt-1 truncate">
+                  <span className="text-[10px] font-mono text-[#707B85] block mt-1 truncate">
                     {threat.cwe}
                   </span>
                 </div>
@@ -323,11 +323,11 @@ export default function TaxonomyDirectoryPage() {
 
         {/* RIGHT: Detailed Threat Profile Card (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="p-6 rounded-lg bg-[#12171D] border border-[#1C242C] space-y-5">
-            <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#1C242C]">
+          <div className="p-6 rounded-lg bg-[#11161B] border border-[#1B2229] space-y-5">
+            <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#1B2229]">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-[#6EA8FE]">
+                  <span className="font-mono text-xs font-bold text-[#5B91D6]">
                     {selectedThreat.code}
                   </span>
                   <Badge
@@ -343,10 +343,10 @@ export default function TaxonomyDirectoryPage() {
                     {selectedThreat.severity}
                   </Badge>
                 </div>
-                <h3 className="text-base font-bold font-heading text-[#EEF2F5]">
+                <h3 className="text-base font-bold font-heading text-[#F1F4F6]">
                   {selectedThreat.title}
                 </h3>
-                <span className="text-xs font-mono text-[#68737E] block">
+                <span className="text-xs font-mono text-[#707B85] block">
                   {selectedThreat.cwe}
                 </span>
               </div>
@@ -354,35 +354,35 @@ export default function TaxonomyDirectoryPage() {
 
             <div className="space-y-4 text-xs font-mono">
               <div className="space-y-1.5">
-                <span className="text-[10px] text-[#68737E] uppercase block">
+                <span className="text-[10px] text-[#707B85] uppercase block">
                   Vulnerability Description
                 </span>
-                <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
+                <p className="text-xs text-[#A6B0BA] font-sans leading-relaxed">
                   {selectedThreat.description}
                 </p>
               </div>
 
-              <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
-                <span className="text-[10px] text-[#E66A77] uppercase block font-bold">
+              <div className="p-3.5 rounded bg-[#0A0D10] border border-[#1B2229] space-y-1">
+                <span className="text-[10px] text-[#D96573] uppercase block font-bold">
                   Adversarial Attack Vector
                 </span>
-                <p className="text-xs text-[#A3ADB7] font-sans leading-relaxed">
+                <p className="text-xs text-[#A6B0BA] font-sans leading-relaxed">
                   {selectedThreat.attackVector}
                 </p>
               </div>
 
-              <div className="p-3.5 rounded bg-[#080A0D] border border-[#1C242C] space-y-1">
-                <span className="text-[10px] text-[#45C995] uppercase block font-bold">
+              <div className="p-3.5 rounded bg-[#0A0D10] border border-[#1B2229] space-y-1">
+                <span className="text-[10px] text-[#42B883] uppercase block font-bold">
                   Bayora Blue Guardrail Enforcement
                 </span>
-                <p className="text-xs text-[#EEF2F5] font-mono leading-relaxed">
+                <p className="text-xs text-[#F1F4F6] font-mono leading-relaxed">
                   {selectedThreat.bayoraDefense}
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-[#68737E] uppercase">
+                  <span className="text-[10px] text-[#707B85] uppercase">
                     Sample Adversarial Payload
                   </span>
                   <Button
@@ -391,7 +391,7 @@ export default function TaxonomyDirectoryPage() {
                     onClick={() => copyPrompt(selectedThreat.examplePrompt)}
                     icon={
                       copied ? (
-                        <Check className="w-3 h-3 text-[#45C995]" />
+                        <Check className="w-3 h-3 text-[#42B883]" />
                       ) : (
                         <Copy className="w-3 h-3" />
                       )
@@ -400,7 +400,7 @@ export default function TaxonomyDirectoryPage() {
                     {copied ? "Copied" : "Copy Payload"}
                   </Button>
                 </div>
-                <div className="p-3 rounded bg-[#080A0D] border border-[#1C242C] text-[11px] text-[#E6B35A] font-mono">
+                <div className="p-3 rounded bg-[#0A0D10] border border-[#1B2229] text-[11px] text-[#D6A856] font-mono">
                   {selectedThreat.examplePrompt}
                 </div>
               </div>

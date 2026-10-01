@@ -2,12 +2,18 @@ import React from "react";
 
 export type BadgeVariant =
   | "accent"
-  | "cyan" // alias for backward compatibility
+  | "teal"
+  | "indigo"
   | "violet"
   | "success"
+  | "green"
   | "warning"
+  | "amber"
   | "danger"
+  | "red"
   | "info"
+  | "steel"
+  | "cyan"
   | "neutral";
 
 interface BadgeProps {
@@ -25,54 +31,60 @@ export function Badge({
   className = "",
   dot = false,
 }: BadgeProps) {
-  // Map cyan to accent
-  const effectiveVariant = variant === "cyan" ? "accent" : variant;
+  // Normalize aliases
+  let normVariant: "teal" | "indigo" | "success" | "warning" | "danger" | "info" | "neutral" = "neutral";
+  if (variant === "accent" || variant === "teal" || variant === "cyan") normVariant = "teal";
+  else if (variant === "indigo" || variant === "violet") normVariant = "indigo";
+  else if (variant === "success" || variant === "green") normVariant = "success";
+  else if (variant === "warning" || variant === "amber") normVariant = "warning";
+  else if (variant === "danger" || variant === "red") normVariant = "danger";
+  else if (variant === "info" || variant === "steel") normVariant = "info";
 
   const variantStyles: Record<
-    "accent" | "violet" | "success" | "warning" | "danger" | "info" | "neutral",
+    "teal" | "indigo" | "success" | "warning" | "danger" | "info" | "neutral",
     { bg: string; text: string; border: string; dotColor: string }
   > = {
-    accent: {
-      bg: "bg-[#4FD1C5]/10",
-      text: "text-[#4FD1C5]",
-      border: "border-[#4FD1C5]/25",
-      dotColor: "bg-[#4FD1C5]",
+    teal: {
+      bg: "bg-[#4BC7B5]/10",
+      text: "text-[#4BC7B5]",
+      border: "border-[#4BC7B5]/25",
+      dotColor: "bg-[#4BC7B5]",
     },
-    violet: {
-      bg: "bg-[#7C8CFF]/10",
-      text: "text-[#7C8CFF]",
-      border: "border-[#7C8CFF]/25",
-      dotColor: "bg-[#7C8CFF]",
+    indigo: {
+      bg: "bg-[#6675D9]/10",
+      text: "text-[#6675D9]",
+      border: "border-[#6675D9]/25",
+      dotColor: "bg-[#6675D9]",
     },
     success: {
-      bg: "bg-[#45C995]/10",
-      text: "text-[#45C995]",
-      border: "border-[#45C995]/25",
-      dotColor: "bg-[#45C995]",
+      bg: "bg-[#42B883]/10",
+      text: "text-[#42B883]",
+      border: "border-[#42B883]/25",
+      dotColor: "bg-[#42B883]",
     },
     warning: {
-      bg: "bg-[#E6B35A]/10",
-      text: "text-[#E6B35A]",
-      border: "border-[#E6B35A]/25",
-      dotColor: "bg-[#E6B35A]",
+      bg: "bg-[#D6A856]/10",
+      text: "text-[#D6A856]",
+      border: "border-[#D6A856]/25",
+      dotColor: "bg-[#D6A856]",
     },
     danger: {
-      bg: "bg-[#E66A77]/10",
-      text: "text-[#E66A77]",
-      border: "border-[#E66A77]/25",
-      dotColor: "bg-[#E66A77]",
+      bg: "bg-[#D96573]/10",
+      text: "text-[#D96573]",
+      border: "border-[#D96573]/25",
+      dotColor: "bg-[#D96573]",
     },
     info: {
-      bg: "bg-[#6EA8FE]/10",
-      text: "text-[#6EA8FE]",
-      border: "border-[#6EA8FE]/25",
-      dotColor: "bg-[#6EA8FE]",
+      bg: "bg-[#5B91D6]/10",
+      text: "text-[#5B91D6]",
+      border: "border-[#5B91D6]/25",
+      dotColor: "bg-[#5B91D6]",
     },
     neutral: {
-      bg: "bg-[#171D24]",
-      text: "text-[#A3ADB7]",
-      border: "border-[#252D36]",
-      dotColor: "bg-[#68737E]",
+      bg: "bg-[#171D23]",
+      text: "text-[#A6B0BA]",
+      border: "border-[#2A333C]",
+      dotColor: "bg-[#707B85]",
     },
   };
 
@@ -82,7 +94,7 @@ export function Badge({
     md: "px-2.5 py-1 text-xs gap-1.5",
   };
 
-  const current = variantStyles[effectiveVariant];
+  const current = variantStyles[normVariant];
 
   return (
     <span
